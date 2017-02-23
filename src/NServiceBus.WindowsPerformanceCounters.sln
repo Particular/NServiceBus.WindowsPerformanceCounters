@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.WindowsPerformanceCounters", "NServiceBus.WindowsPerformanceCounters\NServiceBus.WindowsPerformanceCounters.csproj", "{DF381B87-8EB9-4F30-9E92-0849641ED01A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.WindowsPerformanceCounters.Tests", "NServiceBus.WindowsPerformanceCounters.Tests\NServiceBus.WindowsPerformanceCounters.Tests.csproj", "{9BCDA27A-5FC2-4197-9DCF-0D0F70424B58}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DF381B87-8EB9-4F30-9E92-0849641ED01A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF381B87-8EB9-4F30-9E92-0849641ED01A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF381B87-8EB9-4F30-9E92-0849641ED01A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF381B87-8EB9-4F30-9E92-0849641ED01A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BCDA27A-5FC2-4197-9DCF-0D0F70424B58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BCDA27A-5FC2-4197-9DCF-0D0F70424B58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BCDA27A-5FC2-4197-9DCF-0D0F70424B58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BCDA27A-5FC2-4197-9DCF-0D0F70424B58}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
