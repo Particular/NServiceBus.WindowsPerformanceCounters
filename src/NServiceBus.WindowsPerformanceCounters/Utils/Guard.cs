@@ -1,8 +1,8 @@
-﻿using System;
-using JetBrains.Annotations;
-
-namespace NServiceBus
+﻿namespace NServiceBus
 {
+    using JetBrains.Annotations;
+    using System;
+
     static class Guard
     {
         [ContractAnnotation("value: null => halt")]
