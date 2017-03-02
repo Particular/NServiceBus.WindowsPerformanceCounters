@@ -1,7 +1,6 @@
-﻿namespace NServiceBus
+﻿namespace NServiceBus.Features
 {
     using System.Threading.Tasks;
-    using Features;
 
     class ReceiveStatisticsFeature : Feature
     {
@@ -19,7 +18,7 @@
             //todo: features.Disable("NewNameOfCorePerfCounterFeature");
             //context.Pipeline.Remove("ReceivePerformanceDiagnosticsBehavior");
 
-            context.Pipeline.Register("PerfCountersExternal",performanceDiagnosticsBehavior, "Provides various performance counters for receive statistics");
+            context.Pipeline.Register("PerfCountersExternal", performanceDiagnosticsBehavior, "Provides various performance counters for receive statistics");
             context.RegisterStartupTask(new WarmupCooldownTask(performanceDiagnosticsBehavior));
         }
 
