@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.WindowsPerforma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.WindowsPerformanceCounters.Tests", "NServiceBus.WindowsPerformanceCounters.Tests\NServiceBus.WindowsPerformanceCounters.Tests.csproj", "{9BCDA27A-5FC2-4197-9DCF-0D0F70424B58}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{6B39145F-C32F-4253-AF40-A6BDD8711545}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9BCDA27A-5FC2-4197-9DCF-0D0F70424B58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BCDA27A-5FC2-4197-9DCF-0D0F70424B58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BCDA27A-5FC2-4197-9DCF-0D0F70424B58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B39145F-C32F-4253-AF40-A6BDD8711545}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B39145F-C32F-4253-AF40-A6BDD8711545}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B39145F-C32F-4253-AF40-A6BDD8711545}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B39145F-C32F-4253-AF40-A6BDD8711545}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

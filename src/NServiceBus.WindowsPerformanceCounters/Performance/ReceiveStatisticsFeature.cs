@@ -5,21 +5,13 @@
 
     class ReceiveStatisticsFeature : Feature
     {
-        public ReceiveStatisticsFeature()
-        {
-            EnableByDefault();
-        }
-
         protected override void Setup(FeatureConfigurationContext context)
         {
             var logicalAddress = context.Settings.LogicalAddress();
             var performanceDiagnosticsBehavior = new ReceivePerformanceDiagnosticsBehavior(logicalAddress.EndpointInstance.Endpoint);
 
-
-            //todo: features.Disable("NewNameOfCorePerfCounterFeature");
-            //context.Pipeline.Remove("ReceivePerformanceDiagnosticsBehavior");
-
-            context.Pipeline.Register("PerfCountersExternal", performanceDiagnosticsBehavior, "Provides various performance counters for receive statistics");
+            context.Pipeline.Remove("ReceivePerformanceDiagnosticsBehavior");
+            context.Pipeline.Register("NServiceBus.WindowsPerformanceCounters.ReceivePerformanceDiagnosticsBehavior", performanceDiagnosticsBehavior, "Provides various performance counters for receive statistics");
             context.RegisterStartupTask(new WarmupCooldownTask(performanceDiagnosticsBehavior));
         }
 

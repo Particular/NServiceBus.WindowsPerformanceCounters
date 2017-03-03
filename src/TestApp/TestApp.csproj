@@ -4,32 +4,33 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DF381B87-8EB9-4F30-9E92-0849641ED01A}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{6B39145F-C32F-4253-AF40-A6BDD8711545}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NServiceBus.WindowsPerformanceCounters</RootNamespace>
-    <AssemblyName>NServiceBus.WindowsPerformanceCounters</AssemblyName>
+    <RootNamespace>TestApp</RootNamespace>
+    <AssemblyName>TestApp</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\binaries\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NServiceBus.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
@@ -46,24 +47,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Counters\IPerformanceCounterInstance.cs" />
-    <Compile Include="Counters\NonFunctionalPerformanceCounterInstance.cs" />
-    <Compile Include="Counters\PerformanceCounterHelper.cs" />
-    <Compile Include="Counters\PerformanceCounterInstance.cs" />
-    <Compile Include="Counters\PerformanceMonitorUsersInstaller.cs" />
-    <Compile Include="CriticalTime\CriticalTimeMonitoringConfig.cs" />
-    <Compile Include="CriticalTime\CriticalTimeMonitoring.cs" />
-    <Compile Include="Performance\ReceiveStatisticsConfig.cs" />
-    <Compile Include="Performance\ReceiveStatisticsFeature.cs" />
-    <Compile Include="Performance\Statistics\ReceivePerformanceDiagnosticsBehavior.cs" />
-    <Compile Include="SLA\SLAMonitoring.cs" />
-    <Compile Include="SLA\SLAMonitoringConfig.cs" />
-    <Compile Include="Properties\Resharper.Annotations.g.cs" />
-    <Compile Include="Utils\Guard.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NServiceBus.WindowsPerformanceCounters\NServiceBus.WindowsPerformanceCounters.csproj">
+      <Project>{df381b87-8eb9-4f30-9e92-0849641ed01a}</Project>
+      <Name>NServiceBus.WindowsPerformanceCounters</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>
