@@ -10,7 +10,7 @@
         /// <param name="config">The <see cref="EndpointConfiguration" /> instance to apply the settings to.</param>
         public static void EnableCriticalTimePerformanceCounter(this EndpointConfiguration config)
         {
-            //Guard.AgainstNull(nameof(config), config);
+            Guard.AgainstNull(nameof(config), config);
             config.EnableFeature<CriticalTimeMonitoring>();
         }
     }
