@@ -1,6 +1,6 @@
 ﻿namespace NServiceBus
 {
-    using Features;
+    using WindowsPerformanceCounters;
 
     public static class CriticalTimeMonitoringConfig
     {

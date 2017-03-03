@@ -1,6 +1,7 @@
-﻿namespace NServiceBus.Features
+﻿namespace NServiceBus.WindowsPerformanceCounters
 {
     using System.Threading.Tasks;
+    using Features;
 
     class ReceiveStatisticsFeature : Feature
     {

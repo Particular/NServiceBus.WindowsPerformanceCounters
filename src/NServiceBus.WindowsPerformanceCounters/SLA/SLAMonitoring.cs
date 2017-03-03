@@ -1,10 +1,11 @@
-namespace NServiceBus.Features
+namespace NServiceBus.WindowsPerformanceCounters
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
+    using Features;
 
     class SLAMonitoring : Feature
     {
@@ -25,9 +26,7 @@ namespace NServiceBus.Features
             var counterInstanceName = context.Settings.EndpointName();
             var slaBreachCounter = new EstimatedTimeToSLABreachCounter(endpointSla, counterInstanceName);
 
-            var notifications = context.Settings.Get<NotificationSubscriptions>();
-
-            notifications.Subscribe<ReceivePipelineCompleted>(e =>
+            context.Pipeline.OnReceivePipelineCompleted(e =>
             {
                 string timeSentString;
 

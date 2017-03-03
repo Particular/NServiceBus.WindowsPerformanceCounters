@@ -1,9 +1,10 @@
-﻿namespace NServiceBus.Features
+﻿namespace NServiceBus.WindowsPerformanceCounters
 {
     using System;
     using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
+    using Features;
 
     class CriticalTimeMonitoring : Feature
     {
@@ -12,9 +13,7 @@
             var counterInstanceName = context.Settings.EndpointName();
             var criticalTimeCounter = new CriticalTimeCounter(counterInstanceName);
 
-            var notifications = context.Settings.Get<NotificationSubscriptions>();
-
-            notifications.Subscribe<ReceivePipelineCompleted>(e =>
+            context.Pipeline.OnReceivePipelineCompleted(e =>
             {
                 string timeSentString;
 
