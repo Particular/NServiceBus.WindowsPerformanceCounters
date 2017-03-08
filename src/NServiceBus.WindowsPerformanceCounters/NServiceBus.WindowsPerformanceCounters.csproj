@@ -54,6 +54,8 @@
     <Compile Include="Counters\PerformanceMonitorUsersInstaller.cs" />
     <Compile Include="CriticalTime\CriticalTimeMonitoringConfig.cs" />
     <Compile Include="CriticalTime\CriticalTimeMonitoring.cs" />
+    <Compile Include="Metrics.cs" />
+    <Compile Include="PerfCounters.cs" />
     <Compile Include="Performance\ReceiveStatisticsConfig.cs" />
     <Compile Include="Performance\ReceiveStatisticsFeature.cs" />
     <Compile Include="Performance\Statistics\ReceivePerformanceDiagnosticsBehavior.cs" />

@@ -1,7 +1,6 @@
-namespace NServiceBus
+namespace NServiceBus.WindowsPerformanceCounters
 {
     using System;
-    using WindowsPerformanceCounters;
     using Configuration.AdvanceExtensibility;
 
     /// <summary>
