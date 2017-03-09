@@ -37,7 +37,7 @@
         {
             Guard.AgainstNull(nameof(metrics), metrics);
 
-            metrics.Config.EnableFeature<WindowsPerformanceCounters.SLAMonitoring>();
+            metrics.Config.EnableFeature<SLAMonitoring>();
 
             return metrics;
         }
