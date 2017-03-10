@@ -9,6 +9,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.WindowsPerforma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{6B39145F-C32F-4253-AF40-A6BDD8711545}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{F6825485-5DB0-44AA-B15A-D0D4F6A8B727}"
+	ProjectSection(SolutionItems) = preProject
+		nuget.config = nuget.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{54D85933-AF31-49D3-9208-36DC4689B291}"
+	ProjectSection(SolutionItems) = preProject
+		..\packaging\nuget\NServiceBus.WindowsPerformanceCounters.nuspec = ..\packaging\nuget\NServiceBus.WindowsPerformanceCounters.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
