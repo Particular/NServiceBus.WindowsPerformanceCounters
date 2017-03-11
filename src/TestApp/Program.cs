@@ -4,8 +4,7 @@ using System.Threading.Tasks;
 namespace TestApp
 {
     using NServiceBus;
-    using NServiceBus.WindowsPerformanceCounters;
-
+    
     class Program
     {
         static void Main(string[] args)

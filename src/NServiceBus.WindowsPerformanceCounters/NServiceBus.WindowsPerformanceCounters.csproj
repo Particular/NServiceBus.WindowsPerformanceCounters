@@ -25,6 +25,7 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>..\..\binaries\NServiceBus.WindowsPerformanceCounters.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,6 +36,7 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>..\..\binaries\NServiceBus.WindowsPerformanceCounters.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NServiceBus.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
@@ -51,7 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Counters\IPerformanceCounterInstance.cs" />
     <Compile Include="Counters\NonFunctionalPerformanceCounterInstance.cs" />
     <Compile Include="Counters\PerformanceCounterHelper.cs" />
@@ -66,7 +68,6 @@
     <Compile Include="Performance\Statistics\ReceivePerformanceDiagnosticsBehavior.cs" />
     <Compile Include="SLA\SLAMonitoring.cs" />
     <Compile Include="SLA\SLAMonitoringConfig.cs" />
-    <Compile Include="Properties\Resharper.Annotations.g.cs" />
     <Compile Include="Utils\Guard.cs" />
   </ItemGroup>
   <ItemGroup>

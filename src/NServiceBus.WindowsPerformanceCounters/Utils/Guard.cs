@@ -1,12 +1,10 @@
 ﻿namespace NServiceBus
 {
-    using JetBrains.Annotations;
     using System;
 
     static class Guard
     {
-        [ContractAnnotation("value: null => halt")]
-        public static void AgainstNull([InvokerParameterName] string argumentName, [NotNull] object value)
+        public static void AgainstNull(string argumentName, object value)
         {
             if (value == null)
             {
@@ -14,7 +12,7 @@
             }
         }
 
-        public static void AgainstNegativeAndZero([InvokerParameterName] string argumentName, int value)
+        public static void AgainstNegativeAndZero(string argumentName, int value)
         {
             if (value <= 0)
             {
@@ -22,7 +20,7 @@
             }
         }
 
-        public static void AgainstNegativeAndZero([InvokerParameterName] string argumentName, TimeSpan value)
+        public static void AgainstNegativeAndZero(string argumentName, TimeSpan value)
         {
             if (value <= TimeSpan.Zero)
             {
