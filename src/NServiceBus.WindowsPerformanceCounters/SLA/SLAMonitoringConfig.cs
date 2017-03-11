@@ -11,25 +11,24 @@ namespace NServiceBus.WindowsPerformanceCounters
         /// <summary>
         /// Enables the NServiceBus specific performance counters with a specific EndpointSLA.
         /// </summary>
-        /// <param name="config">The <see cref="EndpointConfiguration" /> instance to apply the settings to.</param>
+        /// <param name="endpointConfiguration">The <see cref="EndpointConfiguration" /> instance to apply the settings to.</param>
         /// <param name="sla">The <see cref="TimeSpan" /> to use oa the SLA. Must be greater than <see cref="TimeSpan.Zero" />.</param>
-        public static void EnableSLAPerformanceCounter(this EndpointConfiguration config, TimeSpan sla)
+        public static void EnableSLAPerformanceCounter(this EndpointConfiguration endpointConfiguration, TimeSpan sla)
         {
-            Guard.AgainstNull(nameof(config), config);
+            Guard.AgainstNull(nameof(endpointConfiguration), endpointConfiguration);
             Guard.AgainstNegativeAndZero(nameof(sla), sla);
-            config.GetSettings().Set(SLAMonitoring.EndpointSLAKey, sla);
-            EnableSLAPerformanceCounter(config);
+            endpointConfiguration.GetSettings().Set(SLAMonitoring.EndpointSLAKey, sla);
+            EnableSLAPerformanceCounter(endpointConfiguration);
         }
 
         /// <summary>
         /// Enables the NServiceBus specific performance counters with a specific EndpointSLA.
         /// </summary>
-        /// <param name="config">The <see cref="EndpointConfiguration" /> instance to apply the settings to.</param>
-        public static void EnableSLAPerformanceCounter(this EndpointConfiguration config)
+        /// <param name="endpointConfiguration">The <see cref="EndpointConfiguration" /> instance to apply the settings to.</param>
+        public static void EnableSLAPerformanceCounter(this EndpointConfiguration endpointConfiguration)
         {
-
-            Guard.AgainstNull(nameof(config), config);
-            config.EnableFeature<SLAMonitoring>();
+            Guard.AgainstNull(nameof(endpointConfiguration), endpointConfiguration);
+            endpointConfiguration.EnableFeature<SLAMonitoring>();
         }
     }
 }

@@ -1,13 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 
-namespace NServiceBus.WindowsPerformanceCounters.Tests
+[TestFixture]
+public class DoNotFailBuildTests
 {
-    [TestClass]
-    public class DoNotFailBuildTests
+    [Test]
+    public void TestMethod1()
     {
-        [TestMethod]
-        public void TestMethod1()
-        {
-        }
     }
 }
