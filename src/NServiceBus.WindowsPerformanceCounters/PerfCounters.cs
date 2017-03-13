@@ -35,6 +35,8 @@
         {
             Guard.AgainstNull(nameof(sla), sla);
             this.GetSettings().Set("WindowsPerformanceCountersSLATime", sla);
+
+
         }
     }
 }

@@ -18,31 +18,28 @@ namespace TestApp
             endpointConfig.UsePersistence<InMemoryPersistence>();
             endpointConfig.SendFailedMessagesTo("error");
             endpointConfig.EnableInstallers();
-            
-            //
-            // *** The current way
-            //
-            endpointConfig.EnablePerformanceCounters();
-            //endpointConfig.EnableSLAPerformanceCounter(TimeSpan.FromSeconds(100));
 
             //
-            // The extensible way
+            // The fluent way
             //
-            endpointConfig.EnableMetrics().
+            endpointConfig.Metrics().
                 EnableSLAPerformanceCounters().
-                EnableStatistics().
+                EnablePerformanceStatistics().
                 Whatever();
 
             //
             // The recoverability way
             //
-            endpointConfig.WindowsPerformanceCounters()
-                .EnableSLACounters(s =>
-                {
-                    s.EndpointSLATimeout(TimeSpan.FromMinutes(10));
-                });
+            //endpointConfig.WindowsPerformanceCounters()
+            //    .EnableSLACounters(s =>
+            //    {
+            //        s.EndpointSLATimeout(TimeSpan.FromMinutes(10));
+            //    });
 
             var endpoint = await Endpoint.Start(endpointConfig);
+
+            Console.WriteLine("Press a key to start sending messages...");
+            Console.ReadKey();
 
             var rnd = new Random();
             while (true)
@@ -61,10 +58,15 @@ namespace TestApp
     
     public class MyHandler : IHandleMessages<MyCommand>
     {
-        public Task Handle(MyCommand message, IMessageHandlerContext context)
+        public static Random random = new Random();
+
+        public async Task Handle(MyCommand message, IMessageHandlerContext context)
         {
-            Console.WriteLine($"Received message at {DateTime.Now}");
-            return Task.FromResult(0);
+            var waitTime = random.Next(250);
+
+            Console.WriteLine($"Received message at {DateTime.Now}, delaying for {waitTime}ms");
+
+            await Task.Delay(waitTime);
         }
     }
 }
