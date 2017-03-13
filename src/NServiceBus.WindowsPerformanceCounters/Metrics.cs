@@ -17,19 +17,14 @@
         }
     }
 
-    public class Metrics : ExposeSettings
+    public class Metrics
     {
-        readonly EndpointConfiguration config;
-
-        internal Metrics(EndpointConfiguration config) : base(config.GetSettings())
+        internal Metrics(EndpointConfiguration endpointConfiguration)
         {
-            this.config = config;
+            EndpointConfiguration = endpointConfiguration;
         }
 
-        public EndpointConfiguration Config
-        {
-            get { return config; }
-        }
+        internal EndpointConfiguration EndpointConfiguration { get; }
     }
 
     public static class MetricsExtensionsForPerformanceCounters
@@ -42,7 +37,7 @@
         {
             Guard.AgainstNull(nameof(metrics), metrics);
 
-            metrics.Config.EnableFeature<CriticalTimeMonitoring>();
+            metrics.EndpointConfiguration.EnableFeature<CriticalTimeMonitoring>();
             
             return metrics;
         }
@@ -55,7 +50,7 @@
         {
             Guard.AgainstNull(nameof(metrics), metrics);
 
-            metrics.Config.EnableFeature<SLAMonitoring>();
+            metrics.EndpointConfiguration.EnableFeature<SLAMonitoring>();
 
             return metrics;
         }
@@ -70,7 +65,7 @@
             Guard.AgainstNull(nameof(metrics), metrics);
             Guard.AgainstNegativeAndZero(nameof(sla), sla);
 
-            metrics.GetSettings().Set(SLAMonitoring.EndpointSLAKey, sla);
+            metrics.EndpointConfiguration.GetSettings().Set(SLAMonitoring.EndpointSLAKey, sla);
             EnableSLAPerformanceCounters(metrics);
 
             return metrics;
@@ -84,7 +79,7 @@
         {
             Guard.AgainstNull(nameof(metrics), metrics);
 
-            metrics.Config.EnableFeature<ReceiveStatisticsFeature>();
+            metrics.EndpointConfiguration.EnableFeature<ReceiveStatisticsFeature>();
 
             return metrics;
         }
