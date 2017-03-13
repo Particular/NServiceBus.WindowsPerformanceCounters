@@ -19,13 +19,9 @@ namespace TestApp
             endpointConfig.SendFailedMessagesTo("error");
             endpointConfig.EnableInstallers();
 
-            //
-            // The fluent way
-            //
-            endpointConfig.Metrics().
-                EnableSLAPerformanceCounters().
-                EnablePerformanceStatistics().
-                Whatever();
+            var metrics = endpointConfig.Metrics();
+            metrics.EnableSLAPerformanceCounters();
+            metrics.EnablePerformanceStatistics();
 
             //
             // The recoverability way
@@ -67,17 +63,6 @@ namespace TestApp
             Console.WriteLine($"Received message at {DateTime.Now}, delaying for {waitTime}ms");
 
             await Task.Delay(waitTime);
-        }
-    }
-}
-
-namespace NServiceBus
-{
-    public static class MetricsExtensions
-    {
-        public static Metrics Whatever(this Metrics metrics)
-        {
-            return metrics;
         }
     }
 }
