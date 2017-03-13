@@ -14,7 +14,7 @@ namespace NServiceBus.WindowsPerformanceCounters
             var settings = context.Settings;
             if (settings.GetOrDefault<bool>("Endpoint.SendOnly"))
             {
-                throw new Exception("SLA Monitoring is not supported for send only endpoints, please remove .EnableSLAPerformanceCounter(mySLA) from your config.");
+                throw new Exception("SLA Monitoring is not supported for send only endpoints, remove .EnableSLAPerformanceCounter(mySLA).");
             }
 
             TimeSpan endpointSla;
