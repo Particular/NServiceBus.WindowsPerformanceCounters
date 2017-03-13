@@ -1,18 +1,20 @@
 ﻿namespace NServiceBus
 {
     using System;
-    using Configuration.AdvanceExtensibility;
     using Settings;
 
-    public class PerformanceCounters : ExposeSettings
+    public class PerformanceCounters
     {
-        internal PerformanceCounters(SettingsHolder settings) : base(settings)
+        SettingsHolder settings;
+
+        internal PerformanceCounters(SettingsHolder settings)
         {
+            this.settings = settings;
         }
 
         public PerformanceCounters EnableSLACounters(Action<PerformanceSettings> customizations)
         {
-            customizations(new PerformanceSettings(this.GetSettings()));
+            customizations(new PerformanceSettings(settings));
             return this;
         }
     }
