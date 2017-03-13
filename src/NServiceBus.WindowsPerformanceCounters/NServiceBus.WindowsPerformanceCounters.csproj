@@ -57,6 +57,7 @@
     <Compile Include="Counters\PerformanceMonitorUsersInstaller.cs" />
     <Compile Include="CriticalTime\CriticalTimeMonitoring.cs" />
     <Compile Include="Metrics.cs" />
+    <Compile Include="MetricsExtensions.cs" />
     <Compile Include="MetricsExtensionsForPerformanceCounters.cs" />
     <Compile Include="PerformanceCounters.cs" />
     <Compile Include="PerformanceCountersExtensions.cs" />
@@ -65,7 +66,7 @@
     <Compile Include="Performance\ReceiveStatisticsFeature.cs" />
     <Compile Include="Performance\ReceivePerformanceDiagnosticsBehavior.cs" />
     <Compile Include="SLA\SLAMonitoring.cs" />
-    <Compile Include="Utils\Guard.cs" />
+    <Compile Include="Guard.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
