@@ -6,7 +6,7 @@
 
     public class PerformanceCounters : ExposeSettings
     {
-        public PerformanceCounters(SettingsHolder settings) : base(settings)
+        internal PerformanceCounters(SettingsHolder settings) : base(settings)
         {
         }
 
