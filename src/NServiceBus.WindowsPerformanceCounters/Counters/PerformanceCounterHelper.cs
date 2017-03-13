@@ -26,7 +26,7 @@ namespace NServiceBus
             return new NonFunctionalPerformanceCounterInstance();
         }
 
-        static bool TryToInstantiatePerformanceCounter(string counterName, string instanceName, out PerformanceCounter counter, bool throwIfFails)
+        public static bool TryToInstantiatePerformanceCounter(string counterName, string instanceName, out PerformanceCounter counter, bool throwIfFails)
         {
             if (instanceName.Length > 128)
             {
