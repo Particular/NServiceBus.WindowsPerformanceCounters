@@ -34,7 +34,7 @@
                 return Task.FromResult(0);
             }
 
-            readonly ReceivePerformanceDiagnosticsBehavior behavior;
+            ReceivePerformanceDiagnosticsBehavior behavior;
         }
     }
 }
