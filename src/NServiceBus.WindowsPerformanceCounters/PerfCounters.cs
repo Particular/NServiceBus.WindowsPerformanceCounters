@@ -18,25 +18,26 @@
         {
         }
 
-        public PerformanceCounters EnableSLACounters(Action<PerfCountSettings> customizations)
+        public PerformanceCounters EnableSLACounters(Action<PerformanceSettings> customizations)
         {
-            customizations(new PerfCountSettings(this.GetSettings()));
+            customizations(new PerformanceSettings(this.GetSettings()));
             return this;
         }
     }
 
-    public class PerfCountSettings : ExposeSettings
+    public class PerformanceSettings
     {
-        public PerfCountSettings(SettingsHolder settings) : base(settings)
+        SettingsHolder settings;
+
+        internal PerformanceSettings(SettingsHolder settings)
         {
+            this.settings = settings;
         }
 
         public void EndpointSLATimeout(TimeSpan sla)
         {
             Guard.AgainstNull(nameof(sla), sla);
-            this.GetSettings().Set("WindowsPerformanceCountersSLATime", sla);
-
-
+            settings.Set("WindowsPerformanceCountersSLATime", sla);
         }
     }
 }
