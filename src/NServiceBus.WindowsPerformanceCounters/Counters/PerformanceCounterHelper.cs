@@ -42,7 +42,7 @@ namespace NServiceBus
                 var message = $"NServiceBus performance counter for '{counterName}' is not set up correctly. To rectify this problem, consult the NServiceBus performance counters documentation.";
                 if (throwIfFails)
                 {
-                    throw new InvalidOperationException(message, exception);
+                    throw new Exception(message, exception);
                 }
 
                 logger.Info(message);
