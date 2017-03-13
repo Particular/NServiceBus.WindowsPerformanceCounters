@@ -4,9 +4,10 @@
 
     public static class PerformanceCountersExtensions
     {
-        public static PerformanceCounters WindowsPerformanceCounters(this EndpointConfiguration config)
+        public static PerformanceCounters WindowsPerformanceCounters(this EndpointConfiguration endpointConfiguration)
         {
-            return new PerformanceCounters(config.GetSettings());
+            Guard.AgainstNull(nameof(endpointConfiguration), endpointConfiguration);
+            return new PerformanceCounters(endpointConfiguration.GetSettings());
         }
     }
 }
