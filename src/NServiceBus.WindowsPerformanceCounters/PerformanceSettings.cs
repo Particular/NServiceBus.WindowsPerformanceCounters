@@ -14,7 +14,7 @@
 
         public void EndpointSLATimeout(TimeSpan sla)
         {
-            Guard.AgainstNull(nameof(sla), sla);
+            Guard.AgainstNegativeAndZero(nameof(sla), sla);
             settings.Set("WindowsPerformanceCountersSLATime", sla);
         }
     }
