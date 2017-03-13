@@ -182,11 +182,11 @@ namespace NServiceBus.WindowsPerformanceCounters
                     ProcessingTime = processingTime;
                 }
 
-                public TimeSpan CriticalTime { get; }
+                public readonly TimeSpan CriticalTime;
 
-                public DateTime OccurredAt { get; }
+                public readonly DateTime OccurredAt;
 
-                public TimeSpan ProcessingTime { get; }
+                public readonly TimeSpan ProcessingTime;
             }
 
         }
