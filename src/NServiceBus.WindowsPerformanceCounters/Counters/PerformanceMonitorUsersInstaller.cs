@@ -13,7 +13,9 @@ namespace NServiceBus
     {
         static PerformanceMonitorUsersInstaller()
         {
-            builtinPerformanceMonitoringUsersName = new SecurityIdentifier(WellKnownSidType.BuiltinPerformanceMonitoringUsersSid, null).Translate(typeof(NTAccount)).ToString();
+            builtinPerformanceMonitoringUsersName = new SecurityIdentifier(WellKnownSidType.BuiltinPerformanceMonitoringUsersSid, null)
+                .Translate(typeof(NTAccount))
+                .ToString();
             var parts = builtinPerformanceMonitoringUsersName.Split('\\');
 
             if (parts.Length == 2)
@@ -103,16 +105,5 @@ net localgroup ""{2}"" ""{0}"" /add", identity, error, builtinPerformanceMonitor
         static ILog logger = LogManager.GetLogger<PerformanceMonitorUsersInstaller>();
         static string builtinPerformanceMonitoringUsersName;
 
-        static class ElevateChecker
-        {
-            public static bool IsCurrentUserElevated()
-            {
-                using (var windowsIdentity = WindowsIdentity.GetCurrent())
-                {
-                    var windowsPrincipal = new WindowsPrincipal(windowsIdentity);
-                    return windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator);
-                }
-            }
-        }
     }
 }
