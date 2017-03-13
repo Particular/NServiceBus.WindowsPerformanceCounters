@@ -14,6 +14,7 @@
 
         public PerformanceCounters EnableSLACounters(Action<PerformanceSettings> customizations)
         {
+            Guard.AgainstNull(nameof(customizations), customizations);
             customizations(new PerformanceSettings(settings));
             return this;
         }
