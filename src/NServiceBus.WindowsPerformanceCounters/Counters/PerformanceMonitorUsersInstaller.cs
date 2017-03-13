@@ -3,7 +3,6 @@ namespace NServiceBus
     using System;
     using System.Diagnostics;
     using System.IO;
-    using System.Security.Principal;
     using System.Threading.Tasks;
     using Installation;
     using Logging;
@@ -13,15 +12,7 @@ namespace NServiceBus
     {
         static PerformanceMonitorUsersInstaller()
         {
-            builtinPerformanceMonitoringUsersName = new SecurityIdentifier(WellKnownSidType.BuiltinPerformanceMonitoringUsersSid, null)
-                .Translate(typeof(NTAccount))
-                .ToString();
-            var parts = builtinPerformanceMonitoringUsersName.Split('\\');
-
-            if (parts.Length == 2)
-            {
-                builtinPerformanceMonitoringUsersName = parts[1];
-            }
+            builtinPerformanceMonitoringUsersName = PerformanceMonitoringUsersSid.Get();
         }
 
         public Task Install(string identity)

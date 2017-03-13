@@ -17,12 +17,10 @@
             {
                 string timeSentString;
 
-                if (!e.ProcessedMessage.Headers.TryGetValue(Headers.TimeSent, out timeSentString))
+                if (e.ProcessedMessage.Headers.TryGetValue(Headers.TimeSent, out timeSentString))
                 {
-                    return Task.FromResult(0);
+                    criticalTimeCounter.Update(DateTimeExtensions.ToUtcDateTime(timeSentString), e.StartedAt, e.CompletedAt);
                 }
-
-                criticalTimeCounter.Update(DateTimeExtensions.ToUtcDateTime(timeSentString), e.StartedAt, e.CompletedAt);
 
                 return Task.FromResult(0);
             });
@@ -52,7 +50,6 @@
             {
                 counter = PerformanceCounterHelper.InstantiatePerformanceCounter("Critical Time", counterInstanceName);
                 timer = new Timer(ResetCounterValueIfNoMessageHasBeenProcessedRecently, null, 0, 2000);
-
                 return Task.FromResult(0);
             }
 
@@ -60,8 +57,6 @@
             {
                 timer.Dispose();
                 counter.Dispose();
-
-
                 return Task.FromResult(0);
             }
 

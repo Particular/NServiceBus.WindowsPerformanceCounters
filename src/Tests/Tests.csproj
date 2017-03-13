@@ -87,6 +87,7 @@
     <Compile Include="ApprovalTestConfig.cs" />
     <Compile Include="App_Packages\PublicApiGenerator.6.0.0\ApiGenerator.cs" />
     <Compile Include="APIApprovals.cs" />
+    <Compile Include="PerformanceMonitoringUsersSidTests.cs" />
     <Compile Include="ElevateCheckerTests.cs" />
   </ItemGroup>
   <ItemGroup>
