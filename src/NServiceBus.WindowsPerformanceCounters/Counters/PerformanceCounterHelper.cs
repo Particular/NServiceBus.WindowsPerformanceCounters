@@ -33,17 +33,16 @@ namespace NServiceBus
                 throw new Exception($"The endpoint name ('{instanceName}') is too long (longer then {(int) sbyte.MaxValue}) to register as a performance counter instance name. Reduce the endpoint name.");
             }
 
-            var message = $"NServiceBus performance counter for '{counterName}' is not set up correctly. To rectify this problem, consult the NServiceBus performance counters documentation.";
-
             try
             {
                 counter = new PerformanceCounter("NServiceBus", counterName, instanceName, false);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
+                var message = $"NServiceBus performance counter for '{counterName}' is not set up correctly. To rectify this problem, consult the NServiceBus performance counters documentation.";
                 if (throwIfFails)
                 {
-                    throw new InvalidOperationException(message, ex);
+                    throw new InvalidOperationException(message, exception);
                 }
 
                 logger.Info(message);
