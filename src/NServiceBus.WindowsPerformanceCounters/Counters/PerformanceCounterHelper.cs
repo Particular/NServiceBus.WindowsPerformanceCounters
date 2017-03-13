@@ -45,7 +45,7 @@ namespace NServiceBus
                     throw new Exception(message, exception);
                 }
 
-                logger.Info(message);
+                logger.Info(message, exception);
                 counter = null;
 
                 return false;
