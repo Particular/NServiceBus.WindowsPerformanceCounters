@@ -2,7 +2,7 @@
 {
     using Configuration.AdvanceExtensibility;
 
-    public static class PerformanceCountersEndpointConfigurationExtensions
+    public static class PerformanceCountersExtensions
     {
         public static PerformanceCounters WindowsPerformanceCounters(this EndpointConfiguration config)
         {
