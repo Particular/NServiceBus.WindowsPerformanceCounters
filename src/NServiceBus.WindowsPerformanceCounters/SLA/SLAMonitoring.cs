@@ -165,7 +165,6 @@ namespace NServiceBus.WindowsPerformanceCounters
             IPerformanceCounterInstance counter;
             List<DataPoint> dataPoints = new List<DataPoint>();
             TimeSpan endpointSla;
-            // ReSharper disable once NotAccessedField.Local
             Timer timer;
 
             const int MaxDataPoints = 10;

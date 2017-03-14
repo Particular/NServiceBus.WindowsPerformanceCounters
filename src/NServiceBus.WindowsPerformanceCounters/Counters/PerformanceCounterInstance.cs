@@ -16,7 +16,7 @@ namespace NServiceBus
 
         public void Dispose()
         {
-            //Injected via Fody
+            counter?.Dispose();
         }
 
         PerformanceCounter counter;

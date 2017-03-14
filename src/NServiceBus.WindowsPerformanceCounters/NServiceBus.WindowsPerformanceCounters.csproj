@@ -57,6 +57,7 @@
     <Compile Include="Counters\PerformanceCounterInstance.cs" />
     <Compile Include="Counters\PerformanceMonitoringUsersSid.cs" />
     <Compile Include="Counters\PerformanceMonitorUsersInstaller.cs" />
+    <Compile Include="CriticalTime\CriticalTimeCounter.cs" />
     <Compile Include="CriticalTime\CriticalTimeMonitoring.cs" />
     <Compile Include="Metrics.cs" />
     <Compile Include="MetricsExtensions.cs" />

@@ -1,7 +1,5 @@
 ﻿namespace NServiceBus.WindowsPerformanceCounters
 {
-    using System;
-    using System.Threading;
     using System.Threading.Tasks;
     using Features;
 
@@ -10,73 +8,40 @@
         protected override void Setup(FeatureConfigurationContext context)
         {
             var counterInstanceName = context.Settings.EndpointName();
-            var criticalTimeCounter = new CriticalTimeCounter(counterInstanceName);
+            var counter = PerformanceCounterHelper.InstantiatePerformanceCounter("Critical Time", counterInstanceName);
+            var criticalTimeCounter = new CriticalTimeCounter(counter);
+            var startup = new StartupTask(criticalTimeCounter);
 
             context.Pipeline.OnReceivePipelineCompleted(e =>
             {
-                string timeSentString;
-
-                if (e.ProcessedMessage.Headers.TryGetValue(Headers.TimeSent, out timeSentString))
-                {
-                    criticalTimeCounter.Update(DateTimeExtensions.ToUtcDateTime(timeSentString), e.StartedAt, e.CompletedAt);
-                }
-
+                criticalTimeCounter.Update(e);
                 return Task.FromResult(0);
             });
 
-            context.RegisterStartupTask(() => criticalTimeCounter);
+            context.RegisterStartupTask(() => startup);
         }
 
-        class CriticalTimeCounter : FeatureStartupTask
+        class StartupTask : FeatureStartupTask
         {
-            public CriticalTimeCounter(string counterInstanceName)
+            CriticalTimeCounter counter;
+
+            public StartupTask(CriticalTimeCounter counter)
             {
-                counter = PerformanceCounterHelper.InstantiatePerformanceCounter("Critical Time", counterInstanceName);
-            }
-
-            public void Update(DateTime sentInstant, DateTime processingStartedInstant, DateTime processingEndedInstant)
-            {
-                var endToEndTime = processingEndedInstant - sentInstant;
-                counter.RawValue = Convert.ToInt32(endToEndTime.TotalSeconds);
-
-                lastMessageProcessedTime = processingEndedInstant;
-
-                var processingDuration = processingEndedInstant - processingStartedInstant;
-                estimatedMaximumProcessingDuration = processingDuration.Add(TimeSpan.FromSeconds(1));
+                this.counter = counter;
             }
 
             protected override Task OnStart(IMessageSession session)
             {
-                timer = new Timer(ResetCounterValueIfNoMessageHasBeenProcessedRecently, null, 0, 2000);
+                counter.Start();
                 return Task.FromResult(0);
             }
 
             protected override Task OnStop(IMessageSession session)
             {
-                timer.Dispose();
                 counter.Dispose();
                 return Task.FromResult(0);
             }
 
-            void ResetCounterValueIfNoMessageHasBeenProcessedRecently(object state)
-            {
-                if (NoMessageHasBeenProcessedRecently())
-                {
-                    counter.RawValue = 0;
-                }
-            }
-
-            bool NoMessageHasBeenProcessedRecently()
-            {
-                var timeFromLastMessageProcessed = DateTime.UtcNow - lastMessageProcessedTime;
-                return timeFromLastMessageProcessed > estimatedMaximumProcessingDuration;
-            }
-
-            IPerformanceCounterInstance counter;
-            TimeSpan estimatedMaximumProcessingDuration = TimeSpan.FromSeconds(2);
-            DateTime lastMessageProcessedTime;
-            // ReSharper disable once NotAccessedField.Local
-            Timer timer;
         }
     }
 }
