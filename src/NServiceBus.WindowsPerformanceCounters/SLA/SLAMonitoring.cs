@@ -2,7 +2,6 @@ namespace NServiceBus.WindowsPerformanceCounters
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
     using Features;
@@ -165,7 +164,7 @@ namespace NServiceBus.WindowsPerformanceCounters
                 UpdateTimeToSLABreach();
             }
 
-            PerformanceCounter counter;
+            IPerformanceCounterInstance counter;
             List<DataPoint> dataPoints = new List<DataPoint>();
             TimeSpan endpointSla;
             string counterInstanceName;

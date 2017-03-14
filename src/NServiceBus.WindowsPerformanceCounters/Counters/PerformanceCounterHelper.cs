@@ -6,13 +6,13 @@ namespace NServiceBus
 
     static class PerformanceCounterHelper
     {
-        public static PerformanceCounter InstantiatePerformanceCounter(string counterName, string instanceName)
+        public static IPerformanceCounterInstance InstantiatePerformanceCounter(string counterName, string instanceName)
         {
             PerformanceCounter counter;
 
             TryToInstantiatePerformanceCounter(counterName, instanceName, out counter, true);
 
-            return counter;
+            return new PerformanceCounterInstance(counter);
         }
 
         public static IPerformanceCounterInstance TryToInstantiatePerformanceCounter(string counterName, string instanceName)

@@ -1,7 +1,6 @@
 ﻿namespace NServiceBus.WindowsPerformanceCounters
 {
     using System;
-    using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
     using Features;
@@ -75,7 +74,7 @@
             }
 
             string counterInstanceName;
-            PerformanceCounter counter;
+            IPerformanceCounterInstance counter;
             TimeSpan estimatedMaximumProcessingDuration = TimeSpan.FromSeconds(2);
             DateTime lastMessageProcessedTime;
             // ReSharper disable once NotAccessedField.Local

@@ -11,5 +11,7 @@ namespace NServiceBus
         {
             //NOOP
         }
+
+        public long RawValue { get; set; }
     }
 }

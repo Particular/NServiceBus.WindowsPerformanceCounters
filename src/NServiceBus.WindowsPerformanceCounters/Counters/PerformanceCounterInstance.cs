@@ -20,5 +20,11 @@ namespace NServiceBus
         }
 
         PerformanceCounter counter;
+
+        public long RawValue
+        {
+            get { return counter.RawValue; }
+            set { counter.RawValue = value; }
+        }
     }
 }
