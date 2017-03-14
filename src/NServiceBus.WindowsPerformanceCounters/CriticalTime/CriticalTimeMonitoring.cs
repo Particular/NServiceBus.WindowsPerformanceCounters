@@ -31,7 +31,7 @@
         {
             public CriticalTimeCounter(string counterInstanceName)
             {
-                this.counterInstanceName = counterInstanceName;
+                counter = PerformanceCounterHelper.InstantiatePerformanceCounter("Critical Time", counterInstanceName);
             }
 
             public void Update(DateTime sentInstant, DateTime processingStartedInstant, DateTime processingEndedInstant)
@@ -47,7 +47,6 @@
 
             protected override Task OnStart(IMessageSession session)
             {
-                counter = PerformanceCounterHelper.InstantiatePerformanceCounter("Critical Time", counterInstanceName);
                 timer = new Timer(ResetCounterValueIfNoMessageHasBeenProcessedRecently, null, 0, 2000);
                 return Task.FromResult(0);
             }
@@ -73,7 +72,6 @@
                 return timeFromLastMessageProcessed > estimatedMaximumProcessingDuration;
             }
 
-            string counterInstanceName;
             IPerformanceCounterInstance counter;
             TimeSpan estimatedMaximumProcessingDuration = TimeSpan.FromSeconds(2);
             DateTime lastMessageProcessedTime;

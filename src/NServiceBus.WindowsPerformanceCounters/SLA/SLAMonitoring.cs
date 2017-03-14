@@ -50,9 +50,8 @@ namespace NServiceBus.WindowsPerformanceCounters
             public EstimatedTimeToSLABreachCounter(TimeSpan endpointSla, string counterInstanceName)
             {
                 this.endpointSla = endpointSla;
-                this.counterInstanceName = counterInstanceName;
+                counter = PerformanceCounterHelper.InstantiatePerformanceCounter("SLA violation countdown", counterInstanceName);
             }
-
 
             public void Update(DateTime sent, DateTime processingStarted, DateTime processingEnded)
             {
@@ -72,7 +71,6 @@ namespace NServiceBus.WindowsPerformanceCounters
 
             protected override Task OnStart(IMessageSession session)
             {
-                counter = PerformanceCounterHelper.InstantiatePerformanceCounter("SLA violation countdown", counterInstanceName);
                 timer = new Timer(RemoveOldDataPoints, null, 0, 2000);
 
                 return Task.FromResult(0);
@@ -167,7 +165,6 @@ namespace NServiceBus.WindowsPerformanceCounters
             IPerformanceCounterInstance counter;
             List<DataPoint> dataPoints = new List<DataPoint>();
             TimeSpan endpointSla;
-            string counterInstanceName;
             // ReSharper disable once NotAccessedField.Local
             Timer timer;
 
