@@ -13,7 +13,7 @@
         public static void EnableCriticalTimePerformanceCounter(this Metrics metrics)
         {
             Guard.AgainstNull(nameof(metrics), metrics);
-            metrics.EndpointConfiguration.EnableFeature<CriticalTimeMonitoring>();
+            metrics.EndpointConfiguration.EnableFeature<CriticalTimeFeature>();
         }
 
         /// <summary>
@@ -23,7 +23,7 @@
         public static void EnableSLAPerformanceCounters(this Metrics metrics)
         {
             Guard.AgainstNull(nameof(metrics), metrics);
-            metrics.EndpointConfiguration.EnableFeature<SLAMonitoring>();
+            metrics.EndpointConfiguration.EnableFeature<SLAMonitoringFeature>();
         }
 
         /// <summary>
@@ -36,7 +36,7 @@
             Guard.AgainstNull(nameof(metrics), metrics);
             Guard.AgainstNegativeAndZero(nameof(sla), sla);
 
-            metrics.EndpointConfiguration.GetSettings().Set(SLAMonitoring.EndpointSLAKey, sla);
+            metrics.EndpointConfiguration.GetSettings().Set(SLAMonitoringFeature.EndpointSLAKey, sla);
             EnableSLAPerformanceCounters(metrics);
         }
 

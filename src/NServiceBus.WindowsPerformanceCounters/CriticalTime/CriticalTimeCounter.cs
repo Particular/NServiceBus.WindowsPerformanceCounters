@@ -56,6 +56,7 @@
         public void Dispose()
         {
             timer?.Dispose();
+            counter?.Dispose();
         }
 
         IPerformanceCounterInstance counter;

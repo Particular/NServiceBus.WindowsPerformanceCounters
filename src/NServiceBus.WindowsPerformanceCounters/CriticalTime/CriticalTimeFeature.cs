@@ -3,7 +3,7 @@
     using System.Threading.Tasks;
     using Features;
 
-    class CriticalTimeMonitoring : Feature
+    class CriticalTimeFeature : Feature
     {
         protected override void Setup(FeatureConfigurationContext context)
         {

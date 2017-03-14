@@ -58,7 +58,7 @@
     <Compile Include="Counters\PerformanceMonitoringUsersSid.cs" />
     <Compile Include="Counters\PerformanceMonitorUsersInstaller.cs" />
     <Compile Include="CriticalTime\CriticalTimeCounter.cs" />
-    <Compile Include="CriticalTime\CriticalTimeMonitoring.cs" />
+    <Compile Include="CriticalTime\CriticalTimeFeature.cs" />
     <Compile Include="Metrics.cs" />
     <Compile Include="MetricsExtensions.cs" />
     <Compile Include="MetricsExtensionsForPerformanceCounters.cs" />
@@ -68,7 +68,9 @@
     <Compile Include="Performance\ReceiveStatisticsConfig.cs" />
     <Compile Include="Performance\ReceiveStatisticsFeature.cs" />
     <Compile Include="Performance\ReceivePerformanceDiagnosticsBehavior.cs" />
-    <Compile Include="SLA\SLAMonitoring.cs" />
+    <Compile Include="SLA\DataPoint.cs" />
+    <Compile Include="SLA\EstimatedTimeToSLABreachCounter.cs" />
+    <Compile Include="SLA\SLAMonitoringFeature.cs" />
     <Compile Include="Guard.cs" />
   </ItemGroup>
   <ItemGroup>
