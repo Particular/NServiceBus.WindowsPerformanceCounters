@@ -60,6 +60,7 @@
     <Compile Include="CriticalTime\CriticalTimeCounter.cs" />
     <Compile Include="CriticalTime\CriticalTimeFeature.cs" />
     <Compile Include="Metrics.cs" />
+    <Compile Include="PipelineExtensions.cs" />
     <Compile Include="MetricsExtensions.cs" />
     <Compile Include="MetricsExtensionsForPerformanceCounters.cs" />
     <Compile Include="PerformanceCounters.cs" />

@@ -14,11 +14,9 @@ namespace NServiceBus.WindowsPerformanceCounters
 
         public void Update(ReceivePipelineCompleted completed)
         {
-            string timeSentString;
-
-            if (completed.ProcessedMessage.Headers.TryGetValue(Headers.TimeSent, out timeSentString))
+            DateTime timeSent;
+            if (completed.TryGetTimeSent(out timeSent))
             {
-                var timeSent = DateTimeExtensions.ToUtcDateTime(timeSentString);
                 Update(timeSent, completed.StartedAt, completed.CompletedAt);
             }
         }
@@ -60,7 +58,8 @@ namespace NServiceBus.WindowsPerformanceCounters
 
         double CalculateTimeToSLABreach(List<DataPoint> snapshots)
         {
-            DataPoint? first = null, previous = null;
+            DataPoint? first = null;
+            DataPoint? previous = null;
 
             var criticalTimeDelta = TimeSpan.Zero;
 

@@ -91,11 +91,14 @@
     <Compile Include="ApprovalTestConfig.cs" />
     <Compile Include="App_Packages\PublicApiGenerator.6.0.0\ApiGenerator.cs" />
     <Compile Include="APIApprovals.cs" />
-    <Compile Include="CriticalTime\CriticalTimeCounterTests.cs" />
-    <Compile Include="CriticalTime\MockIPerformanceCounter.cs" />
+    <Compile Include="PipelineExtensionsTests.cs" />
+    <Compile Include="EstimatedTimeToSLABreachCounterTests.cs" />
+    <Compile Include="CriticalTimeCounterTests.cs" />
+    <Compile Include="MockIPerformanceCounter.cs" />
     <Compile Include="PerformanceCounterHelperTests.cs" />
     <Compile Include="PerformanceMonitoringUsersSidTests.cs" />
     <Compile Include="ElevateCheckerTests.cs" />
+    <Compile Include="PipelineHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

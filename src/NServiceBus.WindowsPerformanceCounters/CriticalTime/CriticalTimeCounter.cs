@@ -13,18 +13,16 @@
 
         public void Update(ReceivePipelineCompleted completed)
         {
-            var headers = completed.ProcessedMessage.Headers;
-            string timeSentString;
-            if (headers.TryGetValue(Headers.TimeSent, out timeSentString))
+            DateTime timeSent;
+            if (completed.TryGetTimeSent(out timeSent))
             {
-                var timeSent = DateTimeExtensions.ToUtcDateTime(timeSentString);
                 Update(timeSent, completed.StartedAt, completed.CompletedAt);
             }
         }
 
-        public void Update(DateTime sentInstant, DateTime processingStarted, DateTime processingEnded)
+        public void Update(DateTime sent, DateTime processingStarted, DateTime processingEnded)
         {
-            var endToEndTime = processingEnded - sentInstant;
+            var endToEndTime = processingEnded - sent;
             counter.RawValue = Convert.ToInt32(endToEndTime.TotalSeconds);
 
             lastMessageProcessedTime = processingEnded;
