@@ -52,7 +52,6 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Counters\ElevateChecker.cs" />
     <Compile Include="Counters\IPerformanceCounterInstance.cs" />
-    <Compile Include="Counters\NonFunctionalPerformanceCounterInstance.cs" />
     <Compile Include="Counters\PerformanceCounterHelper.cs" />
     <Compile Include="Counters\PerformanceCounterInstance.cs" />
     <Compile Include="Counters\PerformanceMonitoringUsersSid.cs" />
