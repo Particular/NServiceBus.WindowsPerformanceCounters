@@ -6,7 +6,7 @@ namespace NServiceBus.WindowsPerformanceCounters
 
     class EstimatedTimeToSLABreachCounter : IDisposable
     {
-        public EstimatedTimeToSLABreachCounter(TimeSpan endpointSla, PerformanceCounterInstance counter)
+        public EstimatedTimeToSLABreachCounter(TimeSpan endpointSla, IPerformanceCounterInstance counter)
         {
             this.endpointSla = endpointSla;
             this.counter = counter;
@@ -121,7 +121,7 @@ namespace NServiceBus.WindowsPerformanceCounters
             UpdateTimeToSLABreach();
         }
 
-        PerformanceCounterInstance counter;
+        IPerformanceCounterInstance counter;
         List<DataPoint> dataPoints = new List<DataPoint>();
         TimeSpan endpointSla;
         Timer timer;

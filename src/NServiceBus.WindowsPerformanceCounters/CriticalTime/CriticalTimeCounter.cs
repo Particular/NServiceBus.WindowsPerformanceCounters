@@ -6,7 +6,7 @@
 
     class CriticalTimeCounter : IDisposable
     {
-        public CriticalTimeCounter(PerformanceCounterInstance counter)
+        public CriticalTimeCounter(IPerformanceCounterInstance counter)
         {
             this.counter = counter;
         }
@@ -57,7 +57,7 @@
             counter?.Dispose();
         }
 
-        PerformanceCounterInstance counter;
+        IPerformanceCounterInstance counter;
         TimeSpan estimatedMaximumProcessingDuration = TimeSpan.FromSeconds(2);
         DateTime lastMessageProcessedTime;
         Timer timer;

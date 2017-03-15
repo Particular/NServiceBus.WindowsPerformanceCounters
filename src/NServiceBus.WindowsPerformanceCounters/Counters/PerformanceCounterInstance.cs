@@ -2,7 +2,7 @@ namespace NServiceBus
 {
     using System.Diagnostics;
 
-    class PerformanceCounterInstance
+    class PerformanceCounterInstance : IPerformanceCounterInstance
     {
         public PerformanceCounterInstance(PerformanceCounter counter)
         {
