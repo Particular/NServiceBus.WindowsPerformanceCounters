@@ -64,7 +64,6 @@
     <Compile Include="PerformanceCounters.cs" />
     <Compile Include="PerformanceCountersExtensions.cs" />
     <Compile Include="PerformanceSettings.cs" />
-    <Compile Include="Performance\ReceiveStatisticsConfig.cs" />
     <Compile Include="Performance\ReceiveStatisticsFeature.cs" />
     <Compile Include="Performance\ReceivePerformanceDiagnosticsBehavior.cs" />
     <Compile Include="SLA\DataPoint.cs" />
