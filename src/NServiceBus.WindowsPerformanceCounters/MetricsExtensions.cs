@@ -1,15 +1,15 @@
 namespace NServiceBus
 {
-    using Configuration.AdvanceExtensibility;
+    using WindowsPerformanceCounters;
 
     public static class MetricsExtensions
     {
-        public static Metrics Metrics(this EndpointConfiguration endpointConfiguration)
+        public static Metrics EnableWindowsPerformanceCounters(this EndpointConfiguration endpointConfiguration)
         {
             Guard.AgainstNull(nameof(endpointConfiguration), endpointConfiguration);
 
-            // This is bogus, but perhaps usable to verify it we access the extensionmethod via Metrics()
-            endpointConfiguration.GetSettings().Set("Metrics", "Activated");
+            endpointConfiguration.EnableFeature<ReceiveStatisticsFeature>();
+            endpointConfiguration.EnableFeature<CriticalTimeFeature>();
 
             return new Metrics(endpointConfiguration);
         }

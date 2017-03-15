@@ -7,16 +7,6 @@
     public static class MetricsExtensionsForPerformanceCounters
     {
         /// <summary>
-        /// Add performance counter functionality to <see cref="EndpointConfiguration"/>.
-        /// </summary>
-        /// <param name="metrics">The <see cref="Metrics" /> instance to apply the settings to.</param>
-        public static void EnableCriticalTimePerformanceCounter(this Metrics metrics)
-        {
-            Guard.AgainstNull(nameof(metrics), metrics);
-            metrics.EndpointConfiguration.EnableFeature<CriticalTimeFeature>();
-        }
-
-        /// <summary>
         /// Enables the NServiceBus specific performance counters with a specific EndpointSLA.
         /// </summary>
         /// <param name="metrics">The <see cref="Metrics" /> instance to apply the settings to.</param>
@@ -38,16 +28,6 @@
 
             metrics.EndpointConfiguration.GetSettings().Set(SLAMonitoringFeature.EndpointSLAKey, sla);
             EnableSLAPerformanceCounters(metrics);
-        }
-
-        /// <summary>
-        /// Enables the NServiceBus statistics performance counters.
-        /// </summary>
-        /// <param name="metrics">The <see cref="Metrics" /> instance to apply the settings to.</param>
-        public static void EnablePerformanceStatistics(this Metrics metrics)
-        {
-            Guard.AgainstNull(nameof(metrics), metrics);
-            metrics.EndpointConfiguration.EnableFeature<ReceiveStatisticsFeature>();
         }
     }
 }

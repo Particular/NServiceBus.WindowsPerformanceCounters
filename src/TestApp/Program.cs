@@ -19,18 +19,8 @@ namespace TestApp
             endpointConfig.SendFailedMessagesTo("error");
             endpointConfig.EnableInstallers();
 
-            var metrics = endpointConfig.Metrics();
-            metrics.EnableSLAPerformanceCounters();
-            metrics.EnablePerformanceStatistics();
-
-            //
-            // The recoverability way
-            //
-            //endpointConfig.WindowsPerformanceCounters()
-            //    .EnableSLACounters(s =>
-            //    {
-            //        s.EndpointSLATimeout(TimeSpan.FromMinutes(10));
-            //    });
+            endpointConfig.EnableWindowsPerformanceCounters()
+                .EnableSLAPerformanceCounters(TimeSpan.FromSeconds(10));
 
             var endpoint = await Endpoint.Start(endpointConfig);
 
