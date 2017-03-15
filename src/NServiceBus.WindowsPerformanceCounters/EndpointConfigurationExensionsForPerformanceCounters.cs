@@ -8,6 +8,9 @@ namespace NServiceBus
         {
             Guard.AgainstNull(nameof(endpointConfiguration), endpointConfiguration);
 
+#pragma warning disable 618
+            endpointConfiguration.DisableFeature<NServiceBus.Features.ReceiveStatisticsPerformanceCounters>;
+#pragma warning restore 618
             endpointConfiguration.EnableFeature<ReceiveStatisticsFeature>();
             endpointConfiguration.EnableFeature<CriticalTimeFeature>();
 
