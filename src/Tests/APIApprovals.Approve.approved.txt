@@ -1,31 +1,13 @@
 ﻿namespace NServiceBus
 {
-    public class Metrics { }
-    public class static MetricsExtensions
+    public class static EndpointConfigurationExensionsForPerformanceCounters
     {
-        public static NServiceBus.Metrics Metrics(this NServiceBus.EndpointConfiguration endpointConfiguration) { }
+        public static NServiceBus.PerformanceCounters EnableWindowsPerformanceCounters(this NServiceBus.EndpointConfiguration endpointConfiguration) { }
     }
-    public class static MetricsExtensionsForPerformanceCounters
-    {
-        public static void EnableCriticalTimePerformanceCounter(this NServiceBus.Metrics metrics) { }
-        public static void EnablePerformanceStatistics(this NServiceBus.Metrics metrics) { }
-        public static void EnableSLAPerformanceCounters(this NServiceBus.Metrics metrics) { }
-        public static void EnableSLAPerformanceCounters(this NServiceBus.Metrics metrics, System.TimeSpan sla) { }
-    }
-    public class PerformanceCounters
-    {
-        public NServiceBus.PerformanceCounters EnableSLACounters(System.Action<NServiceBus.PerformanceSettings> customizations) { }
-    }
+    public class PerformanceCounters { }
     public class static PerformanceCountersExtensions
     {
-        public static NServiceBus.PerformanceCounters WindowsPerformanceCounters(this NServiceBus.EndpointConfiguration endpointConfiguration) { }
-    }
-    public class PerformanceSettings
-    {
-        public void EndpointSLATimeout(System.TimeSpan sla) { }
-    }
-    public class static ReceiveStatisticsConfig
-    {
-        public static void EnablePerformanceCounters(this NServiceBus.EndpointConfiguration endpointConfiguration) { }
+        public static void EnableSLAPerformanceCounters(this NServiceBus.PerformanceCounters performanceCounters) { }
+        public static void EnableSLAPerformanceCounters(this NServiceBus.PerformanceCounters performanceCounters, System.TimeSpan sla) { }
     }
 }
