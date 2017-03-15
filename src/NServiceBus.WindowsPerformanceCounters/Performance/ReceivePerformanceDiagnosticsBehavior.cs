@@ -48,9 +48,9 @@ namespace NServiceBus
             failureRateCounter?.Dispose();
         }
 
-        IPerformanceCounterInstance failureRateCounter;
-        IPerformanceCounterInstance messagesPulledFromQueueCounter;
-        IPerformanceCounterInstance successRateCounter;
+        PerformanceCounterInstance failureRateCounter;
+        PerformanceCounterInstance messagesPulledFromQueueCounter;
+        PerformanceCounterInstance successRateCounter;
 
         string queueName;
     }
