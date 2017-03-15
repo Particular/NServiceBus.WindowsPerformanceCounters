@@ -57,10 +57,10 @@
     <Compile Include="Counters\PerformanceMonitorUsersInstaller.cs" />
     <Compile Include="CriticalTime\CriticalTimeCounter.cs" />
     <Compile Include="CriticalTime\CriticalTimeFeature.cs" />
-    <Compile Include="Metrics.cs" />
+    <Compile Include="PerformanceCounters.cs" />
     <Compile Include="PipelineExtensions.cs" />
-    <Compile Include="MetricsExtensions.cs" />
-    <Compile Include="MetricsExtensionsForPerformanceCounters.cs" />
+    <Compile Include="EndpointConfigurationExensionsForPerformanceCounters.cs" />
+    <Compile Include="PerformanceCountersExtensions.cs" />
     <Compile Include="Performance\ReceiveStatisticsFeature.cs" />
     <Compile Include="Performance\ReceivePerformanceDiagnosticsBehavior.cs" />
     <Compile Include="SLA\DataPoint.cs" />

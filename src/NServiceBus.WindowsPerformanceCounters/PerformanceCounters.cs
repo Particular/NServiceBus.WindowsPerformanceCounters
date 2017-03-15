@@ -1,8 +1,8 @@
 ﻿namespace NServiceBus
 {
-    public class Metrics
+    public class PerformanceCounters
     {
-        internal Metrics(EndpointConfiguration endpointConfiguration)
+        internal PerformanceCounters(EndpointConfiguration endpointConfiguration)
         {
             EndpointConfiguration = endpointConfiguration;
         }
