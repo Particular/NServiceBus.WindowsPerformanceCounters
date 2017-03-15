@@ -6,27 +6,16 @@ namespace NServiceBus
 
     static class PerformanceCounterHelper
     {
-        public static IPerformanceCounterInstance InstantiatePerformanceCounter(string counterName, string instanceName)
+        public static PerformanceCounterInstance InstantiatePerformanceCounter(string counterName, string instanceName)
         {
             PerformanceCounter counter;
 
-            TryToInstantiatePerformanceCounter(counterName, instanceName, out counter, true);
+            TryToInstantiatePerformanceCounter(counterName, instanceName, out counter);
 
             return new PerformanceCounterInstance(counter);
         }
 
-        public static IPerformanceCounterInstance TryToInstantiatePerformanceCounter(string counterName, string instanceName)
-        {
-            PerformanceCounter counter;
-            var success = TryToInstantiatePerformanceCounter(counterName, instanceName, out counter, false);
-            if (success)
-            {
-                return new PerformanceCounterInstance(counter);
-            }
-            return new NonFunctionalPerformanceCounterInstance();
-        }
-
-        public static bool TryToInstantiatePerformanceCounter(string counterName, string instanceName, out PerformanceCounter counter, bool throwIfFails)
+        private static bool TryToInstantiatePerformanceCounter(string counterName, string instanceName, out PerformanceCounter counter)
         {
             if (instanceName.Length > 128)
             {
@@ -40,15 +29,7 @@ namespace NServiceBus
             catch (Exception exception)
             {
                 var message = $"NServiceBus performance counter for '{counterName}' is not set up correctly. To rectify this problem, consult the NServiceBus performance counters documentation.";
-                if (throwIfFails)
-                {
-                    throw new Exception(message, exception);
-                }
-
-                logger.Info(message, exception);
-                counter = null;
-
-                return false;
+                throw new Exception(message, exception);
             }
             logger.DebugFormat("'{0}' counter initialized for '{1}'", counterName, instanceName);
             return true;
