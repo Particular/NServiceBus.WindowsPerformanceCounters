@@ -6,10 +6,10 @@ class Program
 {
     static void Main()
     {
-        new Program().MainAsync().GetAwaiter().GetResult();
+        MainAsync().GetAwaiter().GetResult();
     }
 
-    async Task MainAsync()
+    static async Task MainAsync()
     {
         var endpointConfig = new EndpointConfiguration("TestEndpoint");
         endpointConfig.UsePersistence<InMemoryPersistence>();
