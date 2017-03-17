@@ -1,10 +1,7 @@
-namespace NServiceBus
-{
-    using System;
+using System;
 
-    interface IPerformanceCounterInstance : IDisposable
-    {
-        void Increment();
-        long RawValue { get; set; }
-    }
+interface IPerformanceCounterInstance : IDisposable
+{
+    void Increment();
+    long RawValue { get; set; }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using NServiceBus.WindowsPerformanceCounters;
 using NUnit.Framework;
 
 [TestFixture]

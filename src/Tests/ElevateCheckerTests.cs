@@ -1,5 +1,4 @@
-﻿using NServiceBus;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 [TestFixture]
 public class ElevateCheckerTests

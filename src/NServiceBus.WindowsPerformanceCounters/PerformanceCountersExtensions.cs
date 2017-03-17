@@ -1,6 +1,5 @@
 namespace NServiceBus
 {
-    using WindowsPerformanceCounters;
 
     /// <summary>
     /// Exposes windows performance counters configuration on <see cref="EndpointConfiguration"/>.

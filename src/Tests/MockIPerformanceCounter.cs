@@ -1,6 +1,4 @@
-﻿using NServiceBus;
-
-public class MockIPerformanceCounter : IPerformanceCounterInstance
+﻿public class MockIPerformanceCounter : IPerformanceCounterInstance
 {
     public void Dispose()
     {

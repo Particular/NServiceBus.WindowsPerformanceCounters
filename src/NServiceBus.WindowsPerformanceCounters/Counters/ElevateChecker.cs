@@ -1,16 +1,13 @@
-namespace NServiceBus
-{
-    using System.Security.Principal;
+using System.Security.Principal;
 
-    static class ElevateChecker
+static class ElevateChecker
+{
+    public static bool IsCurrentUserElevated()
     {
-        public static bool IsCurrentUserElevated()
+        using (var windowsIdentity = WindowsIdentity.GetCurrent())
         {
-            using (var windowsIdentity = WindowsIdentity.GetCurrent())
-            {
-                var windowsPrincipal = new WindowsPrincipal(windowsIdentity);
-                return windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator);
-            }
+            var windowsPrincipal = new WindowsPrincipal(windowsIdentity);
+            return windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿namespace NServiceBus
 {
     using System;
-    using WindowsPerformanceCounters;
     using Configuration.AdvanceExtensibility;
 
     /// <summary>

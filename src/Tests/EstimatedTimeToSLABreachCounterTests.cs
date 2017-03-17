@@ -1,5 +1,4 @@
 ﻿using System;
-using NServiceBus.WindowsPerformanceCounters;
 using NUnit.Framework;
 
 [TestFixture]

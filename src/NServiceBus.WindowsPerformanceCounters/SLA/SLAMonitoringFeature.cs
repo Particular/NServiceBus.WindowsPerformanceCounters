@@ -1,54 +1,52 @@
-namespace NServiceBus.WindowsPerformanceCounters
+using System;
+using System.Threading.Tasks;
+using NServiceBus;
+using NServiceBus.Features;
+
+class SLAMonitoringFeature : Feature
 {
-    using System;
-    using System.Threading.Tasks;
-    using Features;
-
-    class SLAMonitoringFeature : Feature
+    protected override void Setup(FeatureConfigurationContext context)
     {
-        protected override void Setup(FeatureConfigurationContext context)
+        context.ThrowIfSendonly();
+        var settings = context.Settings;
+        var endpointSla = settings.Get<TimeSpan>(EndpointSLAKey);
+
+        var counterInstanceName = settings.EndpointName();
+        var counter = PerformanceCounterHelper.InstantiatePerformanceCounter("SLA violation countdown", counterInstanceName);
+        var slaBreachCounter = new EstimatedTimeToSLABreachCounter(endpointSla, counter);
+        var startup = new StartupTask(slaBreachCounter);
+
+        context.Pipeline.OnReceivePipelineCompleted(pipelineCompleted =>
         {
-            context.ThrowIfSendonly();
-            var settings = context.Settings;
-            var endpointSla = settings.Get<TimeSpan>(EndpointSLAKey);
+            slaBreachCounter.Update(pipelineCompleted);
+            return Task.FromResult(0);
+        });
 
-            var counterInstanceName = settings.EndpointName();
-            var counter = PerformanceCounterHelper.InstantiatePerformanceCounter("SLA violation countdown", counterInstanceName);
-            var slaBreachCounter = new EstimatedTimeToSLABreachCounter(endpointSla, counter);
-            var startup = new StartupTask(slaBreachCounter);
+        context.RegisterStartupTask(() => startup);
+    }
 
-            context.Pipeline.OnReceivePipelineCompleted(pipelineCompleted =>
-            {
-                slaBreachCounter.Update(pipelineCompleted);
-                return Task.FromResult(0);
-            });
 
-            context.RegisterStartupTask(() => startup);
+    internal const string EndpointSLAKey = "EndpointSLA";
+
+    class StartupTask : FeatureStartupTask
+    {
+        public StartupTask(EstimatedTimeToSLABreachCounter slaBreachCounter)
+        {
+            this.slaBreachCounter = slaBreachCounter;
         }
 
-
-        internal const string EndpointSLAKey = "EndpointSLA";
-
-        class StartupTask : FeatureStartupTask
+        protected override Task OnStart(IMessageSession session)
         {
-            public StartupTask(EstimatedTimeToSLABreachCounter slaBreachCounter)
-            {
-                this.slaBreachCounter = slaBreachCounter;
-            }
-
-            protected override Task OnStart(IMessageSession session)
-            {
-                slaBreachCounter.Start();
-                return Task.FromResult(0);
-            }
-
-            protected override Task OnStop(IMessageSession session)
-            {
-                slaBreachCounter.Dispose();
-                return Task.FromResult(0);
-            }
-
-            EstimatedTimeToSLABreachCounter slaBreachCounter;
+            slaBreachCounter.Start();
+            return Task.FromResult(0);
         }
+
+        protected override Task OnStop(IMessageSession session)
+        {
+            slaBreachCounter.Dispose();
+            return Task.FromResult(0);
+        }
+
+        EstimatedTimeToSLABreachCounter slaBreachCounter;
     }
 }

@@ -1,31 +1,28 @@
-﻿namespace NServiceBus
+﻿using System;
+
+static class Guard
 {
-    using System;
-
-    static class Guard
+    public static void AgainstNull(string argumentName, object value)
     {
-        public static void AgainstNull(string argumentName, object value)
+        if (value == null)
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException(argumentName);
-            }
+            throw new ArgumentNullException(argumentName);
         }
+    }
 
-        public static void AgainstNegativeAndZero(string argumentName, int value)
+    public static void AgainstNegativeAndZero(string argumentName, int value)
+    {
+        if (value <= 0)
         {
-            if (value <= 0)
-            {
-                throw new ArgumentOutOfRangeException(argumentName);
-            }
+            throw new ArgumentOutOfRangeException(argumentName);
         }
+    }
 
-        public static void AgainstNegativeAndZero(string argumentName, TimeSpan value)
+    public static void AgainstNegativeAndZero(string argumentName, TimeSpan value)
+    {
+        if (value <= TimeSpan.Zero)
         {
-            if (value <= TimeSpan.Zero)
-            {
-                throw new ArgumentOutOfRangeException(argumentName);
-            }
+            throw new ArgumentOutOfRangeException(argumentName);
         }
     }
 }
