@@ -5,5 +5,6 @@ namespace NServiceBus
     interface IPerformanceCounterInstance : IDisposable
     {
         void Increment();
+        long RawValue { get; set; }
     }
 }

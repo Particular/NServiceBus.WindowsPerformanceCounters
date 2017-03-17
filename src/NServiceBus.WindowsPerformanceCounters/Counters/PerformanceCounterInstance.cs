@@ -16,9 +16,15 @@ namespace NServiceBus
 
         public void Dispose()
         {
-            //Injected via Fody
+            counter?.Dispose();
         }
 
         PerformanceCounter counter;
+
+        public long RawValue
+        {
+            get { return counter.RawValue; }
+            set { counter.RawValue = value; }
+        }
     }
 }

@@ -1,0 +1,1 @@
+﻿The endpoint name ('*********************************************************************************************************************************') is too long (longer then 127) to register as a performance counter instance name. Reduce the endpoint name.

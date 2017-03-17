@@ -5,18 +5,14 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.WindowsPerformanceCounters", "NServiceBus.WindowsPerformanceCounters\NServiceBus.WindowsPerformanceCounters.csproj", "{DF381B87-8EB9-4F30-9E92-0849641ED01A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.WindowsPerformanceCounters.Tests", "NServiceBus.WindowsPerformanceCounters.Tests\NServiceBus.WindowsPerformanceCounters.Tests.csproj", "{9BCDA27A-5FC2-4197-9DCF-0D0F70424B58}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{9BCDA27A-5FC2-4197-9DCF-0D0F70424B58}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{6B39145F-C32F-4253-AF40-A6BDD8711545}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{F6825485-5DB0-44AA-B15A-D0D4F6A8B727}"
-	ProjectSection(SolutionItems) = preProject
-		nuget.config = nuget.config
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{54D85933-AF31-49D3-9208-36DC4689B291}"
 	ProjectSection(SolutionItems) = preProject
 		..\packaging\nuget\NServiceBus.WindowsPerformanceCounters.nuspec = ..\packaging\nuget\NServiceBus.WindowsPerformanceCounters.nuspec
+		nuget.config = nuget.config
 	EndProjectSection
 EndProject
 Global

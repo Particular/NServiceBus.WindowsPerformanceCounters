@@ -1,0 +1,13 @@
+﻿namespace NServiceBus
+{
+    public class static EndpointConfigurationExensionsForPerformanceCounters
+    {
+        public static NServiceBus.PerformanceCounters EnableWindowsPerformanceCounters(this NServiceBus.EndpointConfiguration endpointConfiguration) { }
+    }
+    public class PerformanceCounters { }
+    public class static PerformanceCountersExtensions
+    {
+        public static void EnableSLAPerformanceCounters(this NServiceBus.PerformanceCounters performanceCounters) { }
+        public static void EnableSLAPerformanceCounters(this NServiceBus.PerformanceCounters performanceCounters, System.TimeSpan sla) { }
+    }
+}

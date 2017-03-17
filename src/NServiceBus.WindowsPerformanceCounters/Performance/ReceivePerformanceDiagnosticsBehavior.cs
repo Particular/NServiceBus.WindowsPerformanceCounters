@@ -13,13 +13,13 @@ namespace NServiceBus
 
         public void Warmup()
         {
-            messagesPulledFromQueueCounter = PerformanceCounterHelper.TryToInstantiatePerformanceCounter(
+            messagesPulledFromQueueCounter = PerformanceCounterHelper.InstantiatePerformanceCounter(
                 "# of msgs pulled from the input queue /sec",
                 queueName);
-            successRateCounter = PerformanceCounterHelper.TryToInstantiatePerformanceCounter(
+            successRateCounter = PerformanceCounterHelper.InstantiatePerformanceCounter(
                 "# of msgs successfully processed / sec",
                 queueName);
-            failureRateCounter = PerformanceCounterHelper.TryToInstantiatePerformanceCounter(
+            failureRateCounter = PerformanceCounterHelper.InstantiatePerformanceCounter(
                 "# of msgs failures / sec",
                 queueName);
         }
