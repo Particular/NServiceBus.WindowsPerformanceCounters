@@ -7,6 +7,8 @@
     {
         protected override void Setup(FeatureConfigurationContext context)
         {
+            context.ThrowIfSendonly();
+
             var logicalAddress = context.Settings.LogicalAddress();
             var performanceDiagnosticsBehavior = new ReceivePerformanceDiagnosticsBehavior(logicalAddress.EndpointInstance.Endpoint);
 

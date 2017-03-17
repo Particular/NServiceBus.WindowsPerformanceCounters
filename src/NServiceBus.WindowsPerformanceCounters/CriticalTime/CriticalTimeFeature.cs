@@ -7,6 +7,7 @@
     {
         protected override void Setup(FeatureConfigurationContext context)
         {
+            context.ThrowIfSendonly();
             var counterInstanceName = context.Settings.EndpointName();
             var counter = PerformanceCounterHelper.InstantiatePerformanceCounter("Critical Time", counterInstanceName);
             var criticalTimeCounter = new CriticalTimeCounter(counter);

@@ -120,6 +120,11 @@ namespace NServiceBus.WindowsPerformanceCounters
 
             UpdateTimeToSLABreach();
         }
+        public void Dispose()
+        {
+            timer?.Dispose();
+            counter?.Dispose();
+        }
 
         IPerformanceCounterInstance counter;
         List<DataPoint> dataPoints = new List<DataPoint>();
@@ -127,11 +132,5 @@ namespace NServiceBus.WindowsPerformanceCounters
         Timer timer;
 
         const int MaxDataPoints = 10;
-
-        public void Dispose()
-        {
-            timer?.Dispose();
-            counter?.Dispose();
-        }
     }
 }

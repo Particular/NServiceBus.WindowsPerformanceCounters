@@ -1,33 +1,27 @@
-﻿namespace NServiceBus
+namespace NServiceBus
 {
-    using System;
     using WindowsPerformanceCounters;
-    using Configuration.AdvanceExtensibility;
 
+    /// <summary>
+    /// Exposes windows performance counters configuration on <see cref="EndpointConfiguration"/>.
+    /// </summary>
     public static class PerformanceCountersExtensions
     {
         /// <summary>
-        /// Enables the NServiceBus specific performance counters with a specific EndpointSLA.
+        /// Enables receive statistics and critical time performance counters.
         /// </summary>
-        /// <param name="performanceCounters">The <see cref="PerformanceCounters" /> instance to apply the settings to.</param>
-        public static void EnableSLAPerformanceCounters(this PerformanceCounters performanceCounters)
+        /// <param name="endpointConfiguration">The <see cref="EndpointConfiguration" /> instance to apply the settings to.</param>
+        public static PerformanceCountersSettings EnableWindowsPerformanceCounters(this EndpointConfiguration endpointConfiguration)
         {
-            Guard.AgainstNull(nameof(performanceCounters), performanceCounters);
-            performanceCounters.EndpointConfiguration.EnableFeature<SLAMonitoringFeature>();
-        }
+            Guard.AgainstNull(nameof(endpointConfiguration), endpointConfiguration);
 
-        /// <summary>
-        /// Enables the NServiceBus specific performance counters with a specific EndpointSLA.
-        /// </summary>
-        /// <param name="performanceCounters">The <see cref="PerformanceCounters" /> instance to apply the settings to.</param>
-        /// <param name="sla">The <see cref="TimeSpan" /> to use oa the SLA. Must be greater than <see cref="TimeSpan.Zero" />.</param>
-        public static void EnableSLAPerformanceCounters(this PerformanceCounters performanceCounters, TimeSpan sla)
-        {
-            Guard.AgainstNull(nameof(performanceCounters), performanceCounters);
-            Guard.AgainstNegativeAndZero(nameof(sla), sla);
+#pragma warning disable 618
+            endpointConfiguration.DisableFeature<Features.ReceiveStatisticsPerformanceCounters>();
+#pragma warning restore 618
+            endpointConfiguration.EnableFeature<ReceiveStatisticsFeature>();
+            endpointConfiguration.EnableFeature<CriticalTimeFeature>();
 
-            performanceCounters.EndpointConfiguration.GetSettings().Set(SLAMonitoringFeature.EndpointSLAKey, sla);
-            EnableSLAPerformanceCounters(performanceCounters);
+            return new PerformanceCountersSettings(endpointConfiguration);
         }
     }
 }

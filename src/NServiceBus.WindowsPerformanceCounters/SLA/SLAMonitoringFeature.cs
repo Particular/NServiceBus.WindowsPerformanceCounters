@@ -8,18 +8,9 @@ namespace NServiceBus.WindowsPerformanceCounters
     {
         protected override void Setup(FeatureConfigurationContext context)
         {
+            context.ThrowIfSendonly();
             var settings = context.Settings;
-            if (settings.GetOrDefault<bool>("Endpoint.SendOnly"))
-            {
-                throw new Exception("SLA Monitoring is not supported for send only endpoints, remove .EnableSLAPerformanceCounter(mySLA).");
-            }
-
-            TimeSpan endpointSla;
-
-            if (!settings.TryGet(EndpointSLAKey, out endpointSla))
-            {
-                throw new Exception("Endpoint SLA is required for the `SLA violation countdown` counter. Pass the SLA for this endpoint to .EnableSLAPerformanceCounter(mySLA).");
-            }
+            var endpointSla = settings.Get<TimeSpan>(EndpointSLAKey);
 
             var counterInstanceName = settings.EndpointName();
             var counter = PerformanceCounterHelper.InstantiatePerformanceCounter("SLA violation countdown", counterInstanceName);
