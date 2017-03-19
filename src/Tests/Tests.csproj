@@ -106,6 +106,7 @@
     <Compile Include="PerformanceMonitoringUsersSidTests.cs" />
     <Compile Include="PipelineExtensionsTests.cs" />
     <Compile Include="PipelineHelper.cs" />
+    <Compile Include="SetUpFixture.cs" />
     <Compile Include="TypeScanner.cs" />
   </ItemGroup>
   <ItemGroup>
