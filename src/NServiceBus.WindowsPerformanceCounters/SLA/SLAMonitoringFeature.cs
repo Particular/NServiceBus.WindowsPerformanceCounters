@@ -5,6 +5,7 @@ using NServiceBus.Features;
 
 class SLAMonitoringFeature : Feature
 {
+   public  const string CounterName = "SLA violation countdown";
     protected override void Setup(FeatureConfigurationContext context)
     {
         context.ThrowIfSendonly();
@@ -12,7 +13,7 @@ class SLAMonitoringFeature : Feature
         var endpointSla = settings.Get<TimeSpan>(EndpointSLAKey);
 
         var counterInstanceName = settings.EndpointName();
-        var counter = PerformanceCounterHelper.InstantiatePerformanceCounter("SLA violation countdown", counterInstanceName);
+        var counter = PerformanceCounterHelper.InstantiatePerformanceCounter(CounterName, counterInstanceName);
         var slaBreachCounter = new EstimatedTimeToSLABreachCounter(endpointSla, counter);
         var startup = new StartupTask(slaBreachCounter);
 

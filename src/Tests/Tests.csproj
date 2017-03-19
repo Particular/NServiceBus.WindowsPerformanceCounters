@@ -10,8 +10,6 @@
     <AssemblyName>Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\NServiceBus.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,6 +32,12 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ApprovalTests, Version=3.0.0.0, Culture=neutral, PublicKeyToken=11bd7d124fc62e0f, processorArchitecture=MSIL">
@@ -69,8 +73,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NServiceBus.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NServiceBus.6.2.0-alpha0282\lib\net452\NServiceBus.Core.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\NServiceBus.6.2.0-alpha0290\lib\net452\NServiceBus.Core.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
@@ -79,6 +82,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="key.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -88,17 +92,21 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APIApprovals.cs" />
     <Compile Include="ApprovalTestConfig.cs" />
     <Compile Include="App_Packages\PublicApiGenerator.6.0.0\ApiGenerator.cs" />
-    <Compile Include="APIApprovals.cs" />
-    <Compile Include="PipelineExtensionsTests.cs" />
-    <Compile Include="EstimatedTimeToSLABreachCounterTests.cs" />
     <Compile Include="CriticalTimeCounterTests.cs" />
+    <Compile Include="ElevateCheckerTests.cs" />
+    <Compile Include="EndpointConfigBuilder.cs" />
+    <Compile Include="EndpointConfigurationExtensions.cs" />
+    <Compile Include="EstimatedTimeToSLABreachCounterTests.cs" />
+    <Compile Include="IntegrationTests.cs" />
     <Compile Include="MockIPerformanceCounter.cs" />
     <Compile Include="PerformanceCounterHelperTests.cs" />
     <Compile Include="PerformanceMonitoringUsersSidTests.cs" />
-    <Compile Include="ElevateCheckerTests.cs" />
+    <Compile Include="PipelineExtensionsTests.cs" />
     <Compile Include="PipelineHelper.cs" />
+    <Compile Include="TypeScanner.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

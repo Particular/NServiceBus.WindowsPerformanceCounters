@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using NServiceBus.Logging;
 
 static class PerformanceCounterHelper
 {
@@ -22,10 +21,6 @@ static class PerformanceCounterHelper
             var message = $"NServiceBus performance counter for '{counterName}' is not set up correctly. To rectify this problem, consult the NServiceBus performance counters documentation.";
             throw new Exception(message, exception);
         }
-        logger.DebugFormat("'{0}' counter initialized for '{1}'", counterName, instanceName);
-
         return new PerformanceCounterInstance(counter);
     }
-
-    static ILog logger = LogManager.GetLogger(typeof(PerformanceCounterHelper));
 }

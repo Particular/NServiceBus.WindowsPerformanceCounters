@@ -4,11 +4,12 @@ using NServiceBus.Features;
 
 class CriticalTimeFeature : Feature
 {
+    public const string CounterName = "Critical Time";
     protected override void Setup(FeatureConfigurationContext context)
     {
         context.ThrowIfSendonly();
         var counterInstanceName = context.Settings.EndpointName();
-        var counter = PerformanceCounterHelper.InstantiatePerformanceCounter("Critical Time", counterInstanceName);
+        var counter = PerformanceCounterHelper.InstantiatePerformanceCounter(CounterName, counterInstanceName);
         var criticalTimeCounter = new CriticalTimeCounter(counter);
         var startup = new StartupTask(criticalTimeCounter);
 

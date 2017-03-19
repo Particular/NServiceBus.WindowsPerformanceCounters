@@ -9,16 +9,19 @@ class ReceivePerformanceDiagnosticsBehavior : IBehavior<IIncomingPhysicalMessage
         this.queueName = queueName;
     }
 
+    public const string MessagesPulledPerSecondCounterName = "# of msgs pulled from the input queue /sec";
+    public const string MessagesProcessedPerSecondCounterName = "# of msgs successfully processed / sec";
+    public const string MessagesFailuresPerSecondCounterName = "# of msgs failures / sec";
     public void Warmup()
     {
         messagesPulledFromQueueCounter = PerformanceCounterHelper.InstantiatePerformanceCounter(
-            "# of msgs pulled from the input queue /sec",
+            MessagesPulledPerSecondCounterName,
             queueName);
         successRateCounter = PerformanceCounterHelper.InstantiatePerformanceCounter(
-            "# of msgs successfully processed / sec",
+            MessagesProcessedPerSecondCounterName,
             queueName);
         failureRateCounter = PerformanceCounterHelper.InstantiatePerformanceCounter(
-            "# of msgs failures / sec",
+            MessagesFailuresPerSecondCounterName,
             queueName);
     }
 

@@ -20,8 +20,8 @@ class PerformanceMonitorUsersInstaller : INeedToInstallSomething
         {
             if (!ElevateChecker.IsCurrentUserElevated())
             {
-                logger.InfoFormat(@"Did not attempt to add user '{0}' to group '{1}' since the process is not running with elevated privileges. Processing will continue. To manually perform this action, run the following command from an admin console:
-net localgroup ""{1}"" ""{0}"" /add", identity, builtinPerformanceMonitoringUsersName);
+                logger.Info($@"Did not attempt to add user '{identity}' to group '{builtinPerformanceMonitoringUsersName}' since the process is not running with elevated privileges. Processing will continue. To manually perform this action, run the following command from an admin console:
+net localgroup ""{builtinPerformanceMonitoringUsersName}"" ""{identity}"" /add");
                 return Task.FromResult(0);
             }
             StartProcess(identity);
