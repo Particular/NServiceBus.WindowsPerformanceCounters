@@ -9,7 +9,11 @@ public class SetUpFixture
     public void SetUp()
     {
         var counterCreationCollection = new CounterCreationDataCollection(Counters.ToArray());
-        PerformanceCounterCategory.Delete("NServiceBus");
+
+        if (PerformanceCounterCategory.Exists("NServiceBus"))
+        {
+            PerformanceCounterCategory.Delete("NServiceBus");
+        }
         PerformanceCounterCategory.Create(
             categoryName: "NServiceBus",
             categoryHelp: "NServiceBus statistics",
