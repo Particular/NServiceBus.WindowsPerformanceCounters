@@ -7,9 +7,9 @@ static class PerformanceCounterHelper
     {
         PerformanceCounter counter;
 
-        if (instanceName.Length > 128)
+        if (instanceName.Length > sbyte.MaxValue)
         {
-            throw new Exception($"The endpoint name ('{instanceName}') is too long (longer then {(int) sbyte.MaxValue}) to register as a performance counter instance name. Reduce the endpoint name.");
+            throw new Exception($"The endpoint name ('{instanceName}') is too long (longer then {sbyte.MaxValue}) to register as a performance counter instance name. Reduce the endpoint name.");
         }
 
         try
