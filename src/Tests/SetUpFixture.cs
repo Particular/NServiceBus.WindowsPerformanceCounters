@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using NUnit.Framework;
@@ -9,17 +10,22 @@ public class SetUpFixture
     public void SetUp()
     {
         var counterCreationCollection = new CounterCreationDataCollection(Counters.ToArray());
-
-        if (PerformanceCounterCategory.Exists("NServiceBus"))
+        try
         {
-            PerformanceCounterCategory.Delete("NServiceBus");
+            if (!PerformanceCounterCategory.Exists("NServiceBus"))
+            {
+                PerformanceCounterCategory.Create(
+                    categoryName: "NServiceBus",
+                    categoryHelp: "NServiceBus statistics",
+                    categoryType: PerformanceCounterCategoryType.MultiInstance,
+                    counterData: counterCreationCollection);
+                PerformanceCounter.CloseSharedResources();
+            }
         }
-        PerformanceCounterCategory.Create(
-            categoryName: "NServiceBus",
-            categoryHelp: "NServiceBus statistics",
-            categoryType: PerformanceCounterCategoryType.MultiInstance,
-            counterData: counterCreationCollection);
-        PerformanceCounter.CloseSharedResources();
+        catch (UnauthorizedAccessException exception)
+        {
+            throw new Exception("Run VS as admin", exception);
+        }
     }
 
     static List<CounterCreationData> Counters = new List<CounterCreationData>
