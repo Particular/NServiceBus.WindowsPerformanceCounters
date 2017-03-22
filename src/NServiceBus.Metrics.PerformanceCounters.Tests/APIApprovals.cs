@@ -14,7 +14,7 @@ public class APIApprovals
     [MethodImpl(MethodImplOptions.NoInlining)]
     public void Approve()
     {
-        var combine = Path.Combine(TestContext.CurrentContext.TestDirectory, "NServiceBus.WindowsPerformanceCounters.dll");
+        var combine = Path.Combine(TestContext.CurrentContext.TestDirectory, "NServiceBus.Metrics.PerformanceCounters.dll");
         var assembly = Assembly.LoadFile(combine);
         var publicApi = Filter(ApiGenerator.GeneratePublicApi(assembly));
         Approvals.Verify(publicApi);

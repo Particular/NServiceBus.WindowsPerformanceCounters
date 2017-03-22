@@ -12,7 +12,7 @@ static class LogManager
     {
         if (type.Namespace == null)
         {
-            var name = $"NServiceBus.WindowsPerformanceCounters.{type.Name}";
+            var name = $"NServiceBus.Metrics.PerformanceCounters.{type.Name}";
             return NServiceBus.Logging.LogManager.GetLogger(name);
         }
         return NServiceBus.Logging.LogManager.GetLogger(type);

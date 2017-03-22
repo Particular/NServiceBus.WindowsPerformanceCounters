@@ -3,9 +3,9 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("NServiceBus.WindowsPerformanceCounters")]
+[assembly: AssemblyTitle("NServiceBus.Metrics.PerformanceCounters")]
 [assembly: AssemblyCopyright("Copyright NServiceBus Ltd. All rights reserved")]
-[assembly: AssemblyProduct("NServiceBus.WindowsPerformanceCounters")]
+[assembly: AssemblyProduct("NServiceBus.Metrics.PerformanceCounters")]
 [assembly: AssemblyCompany("NServiceBus Ltd.")]
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(true)]

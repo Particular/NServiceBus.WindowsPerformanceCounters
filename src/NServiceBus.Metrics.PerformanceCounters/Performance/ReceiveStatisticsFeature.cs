@@ -11,7 +11,7 @@ class ReceiveStatisticsFeature : Feature
         var logicalAddress = context.Settings.LogicalAddress();
         var performanceDiagnosticsBehavior = new ReceivePerformanceDiagnosticsBehavior(logicalAddress.EndpointInstance.Endpoint);
 
-        context.Pipeline.Register("NServiceBus.WindowsPerformanceCounters.ReceivePerformanceDiagnosticsBehavior", performanceDiagnosticsBehavior, "Provides various performance counters for receive statistics");
+        context.Pipeline.Register("NServiceBus.Metrics.PerformanceCounters.ReceivePerformanceDiagnosticsBehavior", performanceDiagnosticsBehavior, "Provides various performance counters for receive statistics");
         context.RegisterStartupTask(new WarmupCooldownTask(performanceDiagnosticsBehavior));
     }
 

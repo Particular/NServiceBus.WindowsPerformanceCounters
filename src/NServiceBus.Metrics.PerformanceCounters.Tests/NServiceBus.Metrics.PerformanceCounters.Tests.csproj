@@ -86,9 +86,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NServiceBus.WindowsPerformanceCounters\NServiceBus.WindowsPerformanceCounters.csproj">
+    <ProjectReference Include="..\NServiceBus.Metrics.PerformanceCounters\NServiceBus.Metrics.PerformanceCounters.csproj">
       <Project>{df381b87-8eb9-4f30-9e92-0849641ed01a}</Project>
-      <Name>NServiceBus.WindowsPerformanceCounters</Name>
+      <Name>NServiceBus.Metrics.PerformanceCounters</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
