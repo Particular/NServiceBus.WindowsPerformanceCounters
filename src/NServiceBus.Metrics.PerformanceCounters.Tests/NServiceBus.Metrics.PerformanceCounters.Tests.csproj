@@ -97,6 +97,7 @@
     <Compile Include="EndpointConfigBuilder.cs" />
     <Compile Include="EndpointConfigurationExtensions.cs" />
     <Compile Include="EstimatedTimeToSLABreachCounterTests.cs" />
+    <Compile Include="PerformanceCounterUpdaterTests.cs" />
     <Compile Include="IntegrationTests.cs" />
     <Compile Include="MockIPerformanceCounter.cs" />
     <Compile Include="PerformanceCountersCacheTests.cs" />
