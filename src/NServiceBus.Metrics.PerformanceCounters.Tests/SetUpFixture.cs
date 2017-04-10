@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Security;
 using NUnit.Framework;
 
 [SetUpFixture]
@@ -22,9 +23,9 @@ public class SetUpFixture
                 PerformanceCounter.CloseSharedResources();
             }
         }
-        catch (UnauthorizedAccessException exception)
+        catch(Exception ex) when(ex is SecurityException || ex is UnauthorizedAccessException)
         {
-            throw new Exception("Run VS as admin", exception);
+            throw new Exception("Run VS as admin", ex);
         }
     }
 
@@ -36,6 +37,4 @@ public class SetUpFixture
         new CounterCreationData(ReceivePerformanceDiagnosticsBehavior.MessagesPulledPerSecondCounterName, "The current number of messages pulled from the input queue by the transport per second.", PerformanceCounterType.RateOfCountsPerSecond32),
         new CounterCreationData(ReceivePerformanceDiagnosticsBehavior.MessagesFailuresPerSecondCounterName, "The current number of failed processed messages by the transport per second.", PerformanceCounterType.RateOfCountsPerSecond32)
     };
-
-
 }
