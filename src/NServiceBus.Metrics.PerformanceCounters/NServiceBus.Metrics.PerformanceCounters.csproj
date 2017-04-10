@@ -66,6 +66,7 @@
     <Compile Include="CriticalTime\CriticalTimeFeature.cs" />
     <Compile Include="LogManager.cs" />
     <Compile Include="Meter.cs" />
+    <Compile Include="PerformanceCountersCache.cs" />
     <Compile Include="PerformanceCountersSettings.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="PerformanceCountersExtensions.cs" />
