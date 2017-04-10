@@ -8,9 +8,8 @@ class CriticalTimeFeature : Feature
     protected override void Setup(FeatureConfigurationContext context)
     {
         context.ThrowIfSendonly();
-        var counterInstanceName = context.Settings.EndpointName();
-        var counter = PerformanceCounterHelper.InstantiatePerformanceCounter(CounterName, counterInstanceName);
-        var criticalTimeCounter = new CriticalTimeCounter(counter);
+//        var counterInstanceName = context.Settings.EndpointName();
+        var criticalTimeCounter = new CriticalTimeCounter(null);
         var startup = new StartupTask(criticalTimeCounter);
 
         context.Pipeline.OnReceivePipelineCompleted(e =>

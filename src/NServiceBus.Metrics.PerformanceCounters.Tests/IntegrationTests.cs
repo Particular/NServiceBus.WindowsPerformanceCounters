@@ -46,9 +46,9 @@ public class IntegrationTests
 
         var criticalTimePerfCounter = new PerformanceCounter("NServiceBus", CriticalTimeFeature.CounterName, endpointName, true);
         var slaPerCounter = new PerformanceCounter("NServiceBus", SLAMonitoringFeature.CounterName, endpointName, true);
-        var messagesFailuresPerSecondCounter = new PerformanceCounter("NServiceBus", ReceivePerformanceDiagnosticsBehavior.MessagesFailuresPerSecondCounterName, endpointName, true);
-        var messagesProcessedPerSecondCounter = new PerformanceCounter("NServiceBus", ReceivePerformanceDiagnosticsBehavior.MessagesProcessedPerSecondCounterName, endpointName, true);
-        var messagesPulledPerSecondCounter = new PerformanceCounter("NServiceBus", ReceivePerformanceDiagnosticsBehavior.MessagesPulledPerSecondCounterName, endpointName, true);
+        var messagesFailuresPerSecondCounter = new PerformanceCounter("NServiceBus", PerformanceCountersFeature.MessagesFailuresPerSecondCounterName, endpointName, true);
+        var messagesProcessedPerSecondCounter = new PerformanceCounter("NServiceBus", PerformanceCountersFeature.MessagesProcessedPerSecondCounterName, endpointName, true);
+        var messagesPulledPerSecondCounter = new PerformanceCounter("NServiceBus", PerformanceCountersFeature.MessagesPulledPerSecondCounterName, endpointName, true);
         Assert.AreNotEqual(0, criticalTimePerfCounter.RawValue);
         Assert.AreNotEqual(0, slaPerCounter.RawValue);
         Assert.AreEqual(0, messagesFailuresPerSecondCounter.RawValue);

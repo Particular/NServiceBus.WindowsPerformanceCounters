@@ -99,7 +99,6 @@
     <Compile Include="EstimatedTimeToSLABreachCounterTests.cs" />
     <Compile Include="IntegrationTests.cs" />
     <Compile Include="MockIPerformanceCounter.cs" />
-    <Compile Include="PerformanceCounterHelperTests.cs" />
     <Compile Include="PerformanceCountersCacheTests.cs" />
     <Compile Include="PerformanceMonitoringUsersSidTests.cs" />
     <Compile Include="PipelineExtensionsTests.cs" />
