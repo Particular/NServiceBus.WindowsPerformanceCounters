@@ -27,7 +27,7 @@
                 performanceCounterInstance.RawValue = meter.Count;
             }
 
-            var timers = rootObject["Timers"]?.ToObject<List<NServiceBus.Timer>>() ?? new List<NServiceBus.Timer>();
+            var timers = rootObject["Timers"]?.ToObject<List<Timer>>() ?? new List<Timer>();
             foreach (var timer in timers)
             {
                 CounterInstanceName? instanceName;
