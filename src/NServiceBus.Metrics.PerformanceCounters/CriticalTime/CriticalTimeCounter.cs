@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Threading;
 using NServiceBus;
+using Timer = System.Threading.Timer;
 
 class CriticalTimeCounter : IDisposable
 {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using NServiceBus;
+using Timer = System.Threading.Timer;
 
 class EstimatedTimeToSLABreachCounter : IDisposable
 {
