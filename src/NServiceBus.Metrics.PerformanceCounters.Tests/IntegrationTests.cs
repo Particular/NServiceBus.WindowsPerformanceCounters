@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus;
@@ -18,8 +17,6 @@ public class IntegrationTests
 
         var endpointName = "PerfCountersIntegrationTests";
         var endpointConfiguration = EndpointConfigBuilder.BuildEndpoint(endpointName);
-        var typesToScan = TypeScanner.NestedTypes<IntegrationTests>().ToList();
-        endpointConfiguration.SetTypesToScan(typesToScan);
         endpointConfiguration.DefineCriticalErrorAction(
             context =>
             {
@@ -39,12 +36,12 @@ public class IntegrationTests
             .ConfigureAwait(false);
 
         ManualResetEvent.WaitOne();
-        await Task.Delay(100)
+        await Task.Delay(5000)
             .ConfigureAwait(false);
         await endpoint.Stop()
             .ConfigureAwait(false);
 
-        var criticalTimePerfCounter = new PerformanceCounter("NServiceBus", CriticalTimeFeature.CounterName, endpointName, true);
+        var criticalTimePerfCounter = new PerformanceCounter("NServiceBus", PerformanceCountersFeature.CriticalTimeCounterName, endpointName, true);
         var slaPerCounter = new PerformanceCounter("NServiceBus", SLAMonitoringFeature.CounterName, endpointName, true);
         var messagesFailuresPerSecondCounter = new PerformanceCounter("NServiceBus", PerformanceCountersFeature.MessagesFailuresPerSecondCounterName, endpointName, true);
         var messagesProcessedPerSecondCounter = new PerformanceCounter("NServiceBus", PerformanceCountersFeature.MessagesProcessedPerSecondCounterName, endpointName, true);

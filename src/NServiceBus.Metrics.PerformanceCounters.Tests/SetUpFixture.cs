@@ -31,7 +31,7 @@ public class SetUpFixture
 
     static List<CounterCreationData> Counters = new List<CounterCreationData>
     {
-        new CounterCreationData(CriticalTimeFeature.CounterName, "Age of the oldest message in the queue.", PerformanceCounterType.NumberOfItems32),
+        new CounterCreationData(PerformanceCountersFeature.CriticalTimeCounterName, "Age of the oldest message in the queue.", PerformanceCounterType.NumberOfItems32),
         new CounterCreationData(SLAMonitoringFeature.CounterName, "Seconds until the SLA for this endpoint is breached.", PerformanceCounterType.NumberOfItems32),
         new CounterCreationData(PerformanceCountersFeature.MessagesProcessedPerSecondCounterName, "The current number of messages processed successfully by the transport per second.", PerformanceCounterType.RateOfCountsPerSecond32),
         new CounterCreationData(PerformanceCountersFeature.MessagesPulledPerSecondCounterName, "The current number of messages pulled from the input queue by the transport per second.", PerformanceCounterType.RateOfCountsPerSecond32),
