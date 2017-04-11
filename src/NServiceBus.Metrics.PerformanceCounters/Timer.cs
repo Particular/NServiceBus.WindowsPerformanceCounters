@@ -1,14 +1,12 @@
-﻿namespace NServiceBus
+﻿
+ struct Timer
 {
-    struct Timer
-    {
-        public readonly string Name;
-        public readonly long TotalTime;
+    public readonly string Name;
+    public readonly long TotalTime;
 
-        public Timer(string name, long totalTime)
-        {
-            Name = name;
-            TotalTime = totalTime;
-        }
+    public Timer(string name, long totalTime)
+    {
+        Name = name;
+        TotalTime = totalTime;
     }
 }

@@ -30,10 +30,7 @@
             var timers = rootObject["Timers"]?.ToObject<List<Timer>>() ?? new List<Timer>();
             foreach (var timer in timers)
             {
-                CounterInstanceName? instanceName;
-                legacyInstanceNameMap.TryGetValue(timer.Name, out instanceName);
-
-                var performanceCounterInstance = cache.Get(instanceName ?? new CounterInstanceName(timer.Name, context));
+                var performanceCounterInstance = cache.Get(new CounterInstanceName(timer.Name, context));
                 performanceCounterInstance.RawValue = timer.TotalTime;
             }
         }

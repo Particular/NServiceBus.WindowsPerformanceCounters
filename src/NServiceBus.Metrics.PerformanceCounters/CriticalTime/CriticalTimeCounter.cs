@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using NServiceBus;
-using Timer = System.Threading.Timer;
 
 class CriticalTimeCounter : IDisposable
 {
@@ -33,7 +32,7 @@ class CriticalTimeCounter : IDisposable
 
     public void Start()
     {
-        timer = new Timer(ResetCounterValueIfNoMessageHasBeenProcessedRecently, null, 0, 2000);
+        timer = new System.Threading.Timer(ResetCounterValueIfNoMessageHasBeenProcessedRecently, null, 0, 2000);
     }
 
     void ResetCounterValueIfNoMessageHasBeenProcessedRecently(object state)
@@ -59,6 +58,6 @@ class CriticalTimeCounter : IDisposable
     IPerformanceCounterInstance counter;
     TimeSpan estimatedMaximumProcessingDuration = TimeSpan.FromSeconds(2);
     DateTime lastMessageProcessedTime;
-    Timer timer;
+    System.Threading.Timer timer;
 
 }
