@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.0
+VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.Metrics.PerformanceCounters", "NServiceBus.Metrics.PerformanceCounters\NServiceBus.Metrics.PerformanceCounters.csproj", "{DF381B87-8EB9-4F30-9E92-0849641ED01A}"
 EndProject
@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.Metrics.Perform
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{54D85933-AF31-49D3-9208-36DC4689B291}"
 	ProjectSection(SolutionItems) = preProject
+		..\packaging\nuget\NServiceBus.Metrics.PerformanceCounters.MsBuild.nuspec = ..\packaging\nuget\NServiceBus.Metrics.PerformanceCounters.MsBuild.nuspec
+		..\packaging\nuget\NServiceBus.Metrics.PerformanceCounters.MsBuild.targets = ..\packaging\nuget\NServiceBus.Metrics.PerformanceCounters.MsBuild.targets
 		..\packaging\nuget\NServiceBus.Metrics.PerformanceCounters.nuspec = ..\packaging\nuget\NServiceBus.Metrics.PerformanceCounters.nuspec
 		nuget.config = nuget.config
 	EndProjectSection
