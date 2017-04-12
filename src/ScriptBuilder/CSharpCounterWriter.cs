@@ -18,7 +18,7 @@
 
                 foreach (var timer in timers)
                 {
-                    var timerDefinition = $@"new CounterCreationData(""{timer.Name}"", ""PLACEHOLDER"", PerformanceCounterType.NumberOfItems32),";
+                    var timerDefinition = $@"new CounterCreationData(""{timer.Name}"", ""{timer.Description}"", PerformanceCounterType.NumberOfItems32),";
                     stringBuilder.AppendLine(timerDefinition.PadLeft(timerDefinition.Length + 8));
                 }
 
@@ -27,7 +27,7 @@
                     string instanceName;
                     legacyInstanceNameMap.TryGetValue(meter.Name, out instanceName);
 
-                    var meterDefinition = $@"new CounterCreationData(""{instanceName ?? meter.Name}"", ""PLACEHOLDER"", PerformanceCounterType.RateOfCountsPerSecond32),";
+                    var meterDefinition = $@"new CounterCreationData(""{instanceName ?? meter.Name}"", ""{meter.Description}"", PerformanceCounterType.RateOfCountsPerSecond32),";
                     stringBuilder.AppendLine(meterDefinition.PadLeft(meterDefinition.Length + 8));
                 }
 

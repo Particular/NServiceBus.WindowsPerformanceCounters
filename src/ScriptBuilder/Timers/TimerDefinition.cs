@@ -2,12 +2,15 @@ namespace NServiceBus.Metrics.PerformanceCounters
 {
     class TimerDefinition
     {
-        public TimerDefinition(string name, string unit, string[] tags = null)
+        public TimerDefinition(string name, string description, string unit, string[] tags = null)
         {
             Name = name;
+            Description = description;
             Unit = unit;
             Tags = tags;
         }
+
+        public string Description { get; }
 
         public string Name { get; }
 

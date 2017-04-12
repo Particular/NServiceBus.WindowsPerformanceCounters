@@ -17,9 +17,10 @@
                 {
                     var name = (string) timerAttribute.ConstructorArguments[0].Value;
                     var unit = (string) timerAttribute.ConstructorArguments[1].Value;
-                    var tags = (string[]) timerAttribute.ConstructorArguments[2].Value ?? new string[] {};
+                    var description = (string)timerAttribute.ConstructorArguments[2].Value;
+                    var tags = (string[]) timerAttribute.ConstructorArguments[3].Value ?? new string[] {};
 
-                    definitions.Add(new TimerDefinition(name, unit, tags));
+                    definitions.Add(new TimerDefinition(name, description, unit, tags));
                 }
             }
             return definitions.Count > 0;

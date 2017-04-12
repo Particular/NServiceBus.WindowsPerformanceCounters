@@ -17,9 +17,10 @@
                 {
                     var name = (string)meterAttribute.ConstructorArguments[0].Value;
                     var unit = (string)meterAttribute.ConstructorArguments[1].Value;
-                    var tags = (string[])meterAttribute.ConstructorArguments[2].Value ?? new string[] { };
-
-                    definitions.Add(new MeterDefinition(name, unit, tags));
+                    var description = (string)meterAttribute.ConstructorArguments[2].Value;
+                    var tags = (string[])meterAttribute.ConstructorArguments[3].Value ?? new string[] { };
+                    
+                    definitions.Add(new MeterDefinition(name, description, unit, tags));
                 }
             }
             return definitions.Count > 0;
