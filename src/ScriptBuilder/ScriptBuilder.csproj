@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="CecilExtensions.cs" />
     <Compile Include="CounterWriter.cs" />
+    <Compile Include="CSharpCounterWriter.cs" />
     <Compile Include="ErrorsException.cs" />
     <Compile Include="Meters\AllMetersDefinitionReader.cs" />
     <Compile Include="Meters\MeterDefinition.cs" />

@@ -16,6 +16,8 @@
             {
                 logError($"Error in '{type.FullName}'. Error:{exception.Message}", type.GetFileName());
             });
+
+            CSharpCounterWriter.WriteCode(scriptPath, timers, meters);
         }
     }
 }
