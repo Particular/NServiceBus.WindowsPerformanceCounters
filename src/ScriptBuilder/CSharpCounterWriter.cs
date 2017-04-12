@@ -13,6 +13,9 @@
             {
                 var stringBuilder = new StringBuilder();
 
+                var slaCounterDefinition = @"new CounterCreationData(""SLA violation countdown"", ""Seconds until the SLA for this endpoint is breached."", PerformanceCounterType.NumberOfItems32),";
+                stringBuilder.AppendLine(slaCounterDefinition.PadLeft(slaCounterDefinition.Length + 8));
+
                 foreach (var timer in timers)
                 {
                     var timerDefinition = $@"new CounterCreationData(""{timer.Name}"", ""PLACEHOLDER"", PerformanceCounterType.NumberOfItems32),";
@@ -21,7 +24,10 @@
 
                 foreach (var meter in meters)
                 {
-                    var meterDefinition = $@"new CounterCreationData(""{meter.Name}"", ""PLACEHOLDER"", PerformanceCounterType.RateOfCountsPerSecond32),";
+                    string instanceName;
+                    legacyInstanceNameMap.TryGetValue(meter.Name, out instanceName);
+
+                    var meterDefinition = $@"new CounterCreationData(""{instanceName ?? meter.Name}"", ""PLACEHOLDER"", PerformanceCounterType.RateOfCountsPerSecond32),";
                     stringBuilder.AppendLine(meterDefinition.PadLeft(meterDefinition.Length + 8));
                 }
 
@@ -63,7 +69,13 @@ public static class CounterCreator
     {{
 {0}
     }};
-}}
-";
+}}";
+
+        static Dictionary<string, string> legacyInstanceNameMap = new Dictionary<string, string>
+        {
+            {"# of message failures / sec", "# of msgs failures / sec"},
+            {"# of messages pulled from the input queue / sec", "# of msgs pulled from the input queue /sec"},
+            {"# of messages successfully processed / sec", "# of msgs successfully processed / sec"}
+        };
     }
 }
