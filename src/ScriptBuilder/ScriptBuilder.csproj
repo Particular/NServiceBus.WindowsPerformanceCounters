@@ -59,6 +59,7 @@
     <Compile Include="Meters\AllMetersDefinitionReader.cs" />
     <Compile Include="Meters\MeterDefinition.cs" />
     <Compile Include="Meters\MeterDefinitionReader.cs" />
+    <Compile Include="PowerShellCounterWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Timers\AllTimersDefinitionReader.cs" />
     <Compile Include="Timers\TimerDefinition.cs" />

@@ -19,6 +19,7 @@
             });
 
             CSharpCounterWriter.WriteCode(scriptPath, timers, meters, legacyInstanceNameMap);
+            PowerShellCounterWriter.WriteScript(scriptPath, timers, meters, legacyInstanceNameMap);
         }
 
         static Dictionary<string, string> legacyInstanceNameMap = new Dictionary<string, string>
