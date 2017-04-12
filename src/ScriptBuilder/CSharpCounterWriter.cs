@@ -6,7 +6,7 @@
 
     static class CSharpCounterWriter
     {
-        public static void WriteCode(string scriptPath, IEnumerable<TimerDefinition> timers, IEnumerable<MeterDefinition> meters)
+        public static void WriteCode(string scriptPath, IEnumerable<TimerDefinition> timers, IEnumerable<MeterDefinition> meters, Dictionary<string, string> legacyInstanceNameMap)
         {
             var outputPath = Path.Combine(scriptPath, "Counters.g.cs");
             using (var streamWriter = File.CreateText(outputPath))
@@ -70,12 +70,5 @@ public static class CounterCreator
 {0}
     }};
 }}";
-
-        static Dictionary<string, string> legacyInstanceNameMap = new Dictionary<string, string>
-        {
-            {"# of message failures / sec", "# of msgs failures / sec"},
-            {"# of messages pulled from the input queue / sec", "# of msgs pulled from the input queue /sec"},
-            {"# of messages successfully processed / sec", "# of msgs successfully processed / sec"}
-        };
     }
 }
