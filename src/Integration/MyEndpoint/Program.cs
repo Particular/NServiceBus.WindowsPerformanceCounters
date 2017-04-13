@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using NServiceBus;
 
 namespace MyEndpoint
@@ -13,7 +14,31 @@ namespace MyEndpoint
         static async Task AsyncMain()
         {
             var configuration = new EndpointConfiguration("MyEndpoint");
-            await Endpoint.Start(configuration);
+            configuration.SendFailedMessagesTo("error");
+            configuration.UsePersistence<InMemoryPersistence>();
+            configuration.UseTransport<MsmqTransport>();
+            var performanceCounters = configuration.EnableWindowsPerformanceCounters();
+            performanceCounters.EnableSLAPerformanceCounters(TimeSpan.FromSeconds(1));
+            var endpoint = await Endpoint.Start(configuration);
+
+            ConsoleKeyInfo readKey;
+            do
+            {
+                await endpoint.SendLocal(new MyMessage());
+
+                readKey = Console.ReadKey();
+            } while (readKey.Key != ConsoleKey.Escape);
+        }
+    }
+
+    public class MyMessage : ICommand
+    {
+    }
+
+    public class MyHandler : IHandleMessages<MyMessage> {
+        public Task Handle(MyMessage message, IMessageHandlerContext context)
+        {
+            return Task.Delay(2000);
         }
     }
 }
