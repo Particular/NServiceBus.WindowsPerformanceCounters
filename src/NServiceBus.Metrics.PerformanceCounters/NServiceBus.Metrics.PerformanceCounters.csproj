@@ -75,6 +75,7 @@
     <Compile Include="SLA\EstimatedTimeToSLABreachCounter.cs" />
     <Compile Include="SLA\SLAMonitoringFeature.cs" />
     <Compile Include="Guard.cs" />
+    <Compile Include="TaskExtensions.cs" />
     <Compile Include="Timer.cs" />
   </ItemGroup>
   <ItemGroup>
