@@ -1,5 +1,4 @@
-﻿
- struct Timer
+﻿struct Timer
 {
     public readonly string Name;
     public readonly long TotalTime;

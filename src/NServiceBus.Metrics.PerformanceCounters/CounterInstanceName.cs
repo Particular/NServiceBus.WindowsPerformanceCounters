@@ -1,38 +1,35 @@
-﻿namespace NServiceBus
+﻿using System;
+
+struct CounterInstanceName : IEquatable<CounterInstanceName>
 {
-    using System;
-
-    struct CounterInstanceName : IEquatable<CounterInstanceName>
+    public bool Equals(CounterInstanceName other)
     {
-        public bool Equals(CounterInstanceName other)
+        return string.Equals(CounterName, other.CounterName, StringComparison.InvariantCultureIgnoreCase) && string.Equals(InstanceName, other.InstanceName, StringComparison.InvariantCultureIgnoreCase);
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        return obj is CounterInstanceName && Equals((CounterInstanceName)obj);
+    }
+
+    public override int GetHashCode()
+    {
+        unchecked
         {
-            return string.Equals(CounterName, other.CounterName, StringComparison.InvariantCultureIgnoreCase) && string.Equals(InstanceName, other.InstanceName, StringComparison.InvariantCultureIgnoreCase);
+            return (StringComparer.InvariantCultureIgnoreCase.GetHashCode(CounterName) * 397) ^ StringComparer.InvariantCultureIgnoreCase.GetHashCode(InstanceName);
         }
+    }
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            return obj is CounterInstanceName && Equals((CounterInstanceName) obj);
-        }
+    public readonly string CounterName;
+    public readonly string InstanceName;
 
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (StringComparer.InvariantCultureIgnoreCase.GetHashCode(CounterName) * 397) ^ StringComparer.InvariantCultureIgnoreCase.GetHashCode(InstanceName);
-            }
-        }
+    public CounterInstanceName(string counterName, string instanceName)
+    {
+        Guard.AgainstNull(nameof(counterName), counterName);
+        Guard.AgainstNull(nameof(instanceName), instanceName);
 
-        public readonly string CounterName;
-        public readonly string InstanceName;
-
-        public CounterInstanceName(string counterName, string instanceName)
-        {
-            Guard.AgainstNull(nameof(counterName), counterName);
-            Guard.AgainstNull(nameof(instanceName), instanceName);
-
-            CounterName = counterName;
-            InstanceName = instanceName;
-        }
+        CounterName = counterName;
+        InstanceName = instanceName;
     }
 }

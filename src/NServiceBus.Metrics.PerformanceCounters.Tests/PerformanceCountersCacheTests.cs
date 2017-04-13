@@ -2,7 +2,6 @@
 {
     using System;
     using ApprovalTests;
-    using NServiceBus;
     using NUnit.Framework;
 
     [TestFixture]

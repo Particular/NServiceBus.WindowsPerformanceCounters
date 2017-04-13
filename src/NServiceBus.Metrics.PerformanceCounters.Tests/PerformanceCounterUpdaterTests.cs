@@ -1,7 +1,6 @@
 ﻿namespace Tests
 {
     using System.Collections.Generic;
-    using NServiceBus;
     using NUnit.Framework;
 
     [TestFixture]
