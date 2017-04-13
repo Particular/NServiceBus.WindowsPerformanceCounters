@@ -11,7 +11,7 @@
             definitions = new List<TimerDefinition>();
             if (type.BaseType != null && type.BaseType.FullName == "NServiceBus.Metrics.MetricBuilder")
             {
-                var timerAttributes = type.Fields.Select(f => CecilExtentions.GetSingleAttribute(f, "NServiceBus.Metrics.TimerAttribute")).Where(c => c != null);
+                var timerAttributes = type.Fields.Select(f => f.GetSingleAttribute("NServiceBus.Metrics.TimerAttribute")).Where(c => c != null);
 
                 foreach (var timerAttribute in timerAttributes)
                 {
