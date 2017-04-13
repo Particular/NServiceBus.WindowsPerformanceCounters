@@ -91,6 +91,7 @@
     <Compile Include="APIApprovals.cs" />
     <Compile Include="ApprovalTestConfig.cs" />
     <Compile Include="App_Packages\PublicApiGenerator.6.0.0\ApiGenerator.cs" />
+    <Compile Include="Counters.g.cs" />
     <Compile Include="ElevateCheckerTests.cs" />
     <Compile Include="EndpointConfigBuilder.cs" />
     <Compile Include="EndpointConfigurationExtensions.cs" />
