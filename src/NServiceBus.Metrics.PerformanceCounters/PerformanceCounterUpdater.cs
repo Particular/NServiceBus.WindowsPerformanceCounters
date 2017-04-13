@@ -1,7 +1,6 @@
 ﻿namespace NServiceBus
 {
     using System.Collections.Generic;
-    using Metrics.PerformanceCounters.Counters;
     using Newtonsoft.Json.Linq;
 
     class PerformanceCounterUpdater

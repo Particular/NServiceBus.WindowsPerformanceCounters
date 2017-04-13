@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Features;
-using NServiceBus.Metrics.PerformanceCounters.Counters;
 
 class SLAMonitoringFeature : Feature
 {

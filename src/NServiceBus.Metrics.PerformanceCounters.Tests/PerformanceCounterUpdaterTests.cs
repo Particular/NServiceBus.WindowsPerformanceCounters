@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using NServiceBus;
-    using NServiceBus.Metrics.PerformanceCounters.Counters;
     using NUnit.Framework;
 
     [TestFixture]

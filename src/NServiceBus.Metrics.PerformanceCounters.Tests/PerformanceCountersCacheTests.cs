@@ -3,7 +3,6 @@
     using System;
     using ApprovalTests;
     using NServiceBus;
-    using NServiceBus.Metrics.PerformanceCounters.Counters;
     using NUnit.Framework;
 
     [TestFixture]
