@@ -29,6 +29,8 @@ namespace MyEndpoint
 
                 readKey = Console.ReadKey();
             } while (readKey.Key != ConsoleKey.Escape);
+
+            await endpoint.Stop();
         }
     }
 
