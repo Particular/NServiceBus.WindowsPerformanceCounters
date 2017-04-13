@@ -30,11 +30,7 @@
             var timers = rootObject["Timers"]?.ToObject<List<Timer>>() ?? new List<Timer>();
             foreach (var timer in timers)
             {
-                // TODO: Remove mapping once https://github.com/Particular/NServiceBus.Metrics/pull/20 is merged
-                CounterInstanceName? instanceName;
-                legacyInstanceNameMap.TryGetValue(timer.Name, out instanceName);
-
-                var performanceCounterInstance = cache.Get(instanceName ?? new CounterInstanceName(timer.Name, context));
+                var performanceCounterInstance = cache.Get(new CounterInstanceName(timer.Name, context));
                 performanceCounterInstance.RawValue = timer.TotalTime;
             }
         }

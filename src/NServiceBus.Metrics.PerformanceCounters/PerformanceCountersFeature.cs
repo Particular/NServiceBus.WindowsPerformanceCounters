@@ -27,7 +27,6 @@ class PerformanceCountersFeature : Feature
             { "# of message failures / sec", new CounterInstanceName(MessagesFailuresPerSecondCounterName, logicalAddress.EndpointInstance.Endpoint) },
             { "# of messages pulled from the input queue / sec", new CounterInstanceName(MessagesPulledPerSecondCounterName, logicalAddress.EndpointInstance.Endpoint) },
             { "# of messages successfully processed / sec", new CounterInstanceName(MessagesProcessedPerSecondCounterName, logicalAddress.EndpointInstance.Endpoint) },
-            { CriticalTimeCounterName, new CounterInstanceName(CriticalTimeCounterName, logicalAddress.EndpointInstance.Endpoint) },
         };
 
         var cache = new PerformanceCountersCache();
