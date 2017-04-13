@@ -32,7 +32,7 @@
                 CounterWriter.WriteScript(variantPath, variant, metricsAssemblyModuleDefinition, logError);
             }
 
-            PromoteFiles(metricsAssemblyModuleDefinition, scriptPath);
+            PromoteFiles(assemblyModuleDefinition, scriptPath);
         }
 
         void PromoteFiles(ModuleDefinition moduleDefinition, string scriptPath)

@@ -3,10 +3,10 @@
     [System.AttributeUsageAttribute(System.AttributeTargets.Assembly | System.AttributeTargets.All)]
     public sealed class PerformanceCounterSettingsAttribute : System.Attribute
     {
-        public bool CSharp;
-        public bool Powershell;
-        public string ScriptPromotionPath;
         public PerformanceCounterSettingsAttribute() { }
+        public bool CSharp { get; set; }
+        public bool Powershell { get; set; }
+        public string ScriptPromotionPath { get; set; }
     }
 }
 namespace NServiceBus
