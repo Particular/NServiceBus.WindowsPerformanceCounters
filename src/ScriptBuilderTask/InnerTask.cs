@@ -25,7 +25,7 @@ namespace NServiceBus.Metrics.PerformanceCounters
         public void Execute()
         {
             var scriptPath = Path.Combine(intermediateDirectory, "NServiceBus.Metrics.PerformanceCounters");
-            DirectoryExtentions.Delete(scriptPath);
+            DirectoryExtensions.Delete(scriptPath);
             Directory.CreateDirectory(scriptPath);
 
             assemblyPath = Path.Combine(Path.GetDirectoryName(assemblyPath), "NServiceBus.Metrics.dll");
@@ -36,7 +36,7 @@ namespace NServiceBus.Metrics.PerformanceCounters
         }
     }
 
-    static class DirectoryExtentions
+    static class DirectoryExtensions
     {
         public static void Delete(string path)
         {
