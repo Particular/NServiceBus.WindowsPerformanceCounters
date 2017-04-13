@@ -17,6 +17,7 @@ namespace MyEndpoint
             configuration.SendFailedMessagesTo("error");
             configuration.UsePersistence<InMemoryPersistence>();
             configuration.UseTransport<MsmqTransport>();
+            configuration.EnableInstallers();
             var performanceCounters = configuration.EnableWindowsPerformanceCounters();
             performanceCounters.EnableSLAPerformanceCounters(TimeSpan.FromSeconds(1));
             var endpoint = await Endpoint.Start(configuration);
