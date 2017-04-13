@@ -36,8 +36,8 @@
         }
 
         const string Template = @"using System;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Security;
 using System.Runtime.CompilerServices;
 
@@ -46,6 +46,7 @@ public static class CounterCreator
 {{
     public static void Create() 
     {{
+        var counterCreationCollection = new CounterCreationDataCollection(Counters);
         try
         {{
             var install = false;

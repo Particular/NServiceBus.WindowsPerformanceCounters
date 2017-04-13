@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Security;
 using System.Runtime.CompilerServices;
 
@@ -9,19 +9,43 @@ public static class CounterCreator
 {
     public static void Create() 
     {
+        var counterCreationCollection = new CounterCreationDataCollection(Counters);
         try
         {
-            var counterCreationCollection = new CounterCreationDataCollection(Counters);
-            if (!PerformanceCounterCategory.Exists("NServiceBus"))
+            var install = false;
+            var categoryName = "NServiceBus";
+            if (PerformanceCounterCategory.Exists(categoryName))
+            {
+                var category = PerformanceCounterCategory.GetCategories().Single(x => x.CategoryName == categoryName);
+                var existingCounters = category.GetCounters();
+
+                if (existingCounters.Length != counterCreationCollection.Count)
+                {
+                    install = true;
+                }
+                else
+                {
+                    foreach (var counter in Counters)
+                    {
+                        var foundCounter = existingCounters.FirstOrDefault(c => c.CounterName == counter.CounterName);
+                        var found = foundCounter?.CounterName == counter.CounterName | foundCounter?.CounterType == counter.CounterType | foundCounter?.CounterHelp == counter.CounterHelp;
+                        if (!found)
+                        {
+                            install = true;
+                        }
+                    }
+                }
+            }
+
+            if (install)
             {
                 PerformanceCounterCategory.Create(
-                    categoryName: "NServiceBus",
+                    categoryName: categoryName,
                     categoryHelp: "NServiceBus statistics",
                     categoryType: PerformanceCounterCategoryType.MultiInstance,
                     counterData: counterCreationCollection);
                 PerformanceCounter.CloseSharedResources();
             }
-
         } catch(Exception ex) when(ex is SecurityException || ex is UnauthorizedAccessException)
         {
             throw new Exception("Execution requires elevated permissions", ex);
