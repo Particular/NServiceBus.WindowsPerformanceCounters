@@ -11,6 +11,13 @@
             return field.CustomAttributes.SingleOrDefault(x => x.AttributeType.FullName == attributeName);
         }
 
+        public static string[] GetStringArrayProperty(this CustomAttribute attribute, string name)
+        {
+            return (string[])attribute.Properties
+                .SingleOrDefault(argument => argument.Name == name)
+                .Argument.Value;
+        }
+
         public static string GetStringProperty(this CustomAttribute attribute, string name)
         {
             return (string)attribute.Properties
