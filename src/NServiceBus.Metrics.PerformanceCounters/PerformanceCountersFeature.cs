@@ -7,13 +7,12 @@ using NServiceBus.Metrics.PerformanceCounters.Counters;
 
 class PerformanceCountersFeature : Feature
 {
-    MetricsOptions options;
-
     public PerformanceCountersFeature()
     {
         Defaults(s =>
         {
             options = s.EnableMetrics();
+            s.SetDefault(UpdateIntervalKey, TimeSpan.FromSeconds(2));
         });
     }
 
@@ -21,28 +20,58 @@ class PerformanceCountersFeature : Feature
     {
         var logicalAddress = context.Settings.LogicalAddress();
 
-        // ReSharper disable once UnusedVariable
         var legacyInstanceNameMap = new Dictionary<string, CounterInstanceName?>
         {
-            { "# of message failures / sec", new CounterInstanceName(MessagesFailuresPerSecondCounterName, logicalAddress.EndpointInstance.Endpoint) },
-            { "# of messages pulled from the input queue / sec", new CounterInstanceName(MessagesPulledPerSecondCounterName, logicalAddress.EndpointInstance.Endpoint) },
-            { "# of messages successfully processed / sec", new CounterInstanceName(MessagesProcessedPerSecondCounterName, logicalAddress.EndpointInstance.Endpoint) },
+            {"# of message failures / sec", new CounterInstanceName(MessagesFailuresPerSecondCounterName, logicalAddress.EndpointInstance.Endpoint)},
+            {"# of messages pulled from the input queue / sec", new CounterInstanceName(MessagesPulledPerSecondCounterName, logicalAddress.EndpointInstance.Endpoint)},
+            {"# of messages successfully processed / sec", new CounterInstanceName(MessagesProcessedPerSecondCounterName, logicalAddress.EndpointInstance.Endpoint)}
         };
 
-        var cache = new PerformanceCountersCache();
-        var updater = new PerformanceCounterUpdater(cache, legacyInstanceNameMap);
+        cache = new PerformanceCountersCache();
+        updater = new PerformanceCounterUpdater(cache, legacyInstanceNameMap);
+
+        context.RegisterStartupTask(new Cleanup(this));
 
         options.EnableCustomReport(payload =>
         {
-            updater.Update(payload);
-            return CompletedTask;
-        }, TimeSpan.FromSeconds(2));
+            updater?.Update(payload);
+            return TaskExtensions.CompletedTask;
+        }, context.Settings.Get<TimeSpan>(UpdateIntervalKey));
     }
 
-    static Task CompletedTask = Task.FromResult(0);
+    MetricsOptions options;
+    PerformanceCounterUpdater updater;
+    PerformanceCountersCache cache;
 
     public const string MessagesPulledPerSecondCounterName = "# of msgs pulled from the input queue /sec";
     public const string MessagesProcessedPerSecondCounterName = "# of msgs successfully processed / sec";
     public const string MessagesFailuresPerSecondCounterName = "# of msgs failures / sec";
     public const string CriticalTimeCounterName = "Critical Time";
+    public const string UpdateIntervalKey = "PerformanceCounterUpdateInterval";
+
+    class Cleanup : FeatureStartupTask, IDisposable
+    {
+        public Cleanup(PerformanceCountersFeature feature)
+        {
+            this.feature = feature;
+        }
+
+        public void Dispose()
+        {
+            feature.updater = null;
+            feature.cache.Dispose();
+        }
+
+        protected override Task OnStart(IMessageSession session)
+        {
+            return TaskExtensions.CompletedTask;
+        }
+
+        protected override Task OnStop(IMessageSession session)
+        {
+            return TaskExtensions.CompletedTask;
+        }
+
+        PerformanceCountersFeature feature;
+    }
 }

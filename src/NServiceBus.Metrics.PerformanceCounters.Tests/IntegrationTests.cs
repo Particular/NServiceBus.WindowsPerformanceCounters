@@ -27,11 +27,11 @@ public class IntegrationTests
 
         var performanceCounters = endpointConfiguration.EnableWindowsPerformanceCounters();
         performanceCounters.EnableSLAPerformanceCounters(TimeSpan.FromSeconds(10));
+        performanceCounters.UpdateCounterEvery(TimeSpan.FromSeconds(1));
 
         var endpoint = await Endpoint.Start(endpointConfiguration)
             .ConfigureAwait(false);
-
-
+        
         await endpoint.SendLocal(new MyMessage())
             .ConfigureAwait(false);
 
