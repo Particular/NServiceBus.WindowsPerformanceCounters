@@ -36,12 +36,12 @@
       <HintPath>..\..\packages\NServiceBus.6.2.1\lib\net452\NServiceBus.Core.dll</HintPath>
     </Reference>
     <Reference Include="NServiceBus.Metrics, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NServiceBus.Metrics.1.0.0-alpha0062\lib\net452\NServiceBus.Metrics.dll</HintPath>
+      <HintPath>..\..\packages\NServiceBus.Metrics.1.0.0-alpha0065\lib\net452\NServiceBus.Metrics.dll</HintPath>
     </Reference>
     <Reference Include="NServiceBus.Metrics.PerformanceCounters">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ForIntegration\NServiceBus.Metrics.PerformanceCounters.dll</HintPath>
-    </Reference>    
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -57,8 +57,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\..\ForIntegration\build\NServiceBus.Metrics.PerformanceCounters.MsBuild.targets" />  
+  <Import Project="$(SolutionDir)\..\ForIntegration\build\NServiceBus.Metrics.PerformanceCounters.MsBuild.targets" />
 </Project>
