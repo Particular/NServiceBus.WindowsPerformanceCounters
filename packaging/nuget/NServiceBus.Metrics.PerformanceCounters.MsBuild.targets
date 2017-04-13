@@ -12,6 +12,7 @@
       AfterTargets="AfterCompile"
       Name="PerformanceCountersScriptBuilder">
     <ScriptBuilderTask
+          AssemblyPath="$(ProjectDir)@(IntermediateAssembly)"
           References="@(ReferencePath)"
           ReferenceCopyLocalPaths="@(ReferenceCopyLocalPaths)"
           IntermediateDirectory="$(ProjectDir)$(IntermediateOutputPath)"

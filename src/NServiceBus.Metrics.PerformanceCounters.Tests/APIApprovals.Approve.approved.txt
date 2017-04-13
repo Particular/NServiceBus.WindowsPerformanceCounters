@@ -1,4 +1,15 @@
-﻿namespace NServiceBus
+﻿namespace NServiceBus.Metrics.PerformanceCounters
+{
+    [System.AttributeUsageAttribute(System.AttributeTargets.Assembly | System.AttributeTargets.All)]
+    public sealed class PerformanceCounterSettingsAttribute : System.Attribute
+    {
+        public bool CSharp;
+        public bool Powershell;
+        public string ScriptPromotionPath;
+        public PerformanceCounterSettingsAttribute() { }
+    }
+}
+namespace NServiceBus
 {
     public class static PerformanceCountersExtensions
     {

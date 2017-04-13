@@ -6,7 +6,7 @@
 
     public static class CounterWriter
     {
-        public static void WriteScript(string scriptPath, ModuleDefinition module, Action<string, string> logError)
+        public static void WriteScript(string scriptPath, BuildScriptVariant variant, ModuleDefinition module, Action<string, string> logError)
         {
             var timers = AllTimersDefinitionReader.GetTimers(module, (exception, type) =>
             {
@@ -18,8 +18,17 @@
                 logError($"Error in '{type.FullName}'. Error:{exception.Message}", type.GetFileName());
             });
 
-            CSharpCounterWriter.WriteCode(scriptPath, timers, meters, legacyInstanceNameMap);
-            PowerShellCounterWriter.WriteScript(scriptPath, timers, meters, legacyInstanceNameMap);
+            switch (variant)
+            {
+                case BuildScriptVariant.CSharp:
+                    CSharpCounterWriter.WriteCode(scriptPath, timers, meters, legacyInstanceNameMap);
+                    break;
+                case BuildScriptVariant.Powershell:
+                    PowerShellCounterWriter.WriteScript(scriptPath, timers, meters, legacyInstanceNameMap);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(variant), variant, null);
+            }
         }
 
         static Dictionary<string, string> legacyInstanceNameMap = new Dictionary<string, string>

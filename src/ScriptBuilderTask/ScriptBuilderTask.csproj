@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildLogger.cs" />
+    <Compile Include="DirectoryExtensions.cs" />
     <Compile Include="ExceptionExtensions.cs" />
     <Compile Include="InnerTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

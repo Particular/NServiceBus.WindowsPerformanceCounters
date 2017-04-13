@@ -1,5 +1,4 @@
-﻿// ReSharper disable NotAccessedField.Local
-namespace NServiceBus.Metrics.PerformanceCounters
+﻿namespace NServiceBus.Metrics.PerformanceCounters
 {
     using System;
     using System.IO;
@@ -7,14 +6,9 @@ namespace NServiceBus.Metrics.PerformanceCounters
 
     public class InnerTask
     {
-        string assemblyPath;
-        string intermediateDirectory;
-        string projectDirectory;
-        string solutionDirectory;
-        Action<string, string> logError;
-
-        public InnerTask(string assemblyPath, string intermediateDirectory, string projectDirectory, string solutionDirectory, Action<string, string> logError)
+        public InnerTask(string assemblyPath, string metricsAssemblyPath, string intermediateDirectory, string projectDirectory, string solutionDirectory, Action<string, string> logError)
         {
+            this.metricsAssemblyPath = metricsAssemblyPath;
             this.assemblyPath = assemblyPath;
             this.intermediateDirectory = intermediateDirectory;
             this.projectDirectory = projectDirectory;
@@ -28,34 +22,45 @@ namespace NServiceBus.Metrics.PerformanceCounters
             DirectoryExtensions.Delete(scriptPath);
             Directory.CreateDirectory(scriptPath);
 
-            var moduleDefinition = ModuleDefinition.ReadModule(assemblyPath, new ReaderParameters(ReadingMode.Deferred));
+            var assemblyModuleDefinition = ModuleDefinition.ReadModule(assemblyPath, new ReaderParameters(ReadingMode.Deferred));
+            var metricsAssemblyModuleDefinition = ModuleDefinition.ReadModule(metricsAssemblyPath, new ReaderParameters(ReadingMode.Deferred));
 
-            CounterWriter.WriteScript(scriptPath, moduleDefinition, logError);
+            foreach (var variant in ScriptVariantReader.Read(assemblyModuleDefinition))
+            {
+                var variantPath = Path.Combine(scriptPath, variant.ToString());
+                Directory.CreateDirectory(variantPath);
+                CounterWriter.WriteScript(variantPath, variant, metricsAssemblyModuleDefinition, logError);
+            }
+
+            PromoteFiles(metricsAssemblyModuleDefinition, scriptPath);
         }
-    }
 
-    static class DirectoryExtensions
-    {
-        public static void Delete(string path)
+        void PromoteFiles(ModuleDefinition moduleDefinition, string scriptPath)
         {
-            if (!Directory.Exists(path))
+            string customPath;
+            if (!ScriptPromotionPathReader.TryRead(moduleDefinition, out customPath))
             {
                 return;
             }
-            Directory.Delete(path, true);
-        }
-        public static void DuplicateDirectory(string source, string destination)
-        {
-            foreach (var dirPath in Directory.GetDirectories(source, "*", SearchOption.AllDirectories))
+            var replicationPath = customPath
+                .Replace("$(ProjectDir)", projectDirectory)
+                .Replace("$(SolutionDir)", solutionDirectory);
+            try
             {
-                Directory.CreateDirectory(dirPath.Replace(source, destination));
+                DirectoryExtensions.Delete(replicationPath);
+                DirectoryExtensions.DuplicateDirectory(scriptPath, replicationPath);
             }
-
-            foreach (var newPath in Directory.GetFiles(source, "*.*", SearchOption.AllDirectories))
+            catch (Exception exception)
             {
-                File.Copy(newPath, newPath.Replace(source, destination), true);
+                throw new ErrorsException($"Failed to promote scripts to '{replicationPath}'. Error: {exception.Message}");
             }
         }
 
+        string assemblyPath;
+        string intermediateDirectory;
+        string projectDirectory;
+        string solutionDirectory;
+        Action<string, string> logError;
+        string metricsAssemblyPath;
     }
 }

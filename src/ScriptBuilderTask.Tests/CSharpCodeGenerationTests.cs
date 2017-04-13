@@ -18,15 +18,16 @@
         public void SetUp()
         {
             var testDirectory = TestContext.CurrentContext.TestDirectory;
-            tempPath = Path.Combine(testDirectory, "CSharp");
-            var assemblyPath = Path.Combine(testDirectory, "NServiceBus.Metrics.dll");
+            tempPath = testDirectory;
+            var assemblyPath = Path.Combine(testDirectory, "ScriptBuilderTask.Tests.dll");
+            var metricsAssemblyPath = Path.Combine(testDirectory, "NServiceBus.Metrics.dll");
             var intermediatePath = Path.Combine(tempPath, "IntermediatePath");
             var promotePath = Path.Combine(tempPath, "PromotePath");
             Directory.CreateDirectory(tempPath);
             Directory.CreateDirectory(intermediatePath);
 
             Action<string, string> logError = (error, s1) => { throw new Exception(error); };
-            task = new InnerTask(assemblyPath, intermediatePath, "TheProjectDir", promotePath, logError);
+            task = new InnerTask(assemblyPath, metricsAssemblyPath, intermediatePath, "TheProjectDir", promotePath, logError);
         }
 
         [Test]

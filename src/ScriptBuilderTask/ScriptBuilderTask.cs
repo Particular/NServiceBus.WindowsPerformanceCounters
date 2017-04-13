@@ -11,6 +11,9 @@
     public class ScriptBuilderTask : Task
     {
         [Required]
+        public string AssemblyPath { get; set; }
+
+        [Required]
         public string References { get; set; }
 
         [Required]
@@ -41,14 +44,14 @@
                 var fileNameWithExtension = Path.GetFileName(filePath);
                 ReferenceDictionary[fileNameWithExtension] = filePath;
 
-                logger.LogInfo($"ScriptBuilderTask ({fileNameWithExtension} {filePath})");
+                logger.LogInfo($"ScriptBuilderTask (Reference {fileNameWithExtension} located at {filePath})");
             }
 
             try
             {
                 ValidateInputs();
                 Action<string, string> logError = (error, file) => { logger.LogError(error, file); };
-                var innerTask = new InnerTask(ReferenceDictionary["NServiceBus.Metrics.dll"], IntermediateDirectory, ProjectDirectory, SolutionDirectory, logError);
+                var innerTask = new InnerTask(AssemblyPath, ReferenceDictionary["NServiceBus.Metrics.dll"], IntermediateDirectory, ProjectDirectory, SolutionDirectory, logError);
                 innerTask.Execute();
             }
             catch (ErrorsException exception)
@@ -69,6 +72,11 @@
 
         void ValidateInputs()
         {
+            if (!File.Exists(AssemblyPath))
+            {
+                throw new ErrorsException($"AssemblyPath '{AssemblyPath}' does not exist.");
+            }
+
             if (!Directory.Exists(IntermediateDirectory))
             {
                 throw new ErrorsException($"IntermediateDirectory '{IntermediateDirectory}' does not exist.");

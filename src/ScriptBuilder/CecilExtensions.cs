@@ -11,6 +11,21 @@
             return field.CustomAttributes.SingleOrDefault(x => x.AttributeType.FullName == attributeName);
         }
 
+        public static string GetStringProperty(this CustomAttribute attribute, string name)
+        {
+            return (string)attribute.Properties
+                .SingleOrDefault(argument => argument.Name == name)
+                .Argument.Value;
+        }
+
+        public static bool GetBoolProperty(this CustomAttribute attribute, string name)
+        {
+            var value = attribute.Properties
+                .SingleOrDefault(argument => argument.Name == name)
+                .Argument.Value;
+            return value != null && (bool)value;
+        }
+
         public static IEnumerable<TypeDefinition> AllClasses(this ModuleDefinition module)
         {
             return module.GetTypes()

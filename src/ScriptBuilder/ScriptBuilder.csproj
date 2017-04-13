@@ -12,7 +12,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(SolutionDir)NServiceBus.snk</AssemblyOriginatorKeyFile>    
+    <AssemblyOriginatorKeyFile>$(SolutionDir)NServiceBus.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,7 +54,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildScriptVariant.cs" />
     <Compile Include="CecilExtensions.cs" />
+    <Compile Include="ScriptPromotionPathReader.cs" />
+    <Compile Include="ScriptVariantReader.cs" />
     <Compile Include="CounterWriter.cs" />
     <Compile Include="CSharpCounterWriter.cs" />
     <Compile Include="ErrorsException.cs" />
@@ -80,5 +83,5 @@
     </PropertyGroup>
     <MakeDir Directories="$(SolutionDir)..\binaries" />
     <Exec Command="$(IlMerge) /out:&quot;$(MergeOutput)&quot; &quot;$(ScriptBuilderDll)&quot; &quot;$(Cecil)&quot; /target:library /targetplatform:&quot;v4,$(FrameworkPathOverride)&quot; /internalize /keyfile:&quot;$(SolutionDir)NServiceBus.snk&quot;" />
-  </Target>  
+  </Target>
 </Project>
