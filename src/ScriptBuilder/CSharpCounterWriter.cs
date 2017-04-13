@@ -76,6 +76,11 @@ public static class CounterCreator
 
             if (install)
             {{
+                if (PerformanceCounterCategory.Exists(categoryName))
+                {{
+                    PerformanceCounterCategory.Delete(categoryName);
+                }}
+
                 PerformanceCounterCategory.Create(
                     categoryName: categoryName,
                     categoryHelp: ""NServiceBus statistics"",
