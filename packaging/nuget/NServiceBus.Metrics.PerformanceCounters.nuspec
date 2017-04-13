@@ -15,7 +15,7 @@
     <tags>$tags$</tags>
     <dependencies>
       <dependency id="NServiceBus" version="[6.2.0, 7.0.0)" />
-      <dependency id="NServiceBusMetrics" version="[1.0.0-alpha, 2.0.0)" />
+      <dependency id="NServiceBus.Metrics" version="[1.0.0-alpha, 2.0.0)" />
     </dependencies>
   </metadata>
   <files>
