@@ -28,8 +28,6 @@ namespace NServiceBus.Metrics.PerformanceCounters
             DirectoryExtensions.Delete(scriptPath);
             Directory.CreateDirectory(scriptPath);
 
-            assemblyPath = Path.Combine(Path.GetDirectoryName(assemblyPath), "NServiceBus.Metrics.dll");
-
             var moduleDefinition = ModuleDefinition.ReadModule(assemblyPath, new ReaderParameters(ReadingMode.Deferred));
 
             CounterWriter.WriteScript(scriptPath, moduleDefinition, logError);
