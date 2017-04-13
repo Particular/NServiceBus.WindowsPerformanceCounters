@@ -93,6 +93,13 @@
     <Copy SourceFiles="@(TempFiles)" DestinationFolder="$(TargetDir)" OverwriteReadOnlyFiles="true" />
     <Delete Files="@(TempFiles)" />
     <RemoveDir Directories="$(TargetDir)temp\" />
+    <MakeDir Directories="$(SolutionDir)..\binaries" />
+    <ItemGroup>
+      <Files Include="$(TargetDir)$(TargetName).*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(Files)" DestinationFolder="$(SolutionDir)..\binaries" />
+    <MakeDir Directories="$(SolutionDir)ForIntegration" />
+    <Copy SourceFiles="@(Files)" DestinationFolder="$(SolutionDir)ForIntegration" />    
   </Target>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -102,13 +109,4 @@
     <Error Condition="!Exists('..\packages\NuGetPackager.0.6.1\build\NuGetPackager.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NuGetPackager.0.6.1\build\NuGetPackager.targets'))" />
   </Target>
   <Import Project="..\packages\NuGetPackager.0.6.1\build\NuGetPackager.targets" Condition="Exists('..\packages\NuGetPackager.0.6.1\build\NuGetPackager.targets')" />
-  <Target Name="AfterBuild">
-    <MakeDir Directories="$(SolutionDir)..\binaries" />
-    <ItemGroup>
-      <Files Include="$(TargetDir)$(TargetName).*" />
-    </ItemGroup>
-    <Copy SourceFiles="@(Files)" DestinationFolder="$(SolutionDir)..\binaries" />
-    <MakeDir Directories="$(SolutionDir)ForIntegration" />
-    <Copy SourceFiles="@(Files)" DestinationFolder="$(SolutionDir)ForIntegration" />
-  </Target>
 </Project>
