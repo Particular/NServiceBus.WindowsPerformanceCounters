@@ -19,7 +19,7 @@
         {
             var testDirectory = TestContext.CurrentContext.TestDirectory;
             tempPath = Path.Combine(testDirectory, "Powershell");
-            var assemblyPath = Path.Combine(testDirectory, "ScriptBuilderTask.Tests.dll");
+            var assemblyPath = Path.Combine(testDirectory, "NServiceBus.Metrics.dll");
             var intermediatePath = Path.Combine(tempPath, "IntermediatePath");
             var promotePath = Path.Combine(tempPath, "PromotePath");
             Directory.CreateDirectory(tempPath);
