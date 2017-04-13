@@ -13,7 +13,6 @@
       Name="PerformanceCountersScriptBuilder">
     <ScriptBuilderTask
           AssemblyPath="$(ProjectDir)@(IntermediateAssembly)"
-          References="$(References)"
           IntermediateDirectory="$(ProjectDir)$(IntermediateOutputPath)"
           ProjectDirectory="$(ProjectDir)"
           SolutionDirectory="$(SolutionDir)"/>
