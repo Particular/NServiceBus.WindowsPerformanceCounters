@@ -55,10 +55,12 @@
   <ItemGroup>
     <Compile Include="ApprovalTestConfig.cs" />
     <Compile Include="CSharpCodeGenerationTests.cs" />
+    <Compile Include="CSharpCodeGenerationTests.Generates.approved.cs" />
     <Compile Include="PowershellCodeGenerationTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="PowershellCodeGenerationTests.Generates.approved.ps1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ScriptBuilderTask\ScriptBuilderTask.csproj">
