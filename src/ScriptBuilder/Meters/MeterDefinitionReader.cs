@@ -18,10 +18,8 @@
                 foreach (var attribute in attributes)
                 {
                     var name = attribute.ParameterValue<string>("name");
-                    var unit = attribute.ParameterValue<string>("unit");
                     var description = attribute.ParameterValue<string>("description");
-                    var tags = attribute.ParameterValue<string[]>("tags") ?? new string[] {};
-                    definitions.Add(new MeterDefinition(name, description, unit, tags));
+                    definitions.Add(new MeterDefinition(name, description));
                 }
             }
             return definitions.Count > 0;

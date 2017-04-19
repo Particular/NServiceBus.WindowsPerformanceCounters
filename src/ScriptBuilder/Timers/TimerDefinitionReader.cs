@@ -15,12 +15,10 @@
 
                 foreach (var timerAttribute in timerAttributes)
                 {
-                    var name = (string) timerAttribute.ConstructorArguments[0].Value;
-                    var unit = (string) timerAttribute.ConstructorArguments[1].Value;
-                    var description = (string)timerAttribute.ConstructorArguments[2].Value;
-                    var tags = (string[]) timerAttribute.ConstructorArguments[3].Value ?? new string[] {};
+                    var name = timerAttribute.ParameterValue<string>("name");
+                    var description = timerAttribute.ParameterValue<string>("description");
 
-                    definitions.Add(new TimerDefinition(name, description, unit, tags));
+                    definitions.Add(new TimerDefinition(name, description));
                 }
             }
             return definitions.Count > 0;
