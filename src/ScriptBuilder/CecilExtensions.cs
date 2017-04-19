@@ -18,6 +18,21 @@
                 .Argument.Value;
         }
 
+        public static MethodDefinition SingleConstructor(this TypeDefinition type)
+        {
+            return type.Methods.Single(method => method.IsConstructor && !method.IsStatic);
+        }
+        public static int ParameterIndex(this MethodDefinition method, string name)
+        {
+            return method.Parameters.Single(x=>x.Name == name).Index;
+        }
+
+        public static T ParameterValue<T>(this CustomAttribute attribute, string name)
+        {
+            var constructor = attribute.AttributeType.Resolve().SingleConstructor();
+            return (T)attribute.ConstructorArguments[constructor.ParameterIndex(name)].Value;
+        }
+
         public static string GetStringProperty(this CustomAttribute attribute, string name)
         {
             return (string)attribute.Properties
