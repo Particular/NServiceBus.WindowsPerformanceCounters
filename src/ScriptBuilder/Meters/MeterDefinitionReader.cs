@@ -11,15 +11,16 @@
             definitions = new List<MeterDefinition>();
             if (type.BaseType != null && type.BaseType.FullName == "NServiceBus.Metrics.MetricBuilder")
             {
-                var meterAttributes = type.Fields.Select(f => f.GetSingleAttribute("NServiceBus.Metrics.MeterAttribute")).Where(c => c != null);
+                var attributes = type.Fields
+                    .Select(f => f.GetSingleAttribute("NServiceBus.Metrics.MeterAttribute"))
+                    .Where(c => c != null);
 
-                foreach (var meterAttribute in meterAttributes)
+                foreach (var attribute in attributes)
                 {
-                    var name = (string)meterAttribute.ConstructorArguments[0].Value;
-                    var unit = (string)meterAttribute.ConstructorArguments[1].Value;
-                    var description = (string)meterAttribute.ConstructorArguments[2].Value;
-                    var tags = (string[])meterAttribute.ConstructorArguments[3].Value ?? new string[] { };
-                    
+                    var name = attribute.ParameterValue<string>("name");
+                    var unit = attribute.ParameterValue<string>("unit");
+                    var description = attribute.ParameterValue<string>("description");
+                    var tags = attribute.ParameterValue<string[]>("tags") ?? new string[] {};
                     definitions.Add(new MeterDefinition(name, description, unit, tags));
                 }
             }
