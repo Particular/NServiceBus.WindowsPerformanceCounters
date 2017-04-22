@@ -17,8 +17,7 @@ namespace NServiceBus
 #pragma warning disable 618
             endpointConfiguration.DisableFeature<Features.ReceiveStatisticsPerformanceCounters>();
 #pragma warning restore 618
-            endpointConfiguration.EnableFeature<ReceiveStatisticsFeature>();
-            endpointConfiguration.EnableFeature<CriticalTimeFeature>();
+            endpointConfiguration.EnableFeature<PerformanceCountersFeature>();
 
             return new PerformanceCountersSettings(endpointConfiguration);
         }

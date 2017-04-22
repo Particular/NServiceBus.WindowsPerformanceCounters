@@ -1,4 +1,15 @@
-﻿namespace NServiceBus
+﻿namespace NServiceBus.Metrics.PerformanceCounters
+{
+    [System.AttributeUsageAttribute(System.AttributeTargets.Assembly | System.AttributeTargets.All)]
+    public sealed class PerformanceCounterSettingsAttribute : System.Attribute
+    {
+        public PerformanceCounterSettingsAttribute() { }
+        public bool CSharp { get; set; }
+        public bool Powershell { get; set; }
+        public string ScriptPromotionPath { get; set; }
+    }
+}
+namespace NServiceBus
 {
     public class static PerformanceCountersExtensions
     {
@@ -7,5 +18,6 @@
     public class PerformanceCountersSettings
     {
         public void EnableSLAPerformanceCounters(System.TimeSpan sla) { }
+        public void UpdateCounterEvery(System.TimeSpan updateInterval) { }
     }
 }
