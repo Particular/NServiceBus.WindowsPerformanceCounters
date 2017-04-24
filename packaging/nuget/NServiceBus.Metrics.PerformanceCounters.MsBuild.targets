@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ScriptDirectory>$(ProjectDir)$(IntermediateOutputPath)NServiceBus.Metrics.PerformanceCounters\</ScriptDirectory>
+  </PropertyGroup>
+
+  <UsingTask
+      TaskName="NServiceBus.Metrics.PerformanceCounters.ScriptBuilderTask"
+      AssemblyFile="$(MSBuildThisFileDirectory)..\NServiceBus.Metrics.PerformanceCounters.Task.dll" />
+
+  <Target
+      AfterTargets="AfterCompile"
+      Name="PerformanceCountersScriptBuilder">
+    <ScriptBuilderTask
+          AssemblyPath="$(ProjectDir)@(IntermediateAssembly)"
+          References="@(ReferencePath)"
+          ReferenceCopyLocalPaths="@(ReferenceCopyLocalPaths)"
+          IntermediateDirectory="$(ProjectDir)$(IntermediateOutputPath)"
+          ProjectDirectory="$(ProjectDir)"
+          SolutionDirectory="$(SolutionDir)"/>
+  </Target>
+  
+  <Target
+      BeforeTargets="GetCopyToOutputDirectoryItems"
+      Name="AddScriptsToGetCopyToOutputDirectoryItems">
+    <ItemGroup>
+      <Scripts Include="$(ScriptDirectory)**\*.g.cs" />
+      <Scripts Include="$(ScriptDirectory)**\*.ps1" />
+    </ItemGroup>
+    <CreateItem Include="@(Scripts)" AdditionalMetadata="CopyToOutputDirectory=PreserveNewest;TargetPath=NServiceBus.Metrics.PerformanceCounters\%(RecursiveDir)%(Filename)%(Extension)">
+      <Output TaskParameter="Include" ItemName="_SourceItemsToCopyToOutputDirectoryAlways" />
+    </CreateItem>
+    <CreateItem Include="@(Scripts)" AdditionalMetadata="CopyToOutputDirectory=PreserveNewest;TargetPath=NServiceBus.Metrics.PerformanceCounters\%(RecursiveDir)%(Filename)%(Extension)">
+      <Output TaskParameter="Include" ItemName="AllItemsFullPathWithTargetPath" />
+    </CreateItem>
+  </Target>
+
+  <!--Support for ncrunch-->
+  <ItemGroup  Condition="'$(NCrunch)' == '1'">
+    <None Include="$(MSBuildThisFileDirectory)..\*.*" />
+  </ItemGroup>
+
+</Project>
