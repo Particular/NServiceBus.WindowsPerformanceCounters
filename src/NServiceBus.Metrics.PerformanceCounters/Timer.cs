@@ -1,11 +1,10 @@
 ﻿struct Timer
 {
-    public readonly string Name;
-    public readonly long TotalTime;
+    public Histogram Histogram { get; set; }
+    public string Name { get; set; }
+}
 
-    public Timer(string name, long totalTime)
-    {
-        Name = name;
-        TotalTime = totalTime;
-    }
+struct Histogram
+{
+    public long LastValue { get; set; }
 }
