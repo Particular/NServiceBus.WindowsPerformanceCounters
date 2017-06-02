@@ -28,8 +28,7 @@ class PerformanceCounterUpdater
         var timers = rootObject["Timers"]?.ToObject<List<Timer>>() ?? new List<Timer>();
         foreach (var timer in timers)
         {
-            var counterInstanceName = new CounterInstanceName(timer.Name, context);
-            var performanceCounterInstance = cache.Get(counterInstanceName);
+            var performanceCounterInstance = cache.Get(new CounterInstanceName(timer.Name, context));
             
             performanceCounterInstance.RawValue = timer.Histogram.LastValue / 1000;
         }
