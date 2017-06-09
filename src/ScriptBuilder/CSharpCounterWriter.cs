@@ -37,7 +37,6 @@
 
         const string Template = @"using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Security;
 using System.Runtime.CompilerServices;
 
@@ -49,45 +48,18 @@ public static class CounterCreator
         var counterCreationCollection = new CounterCreationDataCollection(Counters);
         try
         {{
-            var install = false;
             var categoryName = ""NServiceBus"";
             if (PerformanceCounterCategory.Exists(categoryName))
             {{
-                var category = PerformanceCounterCategory.GetCategories().Single(x => x.CategoryName == categoryName);
-                var existingCounters = category.GetCounters();
-
-                if (existingCounters.Length != counterCreationCollection.Count)
-                {{
-                    install = true;
-                }}
-                else
-                {{
-                    foreach (var counter in Counters)
-                    {{
-                        var foundCounter = existingCounters.FirstOrDefault(c => c.CounterName == counter.CounterName);
-                        var found = foundCounter?.CounterName == counter.CounterName | foundCounter?.CounterType == counter.CounterType | foundCounter?.CounterHelp == counter.CounterHelp;
-                        if (!found)
-                        {{
-                            install = true;
-                        }}
-                    }}
-                }}
+                PerformanceCounterCategory.Delete(categoryName);
             }}
 
-            if (install)
-            {{
-                if (PerformanceCounterCategory.Exists(categoryName))
-                {{
-                    PerformanceCounterCategory.Delete(categoryName);
-                }}
-
-                PerformanceCounterCategory.Create(
-                    categoryName: categoryName,
-                    categoryHelp: ""NServiceBus statistics"",
-                    categoryType: PerformanceCounterCategoryType.MultiInstance,
-                    counterData: counterCreationCollection);
-                PerformanceCounter.CloseSharedResources();
-            }}
+            PerformanceCounterCategory.Create(
+                categoryName: categoryName,
+                categoryHelp: ""NServiceBus statistics"",
+                categoryType: PerformanceCounterCategoryType.MultiInstance,
+                counterData: counterCreationCollection);
+            PerformanceCounter.CloseSharedResources();
         }} catch(Exception ex) when(ex is SecurityException || ex is UnauthorizedAccessException)
         {{
             throw new Exception(""Execution requires elevated permissions"", ex);

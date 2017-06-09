@@ -13,33 +13,10 @@ Function InstallNSBPerfCounters {
         New-Object System.Diagnostics.CounterCreationData "# of msgs successfully processed / sec", "The current number of messages processed successfully by the transport per second.",  RateOfCountsPerSecond32
 
     ))
-    $install = $false
     if ([System.Diagnostics.PerformanceCounterCategory]::Exists($category.Name)) {
-        $existingCounters = ([System.Diagnostics.PerformanceCounterCategory]::GetCategories() | ? CategoryName -eq $category.Name).GetCounters()
-
-        if ($existingCounters.Count -ne $counters.Count) {
-            $install = $true
-        }
-        else {
-            foreach ($counter in $counters) {
-                $found = $existingCounters  | ? CounterName -eq $counter.CounterName | ? CounterType -eq  $counter.CounterType | ? CounterHelp -eq  $counter.CounterHelp
-                if (-not $found) {
-                    $install = $true
-                    break
-                }
-            }
-        }
+        [System.Diagnostics.PerformanceCounterCategory]::Delete($category.Name)
     }
-    else {
-        $install = $true
-    }
-
-    if ($install) {
-        if ([System.Diagnostics.PerformanceCounterCategory]::Exists($category.Name)) {
-            [System.Diagnostics.PerformanceCounterCategory]::Delete($category.Name)
-        }
-        [void] [System.Diagnostics.PerformanceCounterCategory]::Create($category.Name, $category.Description, [System.Diagnostics.PerformanceCounterCategoryType]::MultiInstance, $counters)
-        [System.Diagnostics.PerformanceCounter]::CloseSharedResources()
-    }
+    [void] [System.Diagnostics.PerformanceCounterCategory]::Create($category.Name, $category.Description, [System.Diagnostics.PerformanceCounterCategoryType]::MultiInstance, $counters)
+    [System.Diagnostics.PerformanceCounter]::CloseSharedResources()
 }
 InstallNSBPerfCounters
