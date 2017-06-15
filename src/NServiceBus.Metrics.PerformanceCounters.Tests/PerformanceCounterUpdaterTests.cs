@@ -130,7 +130,7 @@
 
             var performanceCounterOne = cache.Get(new CounterInstanceName("Critical Time", "Sender@af016c07"));
             var performanceCounterTwo = cache.Get(new CounterInstanceName("Processing Time", "Sender@af016c07"));
-
+            
             Assert.AreEqual(11, performanceCounterOne.RawValue);
             Assert.AreEqual(22, performanceCounterTwo.RawValue);
         }
@@ -150,7 +150,7 @@
           ""FifteenMinuteRate"": 0.0
         },
         ""Histogram"": {
-          ""LastValue"": 0.0,
+          ""LastValue"": 11000.0,
           ""Min"": 0.0,
           ""Mean"": 0.0,
           ""StdDev"": 0.0,
@@ -178,7 +178,7 @@
           ""FifteenMinuteRate"": 0.0
         },
         ""Histogram"": {
-          ""LastValue"": 0.0,
+          ""LastValue"": 22000.0,
           ""Min"": 0.0,
           ""Mean"": 0.0,
           ""StdDev"": 0.0,

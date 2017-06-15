@@ -28,7 +28,8 @@ class PerformanceCounterUpdater
         foreach (var timer in timers)
         {
             var performanceCounterInstance = cache.Get(new CounterInstanceName(timer.Name, context));
-            performanceCounterInstance.RawValue = timer.TotalTime;
+            
+            performanceCounterInstance.RawValue = timer.Histogram.LastValue / 1000;
         }
     }
 

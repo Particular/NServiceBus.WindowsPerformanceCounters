@@ -46,6 +46,7 @@ class PerformanceCountersFeature : Feature
     public const string MessagesProcessedPerSecondCounterName = "# of msgs successfully processed / sec";
     public const string MessagesFailuresPerSecondCounterName = "# of msgs failures / sec";
     public const string CriticalTimeCounterName = "Critical Time";
+    public const string ProcessingTimeCounterName = "Processing Time";
     public const string UpdateIntervalKey = "PerformanceCounterUpdateInterval";
 
     class Cleanup : FeatureStartupTask, IDisposable
