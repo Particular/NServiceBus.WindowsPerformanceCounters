@@ -9,12 +9,11 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+    <Optimize>False</Optimize>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="NServiceBus.Metrics.PerformanceCounters.approved.cs" />
     <Compile Remove="NServiceBus.Metrics.PerformanceCounters.received.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="ApprovalTests" Version="3.0.13" />
     <PackageReference Include="ApprovalUtilities" Version="3.0.13" />
     <PackageReference Include="Mono.Cecil" Version="0.10.0-beta6" />
