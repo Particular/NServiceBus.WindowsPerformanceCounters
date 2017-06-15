@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using NServiceBus;
 
 class EstimatedTimeToSLABreachCounter : IDisposable
@@ -38,7 +37,7 @@ class EstimatedTimeToSLABreachCounter : IDisposable
 
     public void Start()
     {
-        timer = new Timer(RemoveOldDataPoints, null, 0, 2000);
+        timer = new System.Threading.Timer(RemoveOldDataPoints, null, 0, 2000);
     }
 
     void UpdateTimeToSLABreach()
@@ -128,7 +127,7 @@ class EstimatedTimeToSLABreachCounter : IDisposable
     IPerformanceCounterInstance counter;
     List<DataPoint> dataPoints = new List<DataPoint>();
     TimeSpan endpointSla;
-    Timer timer;
+    System.Threading.Timer timer;
 
     const int MaxDataPoints = 10;
 }

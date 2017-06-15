@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus;
@@ -18,8 +17,6 @@ public class IntegrationTests
 
         var endpointName = "PerfCountersIntegrationTests";
         var endpointConfiguration = EndpointConfigBuilder.BuildEndpoint(endpointName);
-        var typesToScan = TypeScanner.NestedTypes<IntegrationTests>().ToList();
-        endpointConfiguration.SetTypesToScan(typesToScan);
         endpointConfiguration.DefineCriticalErrorAction(
             context =>
             {
@@ -30,26 +27,28 @@ public class IntegrationTests
 
         var performanceCounters = endpointConfiguration.EnableWindowsPerformanceCounters();
         performanceCounters.EnableSLAPerformanceCounters(TimeSpan.FromSeconds(10));
+        performanceCounters.UpdateCounterEvery(TimeSpan.FromSeconds(1));
 
         var endpoint = await Endpoint.Start(endpointConfiguration)
             .ConfigureAwait(false);
-
-
+        
         await endpoint.SendLocal(new MyMessage())
             .ConfigureAwait(false);
 
         ManualResetEvent.WaitOne();
-        await Task.Delay(100)
+        await Task.Delay(1500)
             .ConfigureAwait(false);
         await endpoint.Stop()
             .ConfigureAwait(false);
 
-        var criticalTimePerfCounter = new PerformanceCounter("NServiceBus", CriticalTimeFeature.CounterName, endpointName, true);
+        var criticalTimePerfCounter = new PerformanceCounter("NServiceBus", PerformanceCountersFeature.CriticalTimeCounterName, endpointName, true);
+        //var processingTimePerfCounter = new PerformanceCounter("NServiceBus", PerformanceCountersFeature.ProcessingTimeCounterName, endpointName, true);
         var slaPerCounter = new PerformanceCounter("NServiceBus", SLAMonitoringFeature.CounterName, endpointName, true);
-        var messagesFailuresPerSecondCounter = new PerformanceCounter("NServiceBus", ReceivePerformanceDiagnosticsBehavior.MessagesFailuresPerSecondCounterName, endpointName, true);
-        var messagesProcessedPerSecondCounter = new PerformanceCounter("NServiceBus", ReceivePerformanceDiagnosticsBehavior.MessagesProcessedPerSecondCounterName, endpointName, true);
-        var messagesPulledPerSecondCounter = new PerformanceCounter("NServiceBus", ReceivePerformanceDiagnosticsBehavior.MessagesPulledPerSecondCounterName, endpointName, true);
+        var messagesFailuresPerSecondCounter = new PerformanceCounter("NServiceBus", PerformanceCountersFeature.MessagesFailuresPerSecondCounterName, endpointName, true);
+        var messagesProcessedPerSecondCounter = new PerformanceCounter("NServiceBus", PerformanceCountersFeature.MessagesProcessedPerSecondCounterName, endpointName, true);
+        var messagesPulledPerSecondCounter = new PerformanceCounter("NServiceBus", PerformanceCountersFeature.MessagesPulledPerSecondCounterName, endpointName, true);
         Assert.AreNotEqual(0, criticalTimePerfCounter.RawValue);
+        //Assert.AreNotEqual(0, processingTimePerfCounter.RawValue);
         Assert.AreNotEqual(0, slaPerCounter.RawValue);
         Assert.AreEqual(0, messagesFailuresPerSecondCounter.RawValue);
         Assert.AreNotEqual(0, messagesProcessedPerSecondCounter.RawValue);

@@ -5,7 +5,6 @@ using NServiceBus.Features;
 
 class SLAMonitoringFeature : Feature
 {
-   public  const string CounterName = "SLA violation countdown";
     protected override void Setup(FeatureConfigurationContext context)
     {
         context.ThrowIfSendonly();
@@ -13,41 +12,54 @@ class SLAMonitoringFeature : Feature
         var endpointSla = settings.Get<TimeSpan>(EndpointSLAKey);
 
         var counterInstanceName = settings.EndpointName();
-        var counter = PerformanceCounterHelper.InstantiatePerformanceCounter(CounterName, counterInstanceName);
-        var slaBreachCounter = new EstimatedTimeToSLABreachCounter(endpointSla, counter);
-        var startup = new StartupTask(slaBreachCounter);
+
+        cache = new PerformanceCountersCache();
+        var counter = cache.Get(new CounterInstanceName(CounterName, counterInstanceName));
+
+        slaBreachCounter = new EstimatedTimeToSLABreachCounter(endpointSla, counter);
 
         context.Pipeline.OnReceivePipelineCompleted(pipelineCompleted =>
         {
-            slaBreachCounter.Update(pipelineCompleted);
+            slaBreachCounter?.Update(pipelineCompleted);
             return Task.FromResult(0);
         });
 
-        context.RegisterStartupTask(() => startup);
+        context.RegisterStartupTask(new StartupTask(this));
     }
+
+    PerformanceCountersCache cache;
+    EstimatedTimeToSLABreachCounter slaBreachCounter;
+
+    public const string CounterName = "SLA violation countdown";
 
 
     internal const string EndpointSLAKey = "EndpointSLA";
 
-    class StartupTask : FeatureStartupTask
+    class StartupTask : FeatureStartupTask, IDisposable
     {
-        public StartupTask(EstimatedTimeToSLABreachCounter slaBreachCounter)
+        public StartupTask(SLAMonitoringFeature feature)
         {
-            this.slaBreachCounter = slaBreachCounter;
+            this.feature = feature;
+        }
+
+        public void Dispose()
+        {
+            feature.slaBreachCounter?.Dispose();
+            feature.slaBreachCounter = null;
+            feature.cache?.Dispose();
         }
 
         protected override Task OnStart(IMessageSession session)
         {
-            slaBreachCounter.Start();
-            return Task.FromResult(0);
+            feature.slaBreachCounter.Start();
+            return TaskExtensions.CompletedTask;
         }
 
         protected override Task OnStop(IMessageSession session)
         {
-            slaBreachCounter.Dispose();
-            return Task.FromResult(0);
+            return TaskExtensions.CompletedTask;
         }
 
-        EstimatedTimeToSLABreachCounter slaBreachCounter;
+        SLAMonitoringFeature feature;
     }
 }

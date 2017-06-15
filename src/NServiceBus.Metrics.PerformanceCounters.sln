@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.Metrics.PerformanceCounters", "NServiceBus.Metrics.PerformanceCounters\NServiceBus.Metrics.PerformanceCounters.csproj", "{DF381B87-8EB9-4F30-9E92-0849641ED01A}"
 EndProject
@@ -9,9 +9,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.Metrics.Perform
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{54D85933-AF31-49D3-9208-36DC4689B291}"
 	ProjectSection(SolutionItems) = preProject
+		..\packaging\nuget\NServiceBus.Metrics.PerformanceCounters.MsBuild.nuspec = ..\packaging\nuget\NServiceBus.Metrics.PerformanceCounters.MsBuild.nuspec
+		..\packaging\nuget\NServiceBus.Metrics.PerformanceCounters.MsBuild.targets = ..\packaging\nuget\NServiceBus.Metrics.PerformanceCounters.MsBuild.targets
 		..\packaging\nuget\NServiceBus.Metrics.PerformanceCounters.nuspec = ..\packaging\nuget\NServiceBus.Metrics.PerformanceCounters.nuspec
 		nuget.config = nuget.config
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptBuilderTask", "ScriptBuilderTask\ScriptBuilderTask.csproj", "{08FD76CB-6988-485A-A535-B3129AF89C60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptBuilder", "ScriptBuilder\ScriptBuilder.csproj", "{1BDA0A75-91F6-4412-A780-7BE9322B2A4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptBuilderTask.Tests", "ScriptBuilderTask.Tests\ScriptBuilderTask.Tests.csproj", "{8174164E-52B8-4878-BFB0-34C81A31930E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +35,18 @@ Global
 		{9BCDA27A-5FC2-4197-9DCF-0D0F70424B58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BCDA27A-5FC2-4197-9DCF-0D0F70424B58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BCDA27A-5FC2-4197-9DCF-0D0F70424B58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08FD76CB-6988-485A-A535-B3129AF89C60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08FD76CB-6988-485A-A535-B3129AF89C60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08FD76CB-6988-485A-A535-B3129AF89C60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08FD76CB-6988-485A-A535-B3129AF89C60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BDA0A75-91F6-4412-A780-7BE9322B2A4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BDA0A75-91F6-4412-A780-7BE9322B2A4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BDA0A75-91F6-4412-A780-7BE9322B2A4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BDA0A75-91F6-4412-A780-7BE9322B2A4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8174164E-52B8-4878-BFB0-34C81A31930E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8174164E-52B8-4878-BFB0-34C81A31930E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8174164E-52B8-4878-BFB0-34C81A31930E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8174164E-52B8-4878-BFB0-34C81A31930E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
