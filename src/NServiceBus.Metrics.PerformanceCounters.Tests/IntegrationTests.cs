@@ -36,7 +36,7 @@ public class IntegrationTests
             .ConfigureAwait(false);
 
         ManualResetEvent.WaitOne();
-        await Task.Delay(5000)
+        await Task.Delay(1500)
             .ConfigureAwait(false);
         await endpoint.Stop()
             .ConfigureAwait(false);
