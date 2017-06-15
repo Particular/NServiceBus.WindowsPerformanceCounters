@@ -41,9 +41,9 @@ using System.Security;
 using System.Runtime.CompilerServices;
 
 [CompilerGenerated]
-public static class CounterCreator 
+public static class CounterCreator
 {{
-    public static void Create() 
+    public static void Create()
     {{
         var counterCreationCollection = new CounterCreationDataCollection(Counters);
         try
@@ -60,13 +60,14 @@ public static class CounterCreator
                 categoryType: PerformanceCounterCategoryType.MultiInstance,
                 counterData: counterCreationCollection);
             PerformanceCounter.CloseSharedResources();
-        }} catch(Exception ex) when(ex is SecurityException || ex is UnauthorizedAccessException)
+        }}
+        catch(Exception ex) when (ex is SecurityException || ex is UnauthorizedAccessException)
         {{
             throw new Exception(""Execution requires elevated permissions"", ex);
         }}
     }}
 
-    static CounterCreationData[] Counters = new CounterCreationData[]
+    static CounterCreationData[] Counters =
     {{
 {0}
     }};

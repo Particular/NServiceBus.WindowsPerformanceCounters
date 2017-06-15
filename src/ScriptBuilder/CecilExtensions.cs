@@ -47,10 +47,20 @@
                 .Where(x => x.IsClass);
         }
 
+
         public static string GetFileName(this TypeDefinition type)
         {
             foreach (var method in type.Methods)
             {
+                var debugInformation = method.DebugInformation;
+                if (debugInformation == null)
+                {
+                    continue;
+                }
+                if (!debugInformation.HasSequencePoints != true)
+                {
+                    continue;
+                }
                 var body = method.Body;
                 if (body?.Instructions == null)
                 {
@@ -58,7 +68,7 @@
                 }
                 foreach (var instruction in body.Instructions)
                 {
-                    var point = instruction.SequencePoint;
+                    var point = debugInformation.GetSequencePoint(instruction);
                     if (point?.Document?.Url == null)
                     {
                         continue;
