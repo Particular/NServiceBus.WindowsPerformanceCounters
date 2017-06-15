@@ -6,11 +6,14 @@
     <DebugSymbols>True</DebugSymbols>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <OutputType>Exe</OutputType>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NServiceBus" Version="6.3.4" />
     <PackageReference Include="NServiceBus.Metrics" Version="1.0.0" />
-    <Reference Include="NServiceBus.Metrics.PerformanceCounters"/>
+    <Reference Include="NServiceBus.Metrics.PerformanceCounters">
+      <HintPath>..\..\ForIntegration\NServiceBus.Metrics.PerformanceCounters.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(SolutionDir)\..\ForIntegration\build\NServiceBus.Metrics.PerformanceCounters.MsBuild.targets" />
 </Project>
