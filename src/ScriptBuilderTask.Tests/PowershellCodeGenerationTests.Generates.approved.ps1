@@ -6,7 +6,7 @@ Function InstallNSBPerfCounters {
     $counters = New-Object System.Diagnostics.CounterCreationDataCollection
     $counters.AddRange(@(
         New-Object System.Diagnostics.CounterCreationData "SLA violation countdown", "Seconds until the SLA for this endpoint is breached.",  NumberOfItems32
-        New-Object System.Diagnostics.CounterCreationData "Critical Time", "Age of the oldest message in the queue.",  NumberOfItems32
+        New-Object System.Diagnostics.CounterCreationData "Critical Time", "The time it took from sending to processing the message.",  NumberOfItems32
         New-Object System.Diagnostics.CounterCreationData "Processing Time", "The time it took to successfully process a message.",  NumberOfItems32
         New-Object System.Diagnostics.CounterCreationData "# of msgs pulled from the input queue /sec", "The current number of messages pulled from the input queue by the transport per second.",  RateOfCountsPerSecond32
         New-Object System.Diagnostics.CounterCreationData "# of msgs failures / sec", "The current number of failed processed messages by the transport per second.",  RateOfCountsPerSecond32
