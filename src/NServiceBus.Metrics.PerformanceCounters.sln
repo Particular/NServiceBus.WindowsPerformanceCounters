@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.3
-MinimumVisualStudioVersion = 10.0.40219.1
+MinimumVisualStudioVersion = 15.0.26403.3
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.Metrics.PerformanceCounters", "NServiceBus.Metrics.PerformanceCounters\NServiceBus.Metrics.PerformanceCounters.csproj", "{DF381B87-8EB9-4F30-9E92-0849641ED01A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.Metrics.PerformanceCounters.Tests", "NServiceBus.Metrics.PerformanceCounters.Tests\NServiceBus.Metrics.PerformanceCounters.Tests.csproj", "{9BCDA27A-5FC2-4197-9DCF-0D0F70424B58}"
