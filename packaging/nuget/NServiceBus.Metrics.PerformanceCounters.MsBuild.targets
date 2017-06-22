@@ -10,7 +10,8 @@
 
   <Target
       AfterTargets="AfterCompile"
-      Name="PerformanceCountersScriptBuilder">
+      Name="PerformanceCountersScriptBuilder"
+      Condition="'$(DesignTimeBuild)' != 'true'">
     <ScriptBuilderTask
           AssemblyPath="$(ProjectDir)@(IntermediateAssembly)"
           References="@(ReferencePath)"
@@ -22,7 +23,8 @@
 
   <Target
       BeforeTargets="GetCopyToOutputDirectoryItems"
-      Name="AddScriptsToGetCopyToOutputDirectoryItems">
+      Name="AddScriptsToGetCopyToOutputDirectoryItems"
+      Condition="'$(DesignTimeBuild)' != 'true'">
     <ItemGroup>
       <Scripts Include="$(ScriptDirectory)**\*.g.cs" />
       <Scripts Include="$(ScriptDirectory)**\*.ps1" />
