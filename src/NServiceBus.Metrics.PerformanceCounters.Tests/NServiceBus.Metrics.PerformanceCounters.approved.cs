@@ -25,6 +25,5 @@ namespace NServiceBus
     public class PerformanceCountersSettings
     {
         public void EnableSLAPerformanceCounters(System.TimeSpan sla) { }
-        public void UpdateCounterEvery(System.TimeSpan updateInterval) { }
     }
 }

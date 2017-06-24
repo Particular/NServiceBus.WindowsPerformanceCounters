@@ -6,7 +6,7 @@
 
     static class CSharpCounterWriter
     {
-        public static void WriteCode(string scriptPath, IEnumerable<TimerDefinition> timers, IEnumerable<MeterDefinition> meters, Dictionary<string, string> legacyInstanceNameMap)
+        public static void WriteCode(string scriptPath, IEnumerable<DurationDefinition> timers, IEnumerable<SignalDefinition> meters, Dictionary<string, string> legacyInstanceNameMap)
         {
             var outputPath = Path.Combine(scriptPath, "Counters.g.cs");
             using (var streamWriter = File.CreateText(outputPath))

@@ -6,7 +6,7 @@
 
     static class PowerShellCounterWriter
     {
-        public static void WriteScript(string scriptPath, IEnumerable<TimerDefinition> timers, IEnumerable<MeterDefinition> meters, Dictionary<string, string> legacyInstanceNameMap)
+        public static void WriteScript(string scriptPath, IEnumerable<DurationDefinition> timers, IEnumerable<SignalDefinition> meters, Dictionary<string, string> legacyInstanceNameMap)
         {
             var outputPath = Path.Combine(scriptPath, "CreateNSBPerfCounters.ps1");
             using (var streamWriter = File.CreateText(outputPath))
