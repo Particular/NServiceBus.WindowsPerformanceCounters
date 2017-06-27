@@ -6,7 +6,7 @@
 
     static class CSharpCounterWriter
     {
-        public static void WriteCode(string scriptPath, IEnumerable<DurationDefinition> timers, IEnumerable<SignalDefinition> meters, Dictionary<string, string> legacyInstanceNameMap)
+        public static void WriteCode(string scriptPath, IEnumerable<DurationDefinition> durations, IEnumerable<SignalDefinition> signals, Dictionary<string, string> legacyInstanceNameMap)
         {
             var outputPath = Path.Combine(scriptPath, "Counters.g.cs");
             using (var streamWriter = File.CreateText(outputPath))
@@ -16,19 +16,19 @@
                 var slaCounterDefinition = @"new CounterCreationData(""SLA violation countdown"", ""Seconds until the SLA for this endpoint is breached."", PerformanceCounterType.NumberOfItems32),";
                 stringBuilder.AppendLine(slaCounterDefinition.PadLeft(slaCounterDefinition.Length + 8));
 
-                foreach (var timer in timers)
+                foreach (var duration in durations)
                 {
-                    var timerDefinition = $@"new CounterCreationData(""{timer.Name}"", ""{timer.Description}"", PerformanceCounterType.NumberOfItems32),";
-                    stringBuilder.AppendLine(timerDefinition.PadLeft(timerDefinition.Length + 8));
+                    var durationDefinition = $@"new CounterCreationData(""{duration.Name}"", ""{duration.Description}"", PerformanceCounterType.NumberOfItems32),";
+                    stringBuilder.AppendLine(durationDefinition.PadLeft(durationDefinition.Length + 8));
                 }
 
-                foreach (var meter in meters)
+                foreach (var signal in signals)
                 {
                     string instanceName;
-                    legacyInstanceNameMap.TryGetValue(meter.Name, out instanceName);
+                    legacyInstanceNameMap.TryGetValue(signal.Name, out instanceName);
 
-                    var meterDefinition = $@"new CounterCreationData(""{instanceName ?? meter.Name}"", ""{meter.Description}"", PerformanceCounterType.RateOfCountsPerSecond32),";
-                    stringBuilder.AppendLine(meterDefinition.PadLeft(meterDefinition.Length + 8));
+                    var signalDefinition = $@"new CounterCreationData(""{instanceName ?? signal.Name}"", ""{signal.Description}"", PerformanceCounterType.RateOfCountsPerSecond32),";
+                    stringBuilder.AppendLine(signalDefinition.PadLeft(signalDefinition.Length + 8));
                 }
 
                 streamWriter.Write(Template, stringBuilder);

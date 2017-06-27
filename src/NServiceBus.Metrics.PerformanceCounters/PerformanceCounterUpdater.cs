@@ -20,7 +20,7 @@ class PerformanceCounterUpdater
 
             var performanceCounterInstance = cache.Get(instanceName ?? new CounterInstanceName(sp.Name, endpointName));
 
-            sp.Register(() => performanceCounterInstance.RawValue += 1);
+            sp.Register(() => performanceCounterInstance.Increment());
         });
 
         context.Durations.ToList().ForEach(dp =>
