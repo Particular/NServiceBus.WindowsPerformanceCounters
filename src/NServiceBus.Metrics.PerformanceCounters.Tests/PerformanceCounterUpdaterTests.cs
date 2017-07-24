@@ -1,6 +1,10 @@
 ﻿namespace Tests
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using ApprovalUtilities.Utilities;
+    using NServiceBus;
     using NUnit.Framework;
 
     [TestFixture]
@@ -9,58 +13,35 @@
         [Test]
         public void Meters_within_payload_should_be_converted_into_performance_counters()
         {
+            var endpointName = "Sender@af016c07";
             var cache = new MockPerformanceCountersCache();
-            var sut = new PerformanceCounterUpdater(cache, new Dictionary<string, CounterInstanceName?>());
 
-            sut.Update(PayloadWithRandomMeters);
+            var signals = new []
+            {
+                new MockSignalProbe("signal 1"), 
+                new MockSignalProbe("signal 2"), 
+                new MockSignalProbe("signal 3"), 
+            };
 
-            var performanceCounterOne = cache.Get(new CounterInstanceName("meter 1", "Sender@af016c07"));
-            var performanceCounterTwo = cache.Get(new CounterInstanceName("meter 2", "Sender@af016c07"));
-            var performanceCounterThree = cache.Get(new CounterInstanceName("meter 3", "Sender@af016c07"));
+            var sut = new PerformanceCounterUpdater(cache, new Dictionary<string, CounterInstanceName?>(), endpointName);
+
+            sut.Observe(new ProbeContext(new IDurationProbe[0], signals));
+
+            Enumerable.Range(0, 111).ForEach(_ => signals[0].Observers());
+            Enumerable.Range(0, 222).ForEach(_ => signals[1].Observers());
+            Enumerable.Range(0, 333).ForEach(_ => signals[2].Observers());
+
+            var performanceCounterOne = cache.Get(new CounterInstanceName(signals[0].Name, endpointName));
+            var performanceCounterTwo = cache.Get(new CounterInstanceName(signals[1].Name, endpointName));
+            var performanceCounterThree = cache.Get(new CounterInstanceName(signals[2].Name, endpointName));
 
             Assert.AreEqual(111, performanceCounterOne.RawValue);
             Assert.AreEqual(222, performanceCounterTwo.RawValue);
             Assert.AreEqual(333, performanceCounterThree.RawValue);
         }
 
-        const string PayloadWithRandomMeters = @"{    
-    ""Context"": ""Sender@af016c07"",
-    ""Meters"": [
-      {
-        ""Name"": ""meter 1"",
-        ""Count"": 111,
-        ""MeanRate"": 0.0,
-        ""OneMinuteRate"": 0.0,
-        ""FiveMinuteRate"": 0.0,
-        ""FifteenMinuteRate"": 0.0,
-        ""Unit"": ""Messages"",
-        ""RateUnit"": ""s""
-      },
-      {
-        ""Name"": ""meter 2"",
-        ""Count"": 222,
-        ""MeanRate"": 0.0,
-        ""OneMinuteRate"": 0.0,
-        ""FiveMinuteRate"": 0.0,
-        ""FifteenMinuteRate"": 0.0,
-        ""Unit"": ""Messages"",
-        ""RateUnit"": ""s""
-      },
-      {
-        ""Name"": ""meter 3"",
-        ""Count"": 333,
-        ""MeanRate"": 0.0,
-        ""OneMinuteRate"": 0.0,
-        ""FiveMinuteRate"": 0.0,
-        ""FifteenMinuteRate"": 0.0,
-        ""Unit"": ""Messages"",
-        ""RateUnit"": ""s""
-      }
-    ]    
-  }";
-
         [Test]
-        public void Meters_that_need_mapping_within_payload_should_be_converted_into_performance_counters()
+        public void Signals_that_map_to_legacy_names_should_be_converted_to_counters_with_queueAddress_as_instance_name()
         {
             var cache = new MockPerformanceCountersCache();
 
@@ -71,9 +52,20 @@
                 { "# of messages successfully processed / sec", new CounterInstanceName("# of msgs successfully processed / sec", "queueAddress") },
             };
 
-            var sut = new PerformanceCounterUpdater(cache, legacyInstanceNameMap);
+            var sut = new PerformanceCounterUpdater(cache, legacyInstanceNameMap, "Sender@af016c07");
 
-            sut.Update(PayloadWithNewMeterNamesThatNeedToBeMappedToLegacyMeterNames);
+            var signals = new []
+            {
+                new MockSignalProbe("# of message failures / sec"),
+                new MockSignalProbe("# of messages pulled from the input queue / sec"),
+                new MockSignalProbe("# of messages successfully processed / sec"),
+            };
+
+            sut.Observe(new ProbeContext(new IDurationProbe[0], signals));
+
+            Enumerable.Range(0, 111).ForEach(_ => signals[0].Observers());
+            Enumerable.Range(0, 222).ForEach(_ => signals[1].Observers());
+            Enumerable.Range(0, 333).ForEach(_ => signals[2].Observers());
 
             var performanceCounterOne = cache.Get(new CounterInstanceName("# of msgs failures / sec", "queueAddress"));
             var performanceCounterTwo = cache.Get(new CounterInstanceName("# of msgs pulled from the input queue /sec", "queueAddress"));
@@ -84,49 +76,23 @@
             Assert.AreEqual(333, performanceCounterThree.RawValue);
         }
 
-        const string PayloadWithNewMeterNamesThatNeedToBeMappedToLegacyMeterNames = @"{    
-    ""Context"": ""Sender@af016c07"",
-    ""Meters"": [
-      {
-        ""Name"": ""# of message failures / sec"",
-        ""Count"": 111,
-        ""MeanRate"": 0.0,
-        ""OneMinuteRate"": 0.0,
-        ""FiveMinuteRate"": 0.0,
-        ""FifteenMinuteRate"": 0.0,
-        ""Unit"": ""Messages"",
-        ""RateUnit"": ""s""
-      },
-      {
-        ""Name"": ""# of messages pulled from the input queue / sec"",
-        ""Count"": 222,
-        ""MeanRate"": 0.0,
-        ""OneMinuteRate"": 0.0,
-        ""FiveMinuteRate"": 0.0,
-        ""FifteenMinuteRate"": 0.0,
-        ""Unit"": ""Messages"",
-        ""RateUnit"": ""s""
-      },
-      {
-        ""Name"": ""# of messages successfully processed / sec"",
-        ""Count"": 333,
-        ""MeanRate"": 0.0,
-        ""OneMinuteRate"": 0.0,
-        ""FiveMinuteRate"": 0.0,
-        ""FifteenMinuteRate"": 0.0,
-        ""Unit"": ""Messages"",
-        ""RateUnit"": ""s""
-      }
-    ]    
-  }";
-
+        
         [Test]
-        public void Timers_within_payload_should_be_converted_into_performance_counters()
+        public void Duration_probes_within_payload_should_be_converted_into_performance_counters()
         {
             var cache = new MockPerformanceCountersCache();
-            var sut = new PerformanceCounterUpdater(cache, new Dictionary<string, CounterInstanceName?>());
+            var sut = new PerformanceCounterUpdater(cache, new Dictionary<string, CounterInstanceName?>(), "Sender@af016c07");
 
-            sut.Update(PayloadWithRandomTimers);
+            var durationProbes = new[]
+            {
+                new MockDurationProbe("Critical Time"),
+                new MockDurationProbe("Processing Time")
+            };
+
+            sut.Observe(new ProbeContext(durationProbes, new ISignalProbe[0]));
+
+            durationProbes[0].Observers(TimeSpan.FromSeconds(11));
+            durationProbes[1].Observers(TimeSpan.FromSeconds(22));
 
             var performanceCounterOne = cache.Get(new CounterInstanceName("Critical Time", "Sender@af016c07"));
             var performanceCounterTwo = cache.Get(new CounterInstanceName("Processing Time", "Sender@af016c07"));
@@ -134,75 +100,49 @@
             Assert.AreEqual(11, performanceCounterOne.RawValue);
             Assert.AreEqual(22, performanceCounterTwo.RawValue);
         }
-
-        const string PayloadWithRandomTimers = @"{	
-    ""Context"": ""Sender@af016c07"",    
-    ""Timers"": [
-      {
-        ""Name"": ""Critical Time"",
-        ""Count"": 0,
-        ""ActiveSessions"": 0,
-        ""TotalTime"": 11,
-        ""Rate"": {
-          ""MeanRate"": 0.0,
-          ""OneMinuteRate"": 0.0,
-          ""FiveMinuteRate"": 0.0,
-          ""FifteenMinuteRate"": 0.0
-        },
-        ""Histogram"": {
-          ""LastValue"": 11000.0,
-          ""Min"": 0.0,
-          ""Mean"": 0.0,
-          ""StdDev"": 0.0,
-          ""Median"": 0.0,
-          ""Percentile75"": 0.0,
-          ""Percentile95"": 0.0,
-          ""Percentile98"": 0.0,
-          ""Percentile99"": 0.0,
-          ""Percentile999"": 0.0,
-          ""SampleSize"": 0
-        },
-        ""Unit"": ""Messages"",
-        ""RateUnit"": ""s"",
-        ""DurationUnit"": ""ms""
-      },
-      {
-        ""Name"": ""Processing Time"",
-        ""Count"": 0,
-        ""ActiveSessions"": 0,
-        ""TotalTime"": 22,
-        ""Rate"": {
-          ""MeanRate"": 0.0,
-          ""OneMinuteRate"": 0.0,
-          ""FiveMinuteRate"": 0.0,
-          ""FifteenMinuteRate"": 0.0
-        },
-        ""Histogram"": {
-          ""LastValue"": 22000.0,
-          ""Min"": 0.0,
-          ""Mean"": 0.0,
-          ""StdDev"": 0.0,
-          ""Median"": 0.0,
-          ""Percentile75"": 0.0,
-          ""Percentile95"": 0.0,
-          ""Percentile98"": 0.0,
-          ""Percentile99"": 0.0,
-          ""Percentile999"": 0.0,
-          ""SampleSize"": 0
-        },
-        ""Unit"": ""Messages"",
-        ""RateUnit"": ""s"",
-        ""DurationUnit"": ""ms""
-      }
-    ]
-  }";
     }
-
+    
     class MockPerformanceCountersCache : PerformanceCountersCache
     {
         protected override IPerformanceCounterInstance CreateInstance(CounterInstanceName counterInstanceName)
         {
             return new MockIPerformanceCounter();
         }
+    }
+
+    class MockSignalProbe : ISignalProbe
+    {
+        public MockSignalProbe(string name)
+        {
+            Name = name;
+        }
+
+        public void Register(Action observer)
+        {
+            Observers += observer;
+        }
+
+        public string Name { get; }
+        public string Description => string.Empty;
+
+        public Action Observers = () => { };
+    }
+
+    class MockDurationProbe : IDurationProbe
+    {
+        public MockDurationProbe(string name)
+        {
+            Name = name;
+        }
+
+        public void Register(Action<TimeSpan> observer)
+        {
+            Observers += observer;
+        }
+
+        public string Name { get; }
+        public string Description => string.Empty;
+
+        public Action<TimeSpan> Observers = _ => { };
     }
 }

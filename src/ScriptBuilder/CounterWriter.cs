@@ -8,12 +8,12 @@
     {
         public static void WriteScript(string scriptPath, BuildScriptVariant variant, ModuleDefinition module, Action<string, string> logError)
         {
-            var timers = AllTimersDefinitionReader.GetTimers(module, (exception, type) =>
+            var timers = AllDurationsDefinitionReader.GetDurations(module, (exception, type) =>
             {
                 logError($"Error in '{type.FullName}'. Error:{exception.Message}", type.GetFileName());
             });
 
-            var meters = AllMetersDefinitionReader.GetMeters(module, (exception, type) =>
+            var meters = AllSignalsDefinitionReader.GetSignals(module, (exception, type) =>
             {
                 logError($"Error in '{type.FullName}'. Error:{exception.Message}", type.GetFileName());
             });

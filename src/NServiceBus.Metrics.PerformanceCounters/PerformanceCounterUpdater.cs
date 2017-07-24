@@ -1,38 +1,35 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
+using NServiceBus;
 
 class PerformanceCounterUpdater
 {
-    public PerformanceCounterUpdater(PerformanceCountersCache cache, Dictionary<string, CounterInstanceName?> legacyInstanceNameMap)
+    public PerformanceCounterUpdater(PerformanceCountersCache cache, Dictionary<string, CounterInstanceName?> legacyInstanceNameMap, string endpointName)
     {
         this.legacyInstanceNameMap = legacyInstanceNameMap;
+        this.endpointName = endpointName;
         this.cache = cache;
     }
 
-    public void Update(string payload)
+    public void Observe(ProbeContext context)
     {
-        var rootObject = JObject.Parse(payload);
-
-        var context = rootObject.Value<string>("Context");
-        var meters = rootObject["Meters"]?.ToObject<List<Meter>>() ?? new List<Meter>();
-        foreach (var meter in meters)
+        foreach (var sp in context.Signals)
         {
             CounterInstanceName? instanceName;
-            legacyInstanceNameMap.TryGetValue(meter.Name, out instanceName);
+            legacyInstanceNameMap.TryGetValue(sp.Name, out instanceName);
 
-            var performanceCounterInstance = cache.Get(instanceName ?? new CounterInstanceName(meter.Name, context));
-            performanceCounterInstance.RawValue = meter.Count;
+            var performanceCounterInstance = cache.Get(instanceName ?? new CounterInstanceName(sp.Name, endpointName));
+
+            sp.Register(() => performanceCounterInstance.Increment());
         }
 
-        var timers = rootObject["Timers"]?.ToObject<List<Timer>>() ?? new List<Timer>();
-        foreach (var timer in timers)
+        foreach (var dp in context.Durations)
         {
-            var performanceCounterInstance = cache.Get(new CounterInstanceName(timer.Name, context));
-            
-            performanceCounterInstance.RawValue = timer.Histogram.LastValue / 1000;
+            var performanceCounterInstance = cache.Get(new CounterInstanceName(dp.Name, endpointName));
+            dp.Register(d => performanceCounterInstance.RawValue = (long)d.TotalSeconds);
         }
     }
 
     readonly PerformanceCountersCache cache;
     readonly Dictionary<string, CounterInstanceName?> legacyInstanceNameMap;
+    readonly string endpointName;
 }

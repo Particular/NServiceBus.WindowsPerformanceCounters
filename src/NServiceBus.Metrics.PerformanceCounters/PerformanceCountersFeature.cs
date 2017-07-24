@@ -11,31 +11,29 @@ class PerformanceCountersFeature : Feature
         Defaults(s =>
         {
             options = s.EnableMetrics();
-            s.SetDefault(UpdateIntervalKey, TimeSpan.FromSeconds(2));
         });
     }
 
     protected override void Setup(FeatureConfigurationContext context)
     {
-        var logicalAddress = context.Settings.LogicalAddress();
+        var endpoint = context.Settings.LogicalAddress().EndpointInstance.Endpoint;
 
         var legacyInstanceNameMap = new Dictionary<string, CounterInstanceName?>
         {
-            {"# of message failures / sec", new CounterInstanceName(MessagesFailuresPerSecondCounterName, logicalAddress.EndpointInstance.Endpoint)},
-            {"# of messages pulled from the input queue / sec", new CounterInstanceName(MessagesPulledPerSecondCounterName, logicalAddress.EndpointInstance.Endpoint)},
-            {"# of messages successfully processed / sec", new CounterInstanceName(MessagesProcessedPerSecondCounterName, logicalAddress.EndpointInstance.Endpoint)}
+            {"# of message failures / sec", new CounterInstanceName(MessagesFailuresPerSecondCounterName, endpoint)},
+            {"# of messages pulled from the input queue / sec", new CounterInstanceName(MessagesPulledPerSecondCounterName, endpoint)},
+            {"# of messages successfully processed / sec", new CounterInstanceName(MessagesProcessedPerSecondCounterName, endpoint)}
         };
 
         cache = new PerformanceCountersCache();
-        updater = new PerformanceCounterUpdater(cache, legacyInstanceNameMap);
+        updater = new PerformanceCounterUpdater(cache, legacyInstanceNameMap, endpoint);
 
         context.RegisterStartupTask(new Cleanup(this));
 
-        options.EnableCustomReport(payload =>
+        options.RegisterObservers(probeContext =>
         {
-            updater?.Update(payload);
-            return TaskExtensions.CompletedTask;
-        }, context.Settings.Get<TimeSpan>(UpdateIntervalKey));
+            updater.Observe(probeContext);
+        });
     }
 
     MetricsOptions options;
@@ -47,7 +45,6 @@ class PerformanceCountersFeature : Feature
     public const string MessagesFailuresPerSecondCounterName = "# of msgs failures / sec";
     public const string CriticalTimeCounterName = "Critical Time";
     public const string ProcessingTimeCounterName = "Processing Time";
-    public const string UpdateIntervalKey = "PerformanceCounterUpdateInterval";
 
     class Cleanup : FeatureStartupTask, IDisposable
     {
