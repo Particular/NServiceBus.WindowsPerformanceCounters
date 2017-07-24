@@ -20,7 +20,7 @@
     <Reference Include="Microsoft.Build.Tasks.v4.0" />
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
     <PackageReference Include="GitVersionTask" Version="4.0.0-beta0012" />
-    <PackageReference Include="NServiceBus.Metrics" Version="1.1.0-probes-raw-data-0004" />
+    <PackageReference Include="NServiceBus.Metrics" Version="1.1.0" />
     <PackageReference Include="NuGetPackager" Version="0.6.3" />
     <PackageReference Include="Mono.Cecil" Version="0.10.0-beta6" />
     <ProjectReference Include="..\ScriptBuilder\ScriptBuilder.csproj" />
