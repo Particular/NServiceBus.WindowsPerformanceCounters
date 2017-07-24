@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using NServiceBus;
 
 class PerformanceCounterUpdater
@@ -13,7 +12,7 @@ class PerformanceCounterUpdater
 
     public void Observe(ProbeContext context)
     {
-        context.Signals.ToList().ForEach(sp =>
+        foreach (var sp in context.Signals)
         {
             CounterInstanceName? instanceName;
             legacyInstanceNameMap.TryGetValue(sp.Name, out instanceName);
@@ -21,14 +20,13 @@ class PerformanceCounterUpdater
             var performanceCounterInstance = cache.Get(instanceName ?? new CounterInstanceName(sp.Name, endpointName));
 
             sp.Register(() => performanceCounterInstance.Increment());
-        });
+        }
 
-        context.Durations.ToList().ForEach(dp =>
+        foreach (var dp in context.Durations)
         {
             var performanceCounterInstance = cache.Get(new CounterInstanceName(dp.Name, endpointName));
-
             dp.Register(d => performanceCounterInstance.RawValue = (long)d.TotalSeconds);
-        });
+        }
     }
 
     readonly PerformanceCountersCache cache;
