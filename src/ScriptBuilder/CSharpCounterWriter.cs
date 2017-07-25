@@ -18,13 +18,16 @@
 
                 foreach (var duration in durations)
                 {
-                    var durationAverageDefinition = $@"new CounterCreationData(""{duration.Name} Average"", ""{duration.Description}"", PerformanceCounterType.AverageTimer32),";
+                    var averageTimerName = duration.Name.GetAverageTimerCounterName();
+                    var averageTimerBase = duration.Name.GetAverageTimerBaseCounterName();
+
+                    var durationAverageDefinition = $@"new CounterCreationData(""{averageTimerName}"", ""{duration.Description}"", PerformanceCounterType.AverageTimer32),";
                     stringBuilder.AppendLine(durationAverageDefinition.PadLeft(durationAverageDefinition.Length + 8));
 
-                    var durationBaseDefinition = $@"new CounterCreationData(""{duration.Name} AverageBase"", ""{duration.Description}"", PerformanceCounterType.AverageBase),";
+                    var durationBaseDefinition = $@"new CounterCreationData(""{averageTimerBase}"", ""{duration.Description}"", PerformanceCounterType.AverageBase),";
                     stringBuilder.AppendLine(durationBaseDefinition.PadLeft(durationBaseDefinition.Length + 8));
 
-                    if (duration.Name == "Processing Time" || duration.Name == "Critical Time")
+                    if (duration.Name == CounterNameConventions.ProcessingTime || duration.Name == CounterNameConventions.CriticalTime)
                     {
                         var legacyTimerDefinition = $@"new CounterCreationData(""{duration.Name}"", ""{duration.Description}"", PerformanceCounterType.NumberOfItems32),";
                         stringBuilder.AppendLine(legacyTimerDefinition.PadLeft(legacyTimerDefinition.Length + 8));

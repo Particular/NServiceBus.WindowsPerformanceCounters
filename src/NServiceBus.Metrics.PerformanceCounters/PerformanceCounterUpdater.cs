@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using NServiceBus;
+using NServiceBus.Metrics.PerformanceCounters;
 
 class PerformanceCounterUpdater
 {
@@ -24,8 +27,21 @@ class PerformanceCounterUpdater
 
         foreach (var dp in context.Durations)
         {
-            var performanceCounterInstance = cache.Get(new CounterInstanceName(dp.Name, endpointName));
-            dp.Register(d => performanceCounterInstance.RawValue = (long)d.TotalSeconds);
+            if (dp.Name == CounterNameConventions.ProcessingTime || dp.Name == CounterNameConventions.CriticalTime)
+            {
+                var performanceCounterInstance = cache.Get(new CounterInstanceName(dp.Name, endpointName));
+                dp.Register(d => performanceCounterInstance.RawValue = (long) d.TotalSeconds);
+            }
+
+            var averageTimerCounter = cache.Get(new CounterInstanceName(dp.Name.GetAverageTimerCounterName(), endpointName));
+            var baseAverageTimerCounter = cache.Get(new CounterInstanceName(dp.Name.GetAverageTimerBaseCounterName(), endpointName));
+
+            dp.Register(d =>
+            {
+                var performanceCounterTicks = d.Ticks * Stopwatch.Frequency / TimeSpan.TicksPerSecond;
+                averageTimerCounter.IncrementBy(performanceCounterTicks);
+                baseAverageTimerCounter.Increment();
+            });
         }
     }
 

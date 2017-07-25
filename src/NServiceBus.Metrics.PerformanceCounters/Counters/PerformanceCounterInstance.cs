@@ -12,6 +12,11 @@ class PerformanceCounterInstance : IPerformanceCounterInstance
         counter.Increment();
     }
 
+    public void IncrementBy(long value)
+    {
+        counter.IncrementBy(value);
+    }
+
     public void Dispose()
     {
         counter?.Dispose();
