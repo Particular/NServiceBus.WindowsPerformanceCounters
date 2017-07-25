@@ -12,5 +12,10 @@
         RawValue++;
     }
 
+    public void IncrementBy(long value)
+    {
+        RawValue += value;
+    }
+
     public long RawValue { get; set; }
 }

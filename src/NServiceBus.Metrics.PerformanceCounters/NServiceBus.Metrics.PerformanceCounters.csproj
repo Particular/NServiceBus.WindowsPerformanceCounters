@@ -12,6 +12,9 @@
     <UpdateAssemblyInfo>true</UpdateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\ScriptBuilder\CounterNameConventions.cs" Link="CounterNameConventions.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="NServiceBus" Version="6.3.4" />
     <PackageReference Include="GitVersionTask" Version="4.0.0-beta0012" />

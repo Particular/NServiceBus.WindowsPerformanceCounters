@@ -18,8 +18,20 @@
 
                 foreach (var duration in durations)
                 {
-                    var durationDefinition = $@"New-Object System.Diagnostics.CounterCreationData ""{duration.Name}"", ""{duration.Description}"",  NumberOfItems32";
-                    stringBuilder.AppendLine(durationDefinition.PadLeft(durationDefinition.Length + 8));
+                    var averageTimerName = duration.Name.GetAverageTimerCounterName();
+                    var averageTimerBase = duration.Name.GetAverageTimerBaseCounterName();
+
+                    var durationAverageDefinition = $@"New-Object System.Diagnostics.CounterCreationData ""{averageTimerName}"", ""{duration.Description}"",  AverageTimer32";
+                    stringBuilder.AppendLine(durationAverageDefinition.PadLeft(durationAverageDefinition.Length + 8));
+
+                    var durationBaseDefinition = $@"New-Object System.Diagnostics.CounterCreationData ""{averageTimerBase}"", ""{duration.Description}"",  AverageBase";
+                    stringBuilder.AppendLine(durationBaseDefinition.PadLeft(durationAverageDefinition.Length + 8));
+                    
+                    if (duration.Name == CounterNameConventions.ProcessingTime || duration.Name == CounterNameConventions.CriticalTime)
+                    {
+                        var legacyTimerDefinition = $@"New-Object System.Diagnostics.CounterCreationData ""{duration.Name}"", ""{duration.Description}"",  NumberOfItems32";
+                        stringBuilder.AppendLine(legacyTimerDefinition.PadLeft(legacyTimerDefinition.Length + 8));
+                    }
                 }
 
                 foreach (var signal in signals)
