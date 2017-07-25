@@ -42,5 +42,7 @@ class PerformanceCountersCache : IDisposable
         return new PerformanceCounterInstance(counter);
     }
 
+    protected int CountCounters() => counterCache.Count;
+
     ConcurrentDictionary<CounterInstanceName, IPerformanceCounterInstance> counterCache = new ConcurrentDictionary<CounterInstanceName, IPerformanceCounterInstance>();
 }
