@@ -6,6 +6,7 @@
     using System.Linq;
     using ApprovalUtilities.Utilities;
     using NServiceBus;
+    using NServiceBus.Metrics.PerformanceCounters;
     using NUnit.Framework;
 
     [TestFixture]
@@ -84,10 +85,13 @@
             var cache = new MockPerformanceCountersCache();
             var sut = new PerformanceCounterUpdater(cache, new Dictionary<string, CounterInstanceName?>(), "Sender@af016c07");
 
+            var criticalTimeProbe = new MockDurationProbe("Critical Time");
+            var processingTimeProbe = new MockDurationProbe("Processing Time");
+
             var durationProbes = new[]
             {
-                new MockDurationProbe("Critical Time"),
-                new MockDurationProbe("Processing Time")
+                criticalTimeProbe,
+                processingTimeProbe
             };
 
             sut.Observe(new ProbeContext(durationProbes, new ISignalProbe[0]));
@@ -100,13 +104,13 @@
             // asserting the number of accessed counters
             Assert.AreEqual(3 + 3, cache.Count);
 
-            var counter1 = cache.Get(new CounterInstanceName("Critical Time", "Sender@af016c07"));
-            var counter1average = cache.Get(new CounterInstanceName("Critical Time Average", "Sender@af016c07"));
-            var counter1averageBase = cache.Get(new CounterInstanceName("Critical Time AverageBase", "Sender@af016c07"));
+            var counter1 = cache.Get(new CounterInstanceName(criticalTimeProbe.Name, "Sender@af016c07"));
+            var counter1average = cache.Get(new CounterInstanceName(criticalTimeProbe.Name.GetAverageTimerCounterName(), "Sender@af016c07"));
+            var counter1averageBase = cache.Get(new CounterInstanceName(criticalTimeProbe.Name.GetAverageTimerBaseCounterName(), "Sender@af016c07"));
 
-            var counter2 = cache.Get(new CounterInstanceName("Processing Time", "Sender@af016c07"));
-            var counter2average = cache.Get(new CounterInstanceName("Processing Time Average", "Sender@af016c07"));
-            var counter2averageBase = cache.Get(new CounterInstanceName("Processing Time AverageBase", "Sender@af016c07"));
+            var counter2 = cache.Get(new CounterInstanceName(processingTimeProbe.Name, "Sender@af016c07"));
+            var counter2average = cache.Get(new CounterInstanceName(processingTimeProbe.Name.GetAverageTimerCounterName(), "Sender@af016c07"));
+            var counter2averageBase = cache.Get(new CounterInstanceName(processingTimeProbe.Name.GetAverageTimerBaseCounterName(), "Sender@af016c07"));
 
             Assert.AreEqual(11, counter1.RawValue);
             Assert.AreEqual(CalculateAverageTimerCounterUpdate(timespan1), counter1average.RawValue);
@@ -123,9 +127,10 @@
             var cache = new MockPerformanceCountersCache();
             var sut = new PerformanceCounterUpdater(cache, new Dictionary<string, CounterInstanceName?>(), "Sender@af016c07");
 
+            var anyOtherProbe = new MockDurationProbe("Any Other Timer");
             var durationProbes = new[]
             {
-                new MockDurationProbe("Any Other Timer"),
+                anyOtherProbe
             };
 
             sut.Observe(new ProbeContext(durationProbes, new ISignalProbe[0]));
@@ -136,9 +141,9 @@
             // asserting the number of accessed counters
             Assert.AreEqual(2, cache.Count);
             
-            var counter1 = cache.Get(new CounterInstanceName("Any Other Timer", "Sender@af016c07"));
-            var counter1average = cache.Get(new CounterInstanceName("Any Other Timer Average", "Sender@af016c07"));
-            var counter1averageBase = cache.Get(new CounterInstanceName("Any Other Timer AverageBase", "Sender@af016c07"));
+            var counter1 = cache.Get(new CounterInstanceName(anyOtherProbe.Name, "Sender@af016c07"));
+            var counter1average = cache.Get(new CounterInstanceName(anyOtherProbe.Name.GetAverageTimerCounterName(), "Sender@af016c07"));
+            var counter1averageBase = cache.Get(new CounterInstanceName(anyOtherProbe.Name.GetAverageTimerBaseCounterName(), "Sender@af016c07"));
 
             Assert.AreEqual(0, counter1.RawValue);
             Assert.AreEqual(CalculateAverageTimerCounterUpdate(timespan), counter1average.RawValue);
