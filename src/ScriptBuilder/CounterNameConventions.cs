@@ -4,12 +4,12 @@
     {
         public static string GetAverageTimerCounterName(this string durationName)
         {
-            return $"Avg. {durationName} (sec)";
+            return $"Avg. {durationName}";
         }
 
         public static string GetAverageTimerBaseCounterName(this string durationName)
         {
-            return $"Avg. {durationName} (sec)Base";
+            return $"Avg. {durationName}Base";
         }
 
         public const string ProcessingTime = "Processing Time";

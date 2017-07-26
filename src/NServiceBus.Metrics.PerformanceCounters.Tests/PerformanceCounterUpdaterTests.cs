@@ -101,12 +101,12 @@
             Assert.AreEqual(3 + 3, cache.Count);
 
             var counter1 = cache.Get(new CounterInstanceName("Critical Time", "Sender@af016c07"));
-            var counter1average = cache.Get(new CounterInstanceName("Avg. Critical Time (sec)", "Sender@af016c07"));
-            var counter1averageBase = cache.Get(new CounterInstanceName("Avg. Critical Time (sec)Base", "Sender@af016c07"));
+            var counter1average = cache.Get(new CounterInstanceName("Avg. Critical Time", "Sender@af016c07"));
+            var counter1averageBase = cache.Get(new CounterInstanceName("Avg. Critical TimeBase", "Sender@af016c07"));
 
             var counter2 = cache.Get(new CounterInstanceName("Processing Time", "Sender@af016c07"));
-            var counter2average = cache.Get(new CounterInstanceName("Avg. Processing Time (sec)", "Sender@af016c07"));
-            var counter2averageBase = cache.Get(new CounterInstanceName("Avg. Processing Time (sec)Base", "Sender@af016c07"));
+            var counter2average = cache.Get(new CounterInstanceName("Avg. Processing Time", "Sender@af016c07"));
+            var counter2averageBase = cache.Get(new CounterInstanceName("Avg. Processing TimeBase", "Sender@af016c07"));
 
             Assert.AreEqual(11, counter1.RawValue);
             Assert.AreEqual(CalculateAverageTimerCounterUpdate(timespan1), counter1average.RawValue);
@@ -137,8 +137,8 @@
             Assert.AreEqual(2, cache.Count);
 
             var counter1 = cache.Get(new CounterInstanceName("Any Other Timer", "Sender@af016c07"));
-            var counter1average = cache.Get(new CounterInstanceName("Avg. Any Other Timer (sec)", "Sender@af016c07"));
-            var counter1averageBase = cache.Get(new CounterInstanceName("Avg. Any Other Timer (sec)Base", "Sender@af016c07"));
+            var counter1average = cache.Get(new CounterInstanceName("Avg. Any Other Timer", "Sender@af016c07"));
+            var counter1averageBase = cache.Get(new CounterInstanceName("Avg. Any Other TimerBase", "Sender@af016c07"));
 
             Assert.AreEqual(0, counter1.RawValue);
             Assert.AreEqual(CalculateAverageTimerCounterUpdate(timespan), counter1average.RawValue);
