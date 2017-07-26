@@ -13,23 +13,28 @@
             {
                 var stringBuilder = new StringBuilder();
 
-                var slaCounterDefinition = @"New-Object System.Diagnostics.CounterCreationData ""SLA violation countdown"", ""Seconds until the SLA for this endpoint is breached."",  NumberOfItems32";
+                var slaCounterDefinition = $@"New-Object System.Diagnostics.CounterCreationData ""SLA violation countdown"", ""{CounterNameAndDescriptionConventions.LegacySlaViolationCounterDescription}"",  NumberOfItems32";
                 stringBuilder.AppendLine(slaCounterDefinition.PadLeft(slaCounterDefinition.Length + 8));
 
                 foreach (var duration in durations)
                 {
                     var averageTimerName = duration.Name.GetAverageTimerCounterName();
                     var averageTimerBase = duration.Name.GetAverageTimerBaseCounterName();
+                    var averageTimerDescription = CounterNameAndDescriptionConventions.GetAverageTimerDescription(duration.Name, duration.Description);
 
-                    var durationAverageDefinition = $@"New-Object System.Diagnostics.CounterCreationData ""{averageTimerName}"", ""{duration.Description}"",  AverageTimer32";
+                    var durationAverageDefinition = $@"New-Object System.Diagnostics.CounterCreationData ""{averageTimerName}"", ""{averageTimerDescription}"",  AverageTimer32";
                     stringBuilder.AppendLine(durationAverageDefinition.PadLeft(durationAverageDefinition.Length + 8));
 
-                    var durationBaseDefinition = $@"New-Object System.Diagnostics.CounterCreationData ""{averageTimerBase}"", ""{duration.Description}"",  AverageBase";
+                    var durationBaseDefinition = $@"New-Object System.Diagnostics.CounterCreationData ""{averageTimerBase}"", ""{averageTimerDescription}"",  AverageBase";
                     stringBuilder.AppendLine(durationBaseDefinition.PadLeft(durationAverageDefinition.Length + 8));
                     
-                    if (duration.Name == CounterNameConventions.ProcessingTime || duration.Name == CounterNameConventions.CriticalTime)
+                    if (duration.Name == CounterNameAndDescriptionConventions.ProcessingTime || duration.Name == CounterNameAndDescriptionConventions.CriticalTime)
                     {
-                        var legacyTimerDefinition = $@"New-Object System.Diagnostics.CounterCreationData ""{duration.Name}"", ""{duration.Description}"",  NumberOfItems32";
+                        var legacyTimerDescription = duration.Name == CounterNameAndDescriptionConventions.ProcessingTime
+                            ? CounterNameAndDescriptionConventions.LegacyProcessingTimeDescription
+                            : CounterNameAndDescriptionConventions.LegacyCriticalTimeDescription;
+
+                        var legacyTimerDefinition = $@"New-Object System.Diagnostics.CounterCreationData ""{duration.Name}"", ""{legacyTimerDescription}"",  NumberOfItems32";
                         stringBuilder.AppendLine(legacyTimerDefinition.PadLeft(legacyTimerDefinition.Length + 8));
                     }
                 }

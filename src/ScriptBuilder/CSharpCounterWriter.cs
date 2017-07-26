@@ -13,23 +13,28 @@
             {
                 var stringBuilder = new StringBuilder();
 
-                var slaCounterDefinition = @"new CounterCreationData(""SLA violation countdown"", ""Seconds until the SLA for this endpoint is breached."", PerformanceCounterType.NumberOfItems32),";
+                var slaCounterDefinition = $@"new CounterCreationData(""SLA violation countdown"", ""{CounterNameAndDescriptionConventions.LegacySlaViolationCounterDescription}"", PerformanceCounterType.NumberOfItems32),";
                 stringBuilder.AppendLine(slaCounterDefinition.PadLeft(slaCounterDefinition.Length + 8));
 
                 foreach (var duration in durations)
                 {
                     var averageTimerName = duration.Name.GetAverageTimerCounterName();
                     var averageTimerBase = duration.Name.GetAverageTimerBaseCounterName();
+                    var averateTimerDescription = CounterNameAndDescriptionConventions.GetAverageTimerDescription(duration.Name, duration.Description);
 
-                    var durationAverageDefinition = $@"new CounterCreationData(""{averageTimerName}"", ""{duration.Description}"", PerformanceCounterType.AverageTimer32),";
+                    var durationAverageDefinition = $@"new CounterCreationData(""{averageTimerName}"", ""{averateTimerDescription}"", PerformanceCounterType.AverageTimer32),";
                     stringBuilder.AppendLine(durationAverageDefinition.PadLeft(durationAverageDefinition.Length + 8));
 
-                    var durationBaseDefinition = $@"new CounterCreationData(""{averageTimerBase}"", ""{duration.Description}"", PerformanceCounterType.AverageBase),";
+                    var durationBaseDefinition = $@"new CounterCreationData(""{averageTimerBase}"", ""{averateTimerDescription}"", PerformanceCounterType.AverageBase),";
                     stringBuilder.AppendLine(durationBaseDefinition.PadLeft(durationBaseDefinition.Length + 8));
 
-                    if (duration.Name == CounterNameConventions.ProcessingTime || duration.Name == CounterNameConventions.CriticalTime)
+                    if (duration.Name == CounterNameAndDescriptionConventions.ProcessingTime || duration.Name == CounterNameAndDescriptionConventions.CriticalTime)
                     {
-                        var legacyTimerDefinition = $@"new CounterCreationData(""{duration.Name}"", ""{duration.Description}"", PerformanceCounterType.NumberOfItems32),";
+                        var legacyDescription = duration.Name == CounterNameAndDescriptionConventions.ProcessingTime
+                            ? CounterNameAndDescriptionConventions.LegacyProcessingTimeDescription
+                            : CounterNameAndDescriptionConventions.LegacyCriticalTimeDescription;
+
+                        var legacyTimerDefinition = $@"new CounterCreationData(""{duration.Name}"", ""{legacyDescription}"", PerformanceCounterType.NumberOfItems32),";
                         stringBuilder.AppendLine(legacyTimerDefinition.PadLeft(legacyTimerDefinition.Length + 8));
                     }
                 }

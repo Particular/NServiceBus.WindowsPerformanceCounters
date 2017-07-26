@@ -12,7 +12,7 @@
     <UpdateAssemblyInfo>true</UpdateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\ScriptBuilder\CounterNameConventions.cs" Link="CounterNameConventions.cs" />
+    <Compile Include="..\ScriptBuilder\CounterNameAndDescriptionConventions.cs" Link="CounterNameAndDescriptionConventions.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />

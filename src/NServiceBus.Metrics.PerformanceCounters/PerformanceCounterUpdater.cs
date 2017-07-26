@@ -27,7 +27,7 @@ class PerformanceCounterUpdater
 
         foreach (var dp in context.Durations)
         {
-            if (dp.Name == CounterNameConventions.ProcessingTime || dp.Name == CounterNameConventions.CriticalTime)
+            if (dp.Name == CounterNameAndDescriptionConventions.ProcessingTime || dp.Name == CounterNameAndDescriptionConventions.CriticalTime)
             {
                 var performanceCounterInstance = cache.Get(new CounterInstanceName(dp.Name, endpointName));
                 dp.Register(d => performanceCounterInstance.RawValue = (long) d.TotalSeconds);

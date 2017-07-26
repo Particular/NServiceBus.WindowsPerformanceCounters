@@ -31,13 +31,13 @@ public static class CounterCreator
 
     static CounterCreationData[] Counters = new CounterCreationData[]
     {
-        new CounterCreationData("SLA violation countdown", "Seconds until the SLA for this endpoint is breached.", PerformanceCounterType.NumberOfItems32),
-        new CounterCreationData("Avg. Critical Time", "The time it took from sending to processing the message.", PerformanceCounterType.AverageTimer32),
-        new CounterCreationData("Avg. Critical TimeBase", "The time it took from sending to processing the message.", PerformanceCounterType.AverageBase),
-        new CounterCreationData("Critical Time", "The time it took from sending to processing the message.", PerformanceCounterType.NumberOfItems32),
-        new CounterCreationData("Avg. Processing Time", "The time it took to successfully process a message.", PerformanceCounterType.AverageTimer32),
-        new CounterCreationData("Avg. Processing TimeBase", "The time it took to successfully process a message.", PerformanceCounterType.AverageBase),
-        new CounterCreationData("Processing Time", "The time it took to successfully process a message.", PerformanceCounterType.NumberOfItems32),
+        new CounterCreationData("SLA violation countdown", "SLA Violation Countdown - Seconds until the SLA for this endpoint is breached. The value is in rounded seconds. This is an instantaneous snapshot, not an average over the time interval.", PerformanceCounterType.NumberOfItems32),
+        new CounterCreationData("Avg. Critical Time", "Avg. Critical Time - The time it took from sending to processing the message. The value is the average duration in seconds during the sample interval.", PerformanceCounterType.AverageTimer32),
+        new CounterCreationData("Avg. Critical TimeBase", "Avg. Critical Time - The time it took from sending to processing the message. The value is the average duration in seconds during the sample interval.", PerformanceCounterType.AverageBase),
+        new CounterCreationData("Critical Time", "Critical time - The time it took from sending to processing the message. The value is in rounded seconds. This is an instantaneous snapshot, not an average over the time interval.", PerformanceCounterType.NumberOfItems32),
+        new CounterCreationData("Avg. Processing Time", "Avg. Processing Time - The time it took to successfully process a message. The value is the average duration in seconds during the sample interval.", PerformanceCounterType.AverageTimer32),
+        new CounterCreationData("Avg. Processing TimeBase", "Avg. Processing Time - The time it took to successfully process a message. The value is the average duration in seconds during the sample interval.", PerformanceCounterType.AverageBase),
+        new CounterCreationData("Processing Time", "Processing time - The time it took to successfully process a message. The value is in rounded seconds. This is an instantaneous snapshot, not an average over the time interval.", PerformanceCounterType.NumberOfItems32),
         new CounterCreationData("# of msgs failures / sec", "The current number of failed processed messages by the transport per second.", PerformanceCounterType.RateOfCountsPerSecond32),
         new CounterCreationData("# of msgs successfully processed / sec", "The current number of messages processed successfully by the transport per second.", PerformanceCounterType.RateOfCountsPerSecond32),
         new CounterCreationData("# of msgs pulled from the input queue /sec", "The current number of messages pulled from the input queue by the transport per second.", PerformanceCounterType.RateOfCountsPerSecond32),
