@@ -16,9 +16,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-    <PackageReference Include="NServiceBus" Version="6.3.4" />
+    <PackageReference Include="NServiceBus" Version="7.0.0-*" />
+    <PackageReference Include="NServiceBus.Metrics" Version="2.0.0-*" />
     <PackageReference Include="GitVersionTask" Version="4.0.0-beta0012" />
-    <PackageReference Include="NServiceBus.Metrics" Version="1.1.0" />
     <PackageReference Include="NuGetPackager" Version="0.6.3" />
   </ItemGroup>
   <Target Name="BeforeBuildPackages" BeforeTargets="BuildPackages">
