@@ -11,6 +11,10 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <UpdateAssemblyInfo>true</UpdateAssemblyInfo>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\binaries\</OutputPath>
+    <DocumentationFile>..\..\binaries\NServiceBus.Metrics.PerformanceCounters.xml</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\ScriptBuilder\CounterNameConventions.cs" Link="CounterNameConventions.cs" />
   </ItemGroup>
