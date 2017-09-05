@@ -20,12 +20,12 @@
                 {
                     var averageTimerName = duration.Name.GetAverageTimerCounterName();
                     var averageTimerBase = duration.Name.GetAverageTimerBaseCounterName();
-                    var averateTimerDescription = CounterNameAndDescriptionConventions.GetAverageTimerDescription(duration.Name, duration.Description);
+                    var averageTimerDescription = CounterNameAndDescriptionConventions.GetAverageTimerDescription(duration.Name, duration.Description);
 
-                    var durationAverageDefinition = $@"new CounterCreationData(""{averageTimerName}"", ""{averateTimerDescription}"", PerformanceCounterType.AverageTimer32),";
+                    var durationAverageDefinition = $@"new CounterCreationData(""{averageTimerName}"", ""{averageTimerDescription}"", PerformanceCounterType.AverageTimer32),";
                     stringBuilder.AppendLine(durationAverageDefinition.PadLeft(durationAverageDefinition.Length + 8));
 
-                    var durationBaseDefinition = $@"new CounterCreationData(""{averageTimerBase}"", ""{averateTimerDescription}"", PerformanceCounterType.AverageBase),";
+                    var durationBaseDefinition = $@"new CounterCreationData(""{averageTimerBase}"", ""{averageTimerDescription}"", PerformanceCounterType.AverageBase),";
                     stringBuilder.AppendLine(durationBaseDefinition.PadLeft(durationBaseDefinition.Length + 8));
 
                     if (duration.Name == CounterNameAndDescriptionConventions.ProcessingTime || duration.Name == CounterNameAndDescriptionConventions.CriticalTime)
