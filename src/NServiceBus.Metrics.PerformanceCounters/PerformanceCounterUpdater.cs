@@ -22,7 +22,7 @@ class PerformanceCounterUpdater
 
             var performanceCounterInstance = cache.Get(instanceName ?? new CounterInstanceName(signalProbe.Name, endpointName));
 
-            signalProbe.Register(() => performanceCounterInstance.Increment());
+            signalProbe.Register((ref SignalEvent e) => performanceCounterInstance.Increment());
         }
 
         foreach (var durationProbe in context.Durations)
@@ -30,15 +30,15 @@ class PerformanceCounterUpdater
             if (durationProbe.Name == CounterNameConventions.ProcessingTime || durationProbe.Name == CounterNameConventions.CriticalTime)
             {
                 var performanceCounterInstance = cache.Get(new CounterInstanceName(durationProbe.Name, endpointName));
-                durationProbe.Register(d => performanceCounterInstance.RawValue = (long) d.TotalSeconds);
+                durationProbe.Register((ref DurationEvent d) => performanceCounterInstance.RawValue = (long) d.Duration.TotalSeconds);
             }
 
             var averageTimerCounter = cache.Get(new CounterInstanceName(durationProbe.Name.GetAverageTimerCounterName(), endpointName));
             var baseAverageTimerCounter = cache.Get(new CounterInstanceName(durationProbe.Name.GetAverageTimerBaseCounterName(), endpointName));
 
-            durationProbe.Register(d =>
+            durationProbe.Register((ref DurationEvent d) =>
             {
-                var performanceCounterTicks = d.Ticks * Stopwatch.Frequency / TimeSpan.TicksPerSecond;
+                var performanceCounterTicks = d.Duration.Ticks * Stopwatch.Frequency / TimeSpan.TicksPerSecond;
                 averageTimerCounter.IncrementBy(performanceCounterTicks);
                 baseAverageTimerCounter.Increment();
             });
