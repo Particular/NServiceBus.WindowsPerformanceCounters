@@ -18,24 +18,8 @@
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="NServiceBus" Version="7.0.0-*" />
     <PackageReference Include="NServiceBus.Metrics" Version="2.0.0-*" />
+    <PackageReference Include="NServiceBus" Version="6.3.4" />
     <PackageReference Include="GitVersionTask" Version="4.0.0-beta0012" />
     <PackageReference Include="NuGetPackager" Version="0.6.3" />
   </ItemGroup>
-  <Target Name="BeforeBuildPackages" BeforeTargets="BuildPackages">
-    <MakeDir Directories="$(TargetDir)temp\" />
-    <Exec Command="&quot;$(SolutionDir)..\tools\ilmerge.exe&quot; /log:$(TargetDir)ilmerge.log /keyfile:&quot;$(SolutionDir)NServiceBus.snk&quot; /internalize /out:&quot;$(TargetDir)temp\$(TargetFileName)&quot; &quot;$(TargetPath)&quot; &quot;$(TargetDir)Newtonsoft.Json.dll&quot; /target:library /targetplatform:&quot;v4,$(FrameworkPathOverride)&quot;" />
-    <ItemGroup>
-      <TempFiles Include="$(TargetDir)temp\*.*" />
-    </ItemGroup>
-    <Copy SourceFiles="@(TempFiles)" DestinationFolder="$(TargetDir)" OverwriteReadOnlyFiles="true" />
-    <Delete Files="@(TempFiles)" />
-    <RemoveDir Directories="$(TargetDir)temp\" />
-    <MakeDir Directories="$(SolutionDir)..\binaries" />
-    <ItemGroup>
-      <Files Include="$(TargetDir)$(TargetName).*" />
-    </ItemGroup>
-    <Copy SourceFiles="@(Files)" DestinationFolder="$(SolutionDir)..\binaries" />
-    <MakeDir Directories="$(SolutionDir)ForIntegration" />
-    <Copy SourceFiles="@(Files)" DestinationFolder="$(SolutionDir)ForIntegration" />
-  </Target>
 </Project>
