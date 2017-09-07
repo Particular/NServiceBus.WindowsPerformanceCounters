@@ -28,9 +28,10 @@
 
             sut.Observe(new ProbeContext(new IDurationProbe[0], signals));
 
-            Enumerable.Range(0, 111).ForEach(_ => signals[0].Observers());
-            Enumerable.Range(0, 222).ForEach(_ => signals[1].Observers());
-            Enumerable.Range(0, 333).ForEach(_ => signals[2].Observers());
+            var e = new SignalEvent();
+            Enumerable.Range(0, 111).ForEach(_ => signals[0].Observers(ref e));
+            Enumerable.Range(0, 222).ForEach(_ => signals[1].Observers(ref e));
+            Enumerable.Range(0, 333).ForEach(_ => signals[2].Observers(ref e));
 
             var performanceCounterOne = cache.Get(new CounterInstanceName(signals[0].Name, endpointName));
             var performanceCounterTwo = cache.Get(new CounterInstanceName(signals[1].Name, endpointName));
@@ -64,9 +65,11 @@
 
             sut.Observe(new ProbeContext(new IDurationProbe[0], signals));
 
-            Enumerable.Range(0, 111).ForEach(_ => signals[0].Observers());
-            Enumerable.Range(0, 222).ForEach(_ => signals[1].Observers());
-            Enumerable.Range(0, 333).ForEach(_ => signals[2].Observers());
+            var e = new SignalEvent();
+
+            Enumerable.Range(0, 111).ForEach(_ => signals[0].Observers(ref e));
+            Enumerable.Range(0, 222).ForEach(_ => signals[1].Observers(ref e));
+            Enumerable.Range(0, 333).ForEach(_ => signals[2].Observers(ref e));
 
             var performanceCounterOne = cache.Get(new CounterInstanceName("# of msgs failures / sec", "queueAddress"));
             var performanceCounterTwo = cache.Get(new CounterInstanceName("# of msgs pulled from the input queue /sec", "queueAddress"));
@@ -93,9 +96,12 @@
             sut.Observe(new ProbeContext(durationProbes, new ISignalProbe[0]));
 
             var timespan1 = TimeSpan.FromSeconds(11);
-            durationProbes[0].Observers(timespan1);
+            var d1 = new DurationEvent(timespan1, null);
+            durationProbes[0].Observers(ref d1);
+
             var timespan2 = TimeSpan.FromSeconds(22);
-            durationProbes[1].Observers(timespan2);
+            var d2 = new DurationEvent(timespan2, null);
+            durationProbes[1].Observers(ref d2);
 
             // asserting the number of accessed counters
             Assert.AreEqual(3 + 3, cache.Count);
@@ -131,7 +137,8 @@
             sut.Observe(new ProbeContext(durationProbes, new ISignalProbe[0]));
 
             var timespan = TimeSpan.FromSeconds(11);
-            durationProbes[0].Observers(timespan);
+            var d = new DurationEvent(timespan, null);
+            durationProbes[0].Observers(ref d);
 
             // asserting the number of accessed counters
             Assert.AreEqual(2, cache.Count);
@@ -168,15 +175,14 @@
             Name = name;
         }
 
-        public void Register(Action observer)
+        public void Register(OnEvent<SignalEvent> observer)
         {
             Observers += observer;
         }
 
         public string Name { get; }
         public string Description => string.Empty;
-
-        public Action Observers = () => { };
+        public OnEvent<SignalEvent> Observers = (ref SignalEvent e) => { };
     }
 
     class MockDurationProbe : IDurationProbe
@@ -186,14 +192,13 @@
             Name = name;
         }
 
-        public void Register(Action<TimeSpan> observer)
+        public void Register(OnEvent<DurationEvent> observer)
         {
             Observers += observer;
         }
 
         public string Name { get; }
         public string Description => string.Empty;
-
-        public Action<TimeSpan> Observers = _ => { };
+        public OnEvent<DurationEvent> Observers = (ref DurationEvent d) => { };
     }
 }

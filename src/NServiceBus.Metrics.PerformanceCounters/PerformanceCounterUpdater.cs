@@ -15,30 +15,30 @@ class PerformanceCounterUpdater
 
     public void Observe(ProbeContext context)
     {
-        foreach (var sp in context.Signals)
+        foreach (var signalProbe in context.Signals)
         {
             CounterInstanceName? instanceName;
-            legacyInstanceNameMap.TryGetValue(sp.Name, out instanceName);
+            legacyInstanceNameMap.TryGetValue(signalProbe.Name, out instanceName);
 
-            var performanceCounterInstance = cache.Get(instanceName ?? new CounterInstanceName(sp.Name, endpointName));
+            var performanceCounterInstance = cache.Get(instanceName ?? new CounterInstanceName(signalProbe.Name, endpointName));
 
-            sp.Register(() => performanceCounterInstance.Increment());
+            signalProbe.Register((ref SignalEvent e) => performanceCounterInstance.Increment());
         }
 
-        foreach (var dp in context.Durations)
+        foreach (var durationProbe in context.Durations)
         {
-            if (dp.Name == CounterNameConventions.ProcessingTime || dp.Name == CounterNameConventions.CriticalTime)
+            if (durationProbe.Name == CounterNameConventions.ProcessingTime || durationProbe.Name == CounterNameConventions.CriticalTime)
             {
-                var performanceCounterInstance = cache.Get(new CounterInstanceName(dp.Name, endpointName));
-                dp.Register(d => performanceCounterInstance.RawValue = (long) d.TotalSeconds);
+                var performanceCounterInstance = cache.Get(new CounterInstanceName(durationProbe.Name, endpointName));
+                durationProbe.Register((ref DurationEvent d) => performanceCounterInstance.RawValue = (long) d.Duration.TotalSeconds);
             }
 
-            var averageTimerCounter = cache.Get(new CounterInstanceName(dp.Name.GetAverageTimerCounterName(), endpointName));
-            var baseAverageTimerCounter = cache.Get(new CounterInstanceName(dp.Name.GetAverageTimerBaseCounterName(), endpointName));
+            var averageTimerCounter = cache.Get(new CounterInstanceName(durationProbe.Name.GetAverageTimerCounterName(), endpointName));
+            var baseAverageTimerCounter = cache.Get(new CounterInstanceName(durationProbe.Name.GetAverageTimerBaseCounterName(), endpointName));
 
-            dp.Register(d =>
+            durationProbe.Register((ref DurationEvent d) =>
             {
-                var performanceCounterTicks = d.Ticks * Stopwatch.Frequency / TimeSpan.TicksPerSecond;
+                var performanceCounterTicks = d.Duration.Ticks * Stopwatch.Frequency / TimeSpan.TicksPerSecond;
                 averageTimerCounter.IncrementBy(performanceCounterTicks);
                 baseAverageTimerCounter.Increment();
             });
