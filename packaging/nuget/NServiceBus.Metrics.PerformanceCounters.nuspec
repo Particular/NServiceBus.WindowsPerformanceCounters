@@ -14,8 +14,8 @@
     <copyright>$copyright$</copyright>
     <tags>$tags$</tags>
     <dependencies>
-      <dependency id="NServiceBus" version="[7.0.0-*, 8.0.0)" />
-      <dependency id="NServiceBus.Metrics" version="[2.0.0-*, 3.0.0)" />
+      <dependency id="NServiceBus" version="[7.0.0-beta0001, 8.0.0)" />
+      <dependency id="NServiceBus.Metrics" version="[2.0.0-alpha0027, 3.0.0)" />
     </dependencies>
   </metadata>
   <files>
