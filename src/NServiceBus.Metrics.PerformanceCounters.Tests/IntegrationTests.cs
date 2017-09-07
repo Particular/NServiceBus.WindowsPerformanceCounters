@@ -61,7 +61,7 @@ public class IntegrationTests
         public Task Handle(MyMessage message, IMessageHandlerContext context)
         {
             ManualResetEvent.Set();
-            return Task.Delay(TimeSpan.FromMilliseconds(100));
+            return Task.Delay(TimeSpan.FromMilliseconds(1000));
         }
     }
     public class MyMessage : ICommand
