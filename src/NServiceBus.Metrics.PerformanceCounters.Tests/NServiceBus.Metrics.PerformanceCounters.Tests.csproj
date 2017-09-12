@@ -10,8 +10,8 @@
     <Optimize>False</Optimize>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="NServiceBus.Metrics.PerformanceCounters.approved.cs" />
-    <Compile Remove="NServiceBus.Metrics.PerformanceCounters.received.cs" />
+    <Compile Remove="*.approved.cs" />
+    <Compile Remove="*.received.cs" />
     <PackageReference Include="ApprovalTests" Version="3.*" />
     <PackageReference Include="ApprovalUtilities" Version="3.*" />
     <PackageReference Include="Mono.Cecil" Version="0.10.0-*" />
