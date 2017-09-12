@@ -10,10 +10,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <UpdateAssemblyInfo>true</UpdateAssemblyInfo>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\..\binaries\</OutputPath>
-    <DocumentationFile>..\..\binaries\NServiceBus.Metrics.PerformanceCounters.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\ScriptBuilder\CounterNameConventions.cs" Link="CounterNameConventions.cs" />
@@ -22,7 +19,6 @@
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="NServiceBus" Version="7.0.0-*" />
     <PackageReference Include="NServiceBus.Metrics" Version="2.0.0-*" />
-    <PackageReference Include="NServiceBus" Version="6.3.4" />
     <PackageReference Include="GitVersionTask" Version="4.0.0-beta0012" />
     <PackageReference Include="NuGetPackager" Version="0.6.3" />
   </ItemGroup>
