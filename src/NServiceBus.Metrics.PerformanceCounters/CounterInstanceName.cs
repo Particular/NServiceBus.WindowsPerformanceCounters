@@ -13,7 +13,12 @@ struct CounterInstanceName : IEquatable<CounterInstanceName>
         {
             return false;
         }
-        return obj is CounterInstanceName && Equals((CounterInstanceName)obj);
+
+        if (!(obj is CounterInstanceName))
+        {
+            return false;
+        }
+        return Equals((CounterInstanceName)obj);
     }
 
     public override int GetHashCode()
