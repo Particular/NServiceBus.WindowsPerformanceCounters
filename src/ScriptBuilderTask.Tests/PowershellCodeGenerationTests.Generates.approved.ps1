@@ -18,24 +18,20 @@ Function InstallNSBPerfCounters {
 		New-Object System.Diagnostics.CounterCreationData "Retries", "A message has been scheduled for retry (FLR or SLR)",  RateOfCountsPerSecond32
     ))
 
-	$shouldCreate = $true
 	if ([System.Diagnostics.PerformanceCounterCategory]::Exists($category.Name)) {
 		
-		$shouldCreate = $false
-
 		foreach($counter in $counters){
 			$exists = [System.Diagnostics.PerformanceCounterCategory]::CounterExists($counter.CounterName, $category.Name)
 			if (!$exists){
-				$shouldCreate = $true
+				Write-Host "One or more counters are missing. The performance counter category will be recreated"
+				[System.Diagnostics.PerformanceCounterCategory]::Delete($category.Name)
+
 				break
 			}
 		}
     }
 
-	if ($shouldCreate){
-		Write-Host "One or more counters are missing. The performance counter category will be recreated"
-		[System.Diagnostics.PerformanceCounterCategory]::Delete($category.Name)
-
+	if (![System.Diagnostics.PerformanceCounterCategory]::Exists($category.Name)) {
         Write-Host "Creating the performance counter category"
 		[void] [System.Diagnostics.PerformanceCounterCategory]::Create($category.Name, $category.Description, [System.Diagnostics.PerformanceCounterCategoryType]::MultiInstance, $counters)
 	}
