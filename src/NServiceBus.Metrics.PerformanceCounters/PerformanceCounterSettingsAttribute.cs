@@ -23,7 +23,7 @@
         /// <summary>
         /// Path to promote performance counter installation scripts to.
         /// The token '$(SolutionDir)' will be replace with the current solution directory.
-        /// The token '$(ProjectDir)' will be replace witht he current solution directory.
+        /// The token '$(ProjectDir)' will be replace with the current solution directory.
         /// The path calculation is performed relative to the current project directory.
         /// </summary>
         public string ScriptPromotionPath { get; set; }

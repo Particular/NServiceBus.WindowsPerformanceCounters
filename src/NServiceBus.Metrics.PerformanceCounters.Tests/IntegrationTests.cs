@@ -30,7 +30,7 @@ public class IntegrationTests
 
         var endpoint = await Endpoint.Start(endpointConfiguration)
             .ConfigureAwait(false);
-        
+
         await endpoint.SendLocal(new MyMessage())
             .ConfigureAwait(false);
 

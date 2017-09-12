@@ -17,7 +17,7 @@ static class Extensions
         return false;
     }
 
-    public static void ThrowIfSendonly(this FeatureConfigurationContext context)
+    public static void ThrowIfSendOnly(this FeatureConfigurationContext context)
     {
         var isSendOnly = context.Settings.GetOrDefault<bool>("Endpoint.SendOnly");
         if (isSendOnly)

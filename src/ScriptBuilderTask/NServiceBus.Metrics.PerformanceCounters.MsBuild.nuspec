@@ -1,9 +1,8 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>NServiceBus.Metrics.PerformanceCounters.MsBuild</id>
+    <id>$id$</id>
     <version>$version$</version>
-    <title>NServiceBus.Metrics.PerformanceCounters.MsBuild</title>
     <authors>$authors$</authors>
     <owners>$owners$</owners>
     <developmentDependency>true</developmentDependency>
@@ -11,7 +10,7 @@
     <projectUrl>$projectUrl$</projectUrl>
     <requireLicenseAcceptance>$requireLicenseAcceptance$</requireLicenseAcceptance>
     <iconUrl>$iconUrl$</iconUrl>
-    <description>MsBuild Task for building deployment scripts for the NServiceBus.Metrics.PerformanceCounters package.</description>
+    <description>$description$</description>
     <copyright>$copyright$</copyright>
     <tags>$tags$</tags>
     <dependencies>
@@ -19,7 +18,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\binaries\NServiceBus.Metrics.PerformanceCounters.Task.???" target="" />
-    <file src="..\..\packaging\nuget\NServiceBus.Metrics.PerformanceCounters.MsBuild.targets" target="build" />
+    <file src="..\..\binaries\net452\NServiceBus.Metrics.PerformanceCounters.Task.???" target="netclassic" />
+    <file src="..\..\binaries\netstandard1.5\NServiceBus.Metrics.PerformanceCounters.Task.???" target="netstandard" />
+    <file src="NServiceBus.Metrics.PerformanceCounters.MsBuild.targets" target="build" />
   </files>
 </package>

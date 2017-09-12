@@ -3,31 +3,25 @@
   <PropertyGroup>
     <TargetFramework>net452</TargetFramework>
     <AssemblyName>NServiceBus.Metrics.PerformanceCounters.Builder</AssemblyName>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(SolutionDir)NServiceBus.snk</AssemblyOriginatorKeyFile>
     <DebugType>full</DebugType>
     <DebugSymbols>True</DebugSymbols>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <OutputPath>..\..\binaries\</OutputPath>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <UpdateAssemblyInfo>true</UpdateAssemblyInfo>
     <NoWarn>CS1591;CS0006</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Mono.Cecil" Version="0.10.0-beta6" />
+    <PackageReference Include="Mono.Cecil" Version="0.10.0-*" />
     <PackageReference Include="NServiceBus.Metrics" Version="2.0.0-*" />
   </ItemGroup>
-  <Target Name="AfterBuild">
-    <CreateItem Include="@(PackageDefinitions)" Condition="'%(Name)' == 'Mono.Cecil'">
-       <Output TaskParameter="Include" ItemName="MonoCecilRef" />
-    </CreateItem>
-    <PropertyGroup>
-      <IlMerge>"$(SolutionDir)..\Tools\ilmerge.exe"</IlMerge>
-      <ScriptBuilderDll>$(ProjectDir)bin\$(ConfigurationName)\NServiceBus.Metrics.PerformanceCounters.Builder.dll</ScriptBuilderDll>
-      <Cecil>@(MonoCecilRef->'%(ResolvedPath)')\lib\net40\Mono.Cecil.dll</Cecil>
-      <MergeOutput>$(SolutionDir)..\binaries\NServiceBus.Metrics.PerformanceCounters.Builder.dll</MergeOutput>
-    </PropertyGroup>
-    <MakeDir Directories="$(SolutionDir)..\binaries" />
-    <Exec Command="$(IlMerge) /out:&quot;$(MergeOutput)&quot; &quot;$(ScriptBuilderDll)&quot; &quot;$(Cecil)&quot; /target:library /targetplatform:&quot;v4,$(FrameworkPathOverride)&quot; /internalize /keyfile:&quot;$(SolutionDir)NServiceBus.snk&quot;" />
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>NServiceBus.Metrics.PerformanceCounters.Builder</PackageId>
+    <Description>MsBuild Task for building deployment scripts for the NServiceBus.Metrics.PerformanceCounters package.</Description>
+  </PropertyGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <RemoveDir Directories="$(NuGetPackageRoot)NServiceBus.Metrics.PerformanceCounters\$(PackageVersion)" ContinueOnError="WarnAndContinue" />
+    <RemoveDir Directories="$(NuGetPackageRoot)NServiceBus.Metrics.PerformanceCounters.MsBuild\$(PackageVersion)" ContinueOnError="WarnAndContinue" />
   </Target>
 </Project>

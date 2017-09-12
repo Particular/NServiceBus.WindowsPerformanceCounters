@@ -5,6 +5,7 @@
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
 
@@ -28,17 +29,17 @@
         [Required]
         public string SolutionDirectory { get; set; }
 
-        public Dictionary<string, string> ReferenceDictionary { get; } = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+        public Dictionary<string, string> ReferenceDictionary { get; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
         public override bool Execute()
         {
             logger = new BuildLogger(BuildEngine);
-            logger.LogInfo($"ScriptBuilderTask (version {typeof(ScriptBuilderTask).Assembly.GetName().Version}) Executing");
+            logger.LogInfo($"ScriptBuilderTask (version {typeof(ScriptBuilderTask).GetTypeInfo().Assembly.GetName().Version}) Executing");
 
             var stopwatch = Stopwatch.StartNew();
 
             var referenceCopyLocalPaths = ReferenceCopyLocalPaths.Select(x => x.ItemSpec);
-            var splitReferences = References.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Union(referenceCopyLocalPaths, StringComparer.InvariantCultureIgnoreCase);
+            var splitReferences = References.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Union(referenceCopyLocalPaths, StringComparer.OrdinalIgnoreCase);
             foreach (var filePath in splitReferences)
             {
                 var fileNameWithExtension = Path.GetFileName(filePath);

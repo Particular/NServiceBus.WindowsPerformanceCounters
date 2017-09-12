@@ -5,7 +5,7 @@ using NUnit.Framework;
 public class EstimatedTimeToSLABreachCounterTests
 {
     [Test]
-    public void Single_Datapoint_should_result_in_MaxValue()
+    public void Single_DataPoint_should_result_in_MaxValue()
     {
         var mockPerformanceCounter = new MockIPerformanceCounter();
         var counter = new EstimatedTimeToSLABreachCounter(TimeSpan.FromSeconds(2), mockPerformanceCounter);

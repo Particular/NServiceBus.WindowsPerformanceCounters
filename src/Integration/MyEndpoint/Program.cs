@@ -14,7 +14,7 @@ class Program
         var configuration = new EndpointConfiguration("MyEndpoint");
         configuration.SendFailedMessagesTo("error");
         configuration.UsePersistence<InMemoryPersistence>();
-        configuration.UseTransport<MsmqTransport>();
+        configuration.UseTransport<LearningTransport>();
         configuration.EnableInstallers();
         var performanceCounters = configuration.EnableWindowsPerformanceCounters();
         performanceCounters.EnableSLAPerformanceCounters(TimeSpan.FromSeconds(1));

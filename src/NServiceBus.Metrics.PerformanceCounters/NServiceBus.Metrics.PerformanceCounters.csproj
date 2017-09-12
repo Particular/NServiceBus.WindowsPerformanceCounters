@@ -5,21 +5,25 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(SolutionDir)NServiceBus.snk</AssemblyOriginatorKeyFile>
-    <DebugType>full</DebugType>
-    <DebugSymbols>True</DebugSymbols>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <UpdateAssemblyInfo>true</UpdateAssemblyInfo>
     <OutputPath>..\..\binaries\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\ScriptBuilder\CounterNameConventions.cs" Link="CounterNameConventions.cs" />
+    <Compile Include="..\ScriptBuilderTask\CounterNameConventions.cs" Link="CounterNameConventions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-    <PackageReference Include="NServiceBus" Version="7.0.0-*" />
-    <PackageReference Include="NServiceBus.Metrics" Version="2.0.0-*" />
-    <PackageReference Include="GitVersionTask" Version="4.0.0-beta0012" />
-    <PackageReference Include="NuGetPackager" Version="0.6.3" />
+    <PackageReference Include="GitVersionTask" Version="4.0.0-*" PrivateAssets="All" />
+    <PackageReference Include="Newtonsoft.Json" Version="[10.0.1, 11.0.0)" />
+    <PackageReference Include="NServiceBus" Version="[7.0.0-*, 8.0.0)" />
+    <PackageReference Include="NServiceBus.Metrics" Version="[2.0.0-*, 3.0.0)" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Enables access to performance counters</Description>
+  </PropertyGroup>
+
+  <Target Name="WritePackageVersionForIntegration" BeforeTargets="GenerateNuspec">
+    <WriteLinesToFile Lines="&lt;Project&gt;&lt;PropertyGroup&gt;&lt;IntegrationVersion&gt;$(PackageVersion)&lt;/IntegrationVersion&gt;&lt;/PropertyGroup&gt;&lt;/Project&gt;" File="..\Integration\Directory.Build.props" Overwrite="true" />
+  </Target>
 </Project>
