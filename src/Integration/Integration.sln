@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 15.0.26403.3
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyEndpoint", "Integration\MyEndpoint\MyEndpoint.csproj", "{C112D4A5-4A86-432F-8B5C-17B641ED6DC6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyEndpoint", "MyEndpoint\MyEndpoint.csproj", "{C112D4A5-4A86-432F-8B5C-17B641ED6DC6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
