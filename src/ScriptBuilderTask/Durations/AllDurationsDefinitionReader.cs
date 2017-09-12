@@ -13,8 +13,7 @@
             {
                 try
                 {
-                    List<DurationDefinition> definition;
-                    if (DurationDefinitionReader.TryGetDurationDefinition(type, out definition))
+                    if (DurationDefinitionReader.TryGetDurationDefinition(type, out var definition))
                     {
                         timerDefinitions.AddRange(definition);
                     }

@@ -13,8 +13,7 @@
             {
                 try
                 {
-                    List<SignalDefinition> definition;
-                    if (SignalDefinitionReader.TryGetSignalDefinition(type, out definition))
+                    if (SignalDefinitionReader.TryGetSignalDefinition(type, out var definition))
                     {
                         timerDefinitions.AddRange(definition);
                     }

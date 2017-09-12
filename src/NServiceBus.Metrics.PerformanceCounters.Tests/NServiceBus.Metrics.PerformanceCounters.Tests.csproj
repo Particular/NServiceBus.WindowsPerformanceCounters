@@ -12,6 +12,7 @@
   <ItemGroup>
     <Compile Remove="*.approved.cs" />
     <Compile Remove="*.received.cs" />
+    <Compile Include="..\ScriptBuilderTask.Tests\CSharpCodeGenerationTests.Generates.approved.cs" Link="CSharpCodeGenerationTests.Generates.approved.cs" />
     <PackageReference Include="ApprovalTests" Version="3.*" />
     <PackageReference Include="ApprovalUtilities" Version="3.*" />
     <PackageReference Include="Mono.Cecil" Version="0.10.0-*" />
@@ -22,6 +23,5 @@
     <PackageReference Include="ApiApprover" Version="6.1.0-*" />
     <PackageReference Include="PublicApiGenerator" Version="6.1.0-*" />
     <ProjectReference Include="..\NServiceBus.Metrics.PerformanceCounters\NServiceBus.Metrics.PerformanceCounters.csproj" />
-    <ProjectReference Include="..\ScriptBuilderTask.Tests\ScriptBuilderTask.Tests.csproj" />
   </ItemGroup>
 </Project>

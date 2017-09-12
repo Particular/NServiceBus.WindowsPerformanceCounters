@@ -93,8 +93,7 @@
                 throw new ErrorsException($"SolutionDirectory '{SolutionDirectory}' does not exist.");
             }
 
-            string filePath;
-            if (!ReferenceDictionary.TryGetValue("NServiceBus.Metrics.dll", out filePath))
+            if (!ReferenceDictionary.TryGetValue("NServiceBus.Metrics.dll", out _))
             {
                 throw new ErrorsException("NServiceBus.Metrics.dll is not referenced in this assembly.");
             }

@@ -36,8 +36,7 @@
 
                 foreach (var signal in signals)
                 {
-                    string instanceName;
-                    legacyInstanceNameMap.TryGetValue(signal.Name, out instanceName);
+                    legacyInstanceNameMap.TryGetValue(signal.Name, out var instanceName);
 
                     var signalDefinition = $@"new CounterCreationData(""{instanceName ?? signal.Name}"", ""{signal.Description}"", PerformanceCounterType.RateOfCountsPerSecond32),";
                     stringBuilder.AppendLine(signalDefinition.PadLeft(signalDefinition.Length + 8));
@@ -53,9 +52,9 @@ using System.Security;
 using System.Runtime.CompilerServices;
 
 [CompilerGenerated]
-public static class CounterCreator 
+public static class CounterCreator
 {{
-    public static void Create() 
+    public static void Create()
     {{
         var counterCreationCollection = new CounterCreationDataCollection(Counters);
         try
@@ -72,7 +71,8 @@ public static class CounterCreator
                 categoryType: PerformanceCounterCategoryType.MultiInstance,
                 counterData: counterCreationCollection);
             PerformanceCounter.CloseSharedResources();
-        }} catch(Exception ex) when(ex is SecurityException || ex is UnauthorizedAccessException)
+        }}
+        catch (Exception ex) when (ex is SecurityException || ex is UnauthorizedAccessException)
         {{
             throw new Exception(""Execution requires elevated permissions"", ex);
         }}

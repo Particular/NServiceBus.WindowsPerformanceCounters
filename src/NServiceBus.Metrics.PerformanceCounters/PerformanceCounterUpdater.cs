@@ -17,8 +17,7 @@ class PerformanceCounterUpdater
     {
         foreach (var signalProbe in context.Signals)
         {
-            CounterInstanceName? instanceName;
-            legacyInstanceNameMap.TryGetValue(signalProbe.Name, out instanceName);
+            legacyInstanceNameMap.TryGetValue(signalProbe.Name, out var instanceName);
 
             var performanceCounterInstance = cache.Get(instanceName ?? new CounterInstanceName(signalProbe.Name, endpointName));
 

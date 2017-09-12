@@ -26,7 +26,7 @@
 
                     var durationBaseDefinition = $@"New-Object System.Diagnostics.CounterCreationData ""{averageTimerBase}"", ""{duration.Description}"",  AverageBase";
                     stringBuilder.AppendLine(durationBaseDefinition.PadLeft(durationAverageDefinition.Length + 8));
-                    
+
                     if (duration.Name == CounterNameConventions.ProcessingTime || duration.Name == CounterNameConventions.CriticalTime)
                     {
                         var legacyTimerDefinition = $@"New-Object System.Diagnostics.CounterCreationData ""{duration.Name}"", ""{duration.Description}"",  NumberOfItems32";
@@ -36,8 +36,7 @@
 
                 foreach (var signal in signals)
                 {
-                    string instanceName;
-                    legacyInstanceNameMap.TryGetValue(signal.Name, out instanceName);
+                    legacyInstanceNameMap.TryGetValue(signal.Name, out var instanceName);
 
                     var signalDefinition = $@"New-Object System.Diagnostics.CounterCreationData ""{instanceName ?? signal.Name}"", ""{signal.Description}"",  RateOfCountsPerSecond32";
                     stringBuilder.AppendLine(signalDefinition.PadLeft(signalDefinition.Length + 8));
