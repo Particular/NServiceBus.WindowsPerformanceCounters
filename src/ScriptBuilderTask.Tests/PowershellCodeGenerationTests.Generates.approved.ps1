@@ -16,7 +16,6 @@ Function InstallNSBPerfCounters {
 		New-Object System.Diagnostics.CounterCreationData "# of msgs successfully processed / sec", "The current number of messages processed successfully by the transport per second.",  RateOfCountsPerSecond32
 		New-Object System.Diagnostics.CounterCreationData "# of msgs pulled from the input queue /sec", "The current number of messages pulled from the input queue by the transport per second.",  RateOfCountsPerSecond32
 		New-Object System.Diagnostics.CounterCreationData "Retries", "A message has been scheduled for retry (FLR or SLR)",  RateOfCountsPerSecond32
-
     ))
 
 	$shouldCreate = $true
@@ -27,15 +26,16 @@ Function InstallNSBPerfCounters {
 		foreach($counter in $counters){
 			$exists = [System.Diagnostics.PerformanceCounterCategory]::CounterExists($counter.CounterName, $category.Name)
 			if (!$exists){
-                Write-Host "One or more counters are missing. The performance counter category will be recreated"
 				$shouldCreate = $true
-			    [System.Diagnostics.PerformanceCounterCategory]::Delete($category.Name)
 				break
 			}
 		}
     }
 
 	if ($shouldCreate){
+		Write-Host "One or more counters are missing. The performance counter category will be recreated"
+		[System.Diagnostics.PerformanceCounterCategory]::Delete($category.Name)
+
         Write-Host "Creating the performance counter category"
 		[void] [System.Diagnostics.PerformanceCounterCategory]::Create($category.Name, $category.Description, [System.Diagnostics.PerformanceCounterCategoryType]::MultiInstance, $counters)
 	}
