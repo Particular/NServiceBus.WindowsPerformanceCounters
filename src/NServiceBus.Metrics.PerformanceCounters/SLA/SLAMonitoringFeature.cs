@@ -7,7 +7,7 @@ class SLAMonitoringFeature : Feature
 {
     protected override void Setup(FeatureConfigurationContext context)
     {
-        context.ThrowIfSendonly();
+        context.ThrowIfSendOnly();
         var settings = context.Settings;
         var endpointSla = settings.Get<TimeSpan>(EndpointSLAKey);
 

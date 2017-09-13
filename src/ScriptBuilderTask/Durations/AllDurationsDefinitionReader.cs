@@ -4,17 +4,16 @@
     using System.Collections.Generic;
     using Mono.Cecil;
 
-    static class AllSignalsDefinitionReader
+    static class AllDurationsDefinitionReader
     {
-        public static IEnumerable<SignalDefinition> GetSignals(ModuleDefinition module, Action<ErrorsException, TypeDefinition> logError)
+        public static IEnumerable<DurationDefinition> GetDurations(ModuleDefinition module, Action<ErrorsException, TypeDefinition> logError)
         {
-            var timerDefinitions = new List<SignalDefinition>();
+            var timerDefinitions = new List<DurationDefinition>();
             foreach (var type in module.AllClasses())
             {
                 try
                 {
-                    List<SignalDefinition> definition;
-                    if (SignalDefinitionReader.TryGetSignalDefinition(type, out definition))
+                    if (DurationDefinitionReader.TryGetDurationDefinition(type, out var definition))
                     {
                         timerDefinitions.AddRange(definition);
                     }

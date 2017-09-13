@@ -8,7 +8,7 @@ public class PipelineExtensionsTests
 {
 
     [Test]
-    public void Should_extract_timesent_from_headers()
+    public void Should_extract_timeSent_from_headers()
     {
         var dateTime = new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
         var headers = new Dictionary<string, string>
@@ -22,8 +22,7 @@ public class PipelineExtensionsTests
             startedAt: new DateTime(2000, 1, 1, 1, 1, 2, DateTimeKind.Utc),
             completedAt: new DateTime(2000, 1, 1, 1, 1, 3, DateTimeKind.Utc));
 
-        DateTime timeSent;
-        pipelineCompleted.TryGetTimeSent(out timeSent);
+        pipelineCompleted.TryGetTimeSent(out var timeSent);
         Assert.AreEqual(dateTime, timeSent);
     }
 }

@@ -26,7 +26,7 @@ class PerformanceCounterInstance : IPerformanceCounterInstance
 
     public long RawValue
     {
-        get { return counter.RawValue; }
-        set { counter.RawValue = value; }
+        get => counter.RawValue;
+        set => counter.RawValue = value;
     }
 }

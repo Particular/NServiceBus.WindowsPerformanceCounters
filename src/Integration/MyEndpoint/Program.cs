@@ -4,17 +4,12 @@ using NServiceBus;
 
 class Program
 {
-    static void Main()
-    {
-        AsyncMain().GetAwaiter().GetResult();
-    }
-
-    static async Task AsyncMain()
+    static async Task Main()
     {
         var configuration = new EndpointConfiguration("MyEndpoint");
         configuration.SendFailedMessagesTo("error");
         configuration.UsePersistence<InMemoryPersistence>();
-        configuration.UseTransport<MsmqTransport>();
+        configuration.UseTransport<LearningTransport>();
         configuration.EnableInstallers();
         var performanceCounters = configuration.EnableWindowsPerformanceCounters();
         performanceCounters.EnableSLAPerformanceCounters(TimeSpan.FromSeconds(1));

@@ -3,27 +3,25 @@
   <PropertyGroup>
     <TargetFramework>net452</TargetFramework>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(SolutionDir)NServiceBus.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
     <DebugType>full</DebugType>
     <DebugSymbols>True</DebugSymbols>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
     <Optimize>False</Optimize>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="NServiceBus.Metrics.PerformanceCounters.approved.cs" />
-    <Compile Remove="NServiceBus.Metrics.PerformanceCounters.received.cs" />
-    <PackageReference Include="ApprovalTests" Version="3.0.13" />
-    <PackageReference Include="ApprovalUtilities" Version="3.0.13" />
-    <PackageReference Include="Mono.Cecil" Version="0.10.0-beta6" />
+    <Compile Remove="*.approved.cs" />
+    <Compile Remove="*.received.cs" />
+    <Compile Include="..\ScriptBuilderTask.Tests\CSharpCodeGenerationTests.Generates.approved.cs" Link="CSharpCodeGenerationTests.Generates.approved.cs" />
+    <PackageReference Include="ApprovalTests" Version="3.*" />
+    <PackageReference Include="ApprovalUtilities" Version="3.*" />
+    <PackageReference Include="Mono.Cecil" Version="0.10.0-*" />
     <PackageReference Include="NServiceBus" Version="7.0.0-*" />
     <PackageReference Include="NServiceBus.Metrics" Version="2.0.0-*" />
-    <PackageReference Include="NServiceBus.Newtonsoft.Json" Version="2.0.0-beta0001" />
-    <PackageReference Include="NUnit" Version="3.7.1" />
-    <PackageReference Include="ApiApprover" Version="6.1.0-beta2" />
-    <PackageReference Include="PublicApiGenerator" Version="6.1.0-beta2" />
+    <PackageReference Include="NServiceBus.Newtonsoft.Json" Version="2.0.0-*" />
+    <PackageReference Include="NUnit" Version="3.*" />
+    <PackageReference Include="ApiApprover" Version="6.1.0-*" />
+    <PackageReference Include="PublicApiGenerator" Version="6.1.0-*" />
     <ProjectReference Include="..\NServiceBus.Metrics.PerformanceCounters\NServiceBus.Metrics.PerformanceCounters.csproj" />
-    <ProjectReference Include="..\ScriptBuilderTask.Tests\ScriptBuilderTask.Tests.csproj" />
   </ItemGroup>
 </Project>
