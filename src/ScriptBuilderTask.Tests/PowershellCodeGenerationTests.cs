@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Runtime.CompilerServices;
     using ApprovalTests;
+    using ApprovalTests.Reporters;
     using NServiceBus.Metrics.PerformanceCounters;
     using NUnit.Framework;
 
@@ -34,6 +35,8 @@
         [MethodImpl(MethodImplOptions.NoInlining)]
         public void Generates()
         {
+            GenericDiffReporter.RegisterTextFileTypes(".ps1");
+
             task.Execute();
 
             var powershell = Directory.EnumerateFiles(tempPath, "*.ps1", SearchOption.AllDirectories).Single();
