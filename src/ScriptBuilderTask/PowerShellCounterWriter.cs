@@ -50,7 +50,7 @@
         const string Template = @"
 #requires -RunAsAdministrator
 Function InstallNSBPerfCounters {{
-
+    
     $category = @{{Name=""NServiceBus""; Description=""NServiceBus statistics""}}
     $counters = New-Object System.Diagnostics.CounterCreationDataCollection
     $counters.AddRange(@(
@@ -58,12 +58,11 @@ Function InstallNSBPerfCounters {{
     ))
 
     if ([System.Diagnostics.PerformanceCounterCategory]::Exists($category.Name)) {{
-		
-	    foreach($counter in $counters){{
-		    $exists = [System.Diagnostics.PerformanceCounterCategory]::CounterExists($counter.CounterName, $category.Name)
-			if (!$exists){{
-				Write-Host ""One or more counters are missing.The performance counter category will be recreated""
 
+       foreach($counter in $counters){{
+            $exists = [System.Diagnostics.PerformanceCounterCategory]::CounterExists($counter.CounterName, $category.Name)
+            if (!$exists){{
+                Write-Host ""One or more counters are missing.The performance counter category will be recreated""
                 [System.Diagnostics.PerformanceCounterCategory]::Delete($category.Name)
 
                 break
