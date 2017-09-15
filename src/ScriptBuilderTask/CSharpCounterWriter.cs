@@ -36,8 +36,7 @@
 
                 foreach (var signal in signals)
                 {
-                    string instanceName;
-                    legacyInstanceNameMap.TryGetValue(signal.Name, out instanceName);
+                    legacyInstanceNameMap.TryGetValue(signal.Name, out string instanceName);
 
                     var signalDefinition = $@"new CounterCreationData(""{instanceName ?? signal.Name}"", ""{signal.Description}"", PerformanceCounterType.RateOfCountsPerSecond32),";
                     stringBuilder.AppendLine(signalDefinition.PadLeft(signalDefinition.Length + 8));
