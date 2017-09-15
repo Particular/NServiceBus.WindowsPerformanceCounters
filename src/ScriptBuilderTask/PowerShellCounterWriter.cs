@@ -36,7 +36,7 @@
 
                 foreach (var signal in signals)
                 {
-                    legacyInstanceNameMap.TryGetValue(signal.Name, out string instanceName);
+                    legacyInstanceNameMap.TryGetValue(signal.Name, out var instanceName);
 
                     var signalDefinition = $@"New-Object System.Diagnostics.CounterCreationData ""{instanceName ?? signal.Name}"", ""{signal.Description}"",  RateOfCountsPerSecond32";
                     stringBuilder.AppendLine(signalDefinition.PadLeft(signalDefinition.Length + 8));
