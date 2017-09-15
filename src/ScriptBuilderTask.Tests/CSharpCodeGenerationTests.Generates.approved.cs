@@ -4,26 +4,39 @@ using System.Security;
 using System.Runtime.CompilerServices;
 
 [CompilerGenerated]
-public static class CounterCreator 
+public static class CounterCreator
 {
-    public static void Create() 
+    public static void Create()
     {
         var counterCreationCollection = new CounterCreationDataCollection(Counters);
         try
         {
             var categoryName = "NServiceBus";
+
             if (PerformanceCounterCategory.Exists(categoryName))
             {
-                PerformanceCounterCategory.Delete(categoryName);
+                foreach (CounterCreationData counter in counterCreationCollection)
+                {
+                    if (!PerformanceCounterCategory.CounterExists(counter.CounterName, categoryName))
+                    {
+                        PerformanceCounterCategory.Delete(categoryName);
+                        break;
+                    }
+                }
             }
 
-            PerformanceCounterCategory.Create(
-                categoryName: categoryName,
-                categoryHelp: "NServiceBus statistics",
-                categoryType: PerformanceCounterCategoryType.MultiInstance,
-                counterData: counterCreationCollection);
+            if (PerformanceCounterCategory.Exists(categoryName) == false)
+            {
+                PerformanceCounterCategory.Create(
+                    categoryName: categoryName,
+                    categoryHelp: "NServiceBus statistics",
+                    categoryType: PerformanceCounterCategoryType.MultiInstance,
+                    counterData: counterCreationCollection);
+            }
+
             PerformanceCounter.CloseSharedResources();
-        } catch(Exception ex) when(ex is SecurityException || ex is UnauthorizedAccessException)
+        }
+        catch (Exception ex) when (ex is SecurityException || ex is UnauthorizedAccessException)
         {
             throw new Exception("Execution requires elevated permissions", ex);
         }
@@ -37,6 +50,5 @@ public static class CounterCreator
         new CounterCreationData("# of msgs pulled from the input queue /sec", "The current number of messages pulled from the input queue by the transport per second.", PerformanceCounterType.RateOfCountsPerSecond32),
         new CounterCreationData("# of msgs failures / sec", "The current number of failed processed messages by the transport per second.", PerformanceCounterType.RateOfCountsPerSecond32),
         new CounterCreationData("# of msgs successfully processed / sec", "The current number of messages processed successfully by the transport per second.", PerformanceCounterType.RateOfCountsPerSecond32),
-
     };
 }
