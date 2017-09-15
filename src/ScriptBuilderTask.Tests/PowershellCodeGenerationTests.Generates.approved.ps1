@@ -10,10 +10,10 @@ Function InstallNSBPerfCounters {
         New-Object System.Diagnostics.CounterCreationData "# of msgs pulled from the input queue /sec", "The current number of messages pulled from the input queue by the transport per second.",  RateOfCountsPerSecond32
         New-Object System.Diagnostics.CounterCreationData "# of msgs failures / sec", "The current number of failed processed messages by the transport per second.",  RateOfCountsPerSecond32
         New-Object System.Diagnostics.CounterCreationData "# of msgs successfully processed / sec", "The current number of messages processed successfully by the transport per second.",  RateOfCountsPerSecond32
+
     ))
 
     if ([System.Diagnostics.PerformanceCounterCategory]::Exists($category.Name)) {
-
        foreach($counter in $counters){
             $exists = [System.Diagnostics.PerformanceCounterCategory]::CounterExists($counter.CounterName, $category.Name)
             if (!$exists){
@@ -28,7 +28,7 @@ Function InstallNSBPerfCounters {
     if (![System.Diagnostics.PerformanceCounterCategory]::Exists($category.Name)) {
         Write-Host "Creating the performance counter category"
         [void] [System.Diagnostics.PerformanceCounterCategory]::Create($category.Name, $category.Description, [System.Diagnostics.PerformanceCounterCategoryType]::MultiInstance, $counters)
-        }
+    }
     else {
         Write-Host "No performance counters have to be created"
     }
