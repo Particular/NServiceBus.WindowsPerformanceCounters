@@ -35,22 +35,37 @@
             }
         }
 
-        const string Template = @"
-#requires -RunAsAdministrator
+        const string Template = @"#requires -RunAsAdministrator
 Function InstallNSBPerfCounters {{
-
+    
     $category = @{{Name=""NServiceBus""; Description=""NServiceBus statistics""}}
     $counters = New-Object System.Diagnostics.CounterCreationDataCollection
     $counters.AddRange(@(
 {0}
     ))
+
     if ([System.Diagnostics.PerformanceCounterCategory]::Exists($category.Name)) {{
-        [System.Diagnostics.PerformanceCounterCategory]::Delete($category.Name)
+       foreach($counter in $counters){{
+            $exists = [System.Diagnostics.PerformanceCounterCategory]::CounterExists($counter.CounterName, $category.Name)
+            if (!$exists){{
+                Write-Host ""One or more counters are missing.The performance counter category will be recreated""
+                [System.Diagnostics.PerformanceCounterCategory]::Delete($category.Name)
+
+                break
+            }}
+        }}
     }}
-    [void] [System.Diagnostics.PerformanceCounterCategory]::Create($category.Name, $category.Description, [System.Diagnostics.PerformanceCounterCategoryType]::MultiInstance, $counters)
+
+    if (![System.Diagnostics.PerformanceCounterCategory]::Exists($category.Name)) {{
+        Write-Host ""Creating the performance counter category""
+        [void] [System.Diagnostics.PerformanceCounterCategory]::Create($category.Name, $category.Description, [System.Diagnostics.PerformanceCounterCategoryType]::MultiInstance, $counters)
+    }}
+    else {{
+        Write-Host ""No performance counters have to be created""
+    }}
+
     [System.Diagnostics.PerformanceCounter]::CloseSharedResources()
 }}
-InstallNSBPerfCounters
-";
+InstallNSBPerfCounters";
     }
 }
