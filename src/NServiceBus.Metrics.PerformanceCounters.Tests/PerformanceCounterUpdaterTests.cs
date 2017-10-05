@@ -1,6 +1,8 @@
 ﻿namespace Tests
 {
+    using System;
     using System.Collections.Generic;
+    using System.Threading;
     using NUnit.Framework;
 
     [TestFixture]
@@ -130,7 +132,7 @@
 
             var performanceCounterOne = cache.Get(new CounterInstanceName("Critical Time", "Sender@af016c07"));
             var performanceCounterTwo = cache.Get(new CounterInstanceName("Processing Time", "Sender@af016c07"));
-            
+
             Assert.AreEqual(11, performanceCounterOne.RawValue);
             Assert.AreEqual(22, performanceCounterTwo.RawValue);
         }
@@ -196,6 +198,45 @@
       }
     ]
   }";
+        [Test]
+        public void Timers_within_payload_should_be_reported_as_zeros_after_specific_period_from_last_observed_pipeline_completion()
+        {
+            var resetTimersAfter = TimeSpan.FromMilliseconds(100);
+
+            var cache = new MockPerformanceCountersCache();
+            var sut = new PerformanceCounterUpdater(cache, new Dictionary<string, CounterInstanceName?>(), resetTimersAfter);
+
+            Thread.Sleep(TimeSpan.FromTicks(resetTimersAfter.Ticks * 2));
+
+            sut.Update(PayloadWithRandomTimers);
+
+            var performanceCounterOne = cache.Get(new CounterInstanceName("Critical Time", "Sender@af016c07"));
+            var performanceCounterTwo = cache.Get(new CounterInstanceName("Processing Time", "Sender@af016c07"));
+
+            Assert.AreEqual(0, performanceCounterOne.RawValue);
+            Assert.AreEqual(0, performanceCounterTwo.RawValue);
+        }
+
+        [Test]
+        public void Timers_within_payload_should_be_reported_properly_after_observed_pipeline_completion()
+        {
+            var resetTimersAfter = TimeSpan.FromMilliseconds(100);
+
+            var cache = new MockPerformanceCountersCache();
+            var sut = new PerformanceCounterUpdater(cache, new Dictionary<string, CounterInstanceName?>(), resetTimersAfter);
+
+            Thread.Sleep(TimeSpan.FromTicks(resetTimersAfter.Ticks * 2));
+
+            sut.OnReceivePipelineCompleted();
+
+            sut.Update(PayloadWithRandomTimers);
+
+            var performanceCounterOne = cache.Get(new CounterInstanceName("Critical Time", "Sender@af016c07"));
+            var performanceCounterTwo = cache.Get(new CounterInstanceName("Processing Time", "Sender@af016c07"));
+
+            Assert.AreEqual(11, performanceCounterOne.RawValue);
+            Assert.AreEqual(22, performanceCounterTwo.RawValue);
+        }
     }
 
     class MockPerformanceCountersCache : PerformanceCountersCache

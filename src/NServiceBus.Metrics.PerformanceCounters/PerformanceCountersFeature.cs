@@ -31,6 +31,12 @@ class PerformanceCountersFeature : Feature
 
         context.RegisterStartupTask(new Cleanup(this));
 
+        context.Pipeline.OnReceivePipelineCompleted(_=>
+        {
+            updater.OnReceivePipelineCompleted();
+            return TaskExtensions.CompletedTask;
+        });
+
         options.EnableCustomReport(payload =>
         {
             updater?.Update(payload);
