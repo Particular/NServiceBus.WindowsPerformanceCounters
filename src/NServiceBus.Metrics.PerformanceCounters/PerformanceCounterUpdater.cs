@@ -1,12 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using Newtonsoft.Json.Linq;
 
 class PerformanceCounterUpdater
 {
-    public PerformanceCounterUpdater(PerformanceCountersCache cache, Dictionary<string, CounterInstanceName?> legacyInstanceNameMap)
+    public PerformanceCounterUpdater(PerformanceCountersCache cache, Dictionary<string, CounterInstanceName?> legacyInstanceNameMap, TimeSpan? resetTimersAfter = null)
     {
+        resetAfterTicks = (resetTimersAfter ?? TimeSpan.FromSeconds(2)).Ticks;
         this.legacyInstanceNameMap = legacyInstanceNameMap;
         this.cache = cache;
+
+        // initialize to an armed state
+        OnReceivePipelineCompleted();
     }
 
     public void Update(string payload)
@@ -28,11 +34,28 @@ class PerformanceCounterUpdater
         foreach (var timer in timers)
         {
             var performanceCounterInstance = cache.Get(new CounterInstanceName(timer.Name, context));
-            
-            performanceCounterInstance.RawValue = timer.Histogram.LastValue / 1000;
+
+            var idleFor = NowTicks - Volatile.Read(ref lastCompleted);
+            if (idleFor > resetAfterTicks)
+            {
+                performanceCounterInstance.RawValue = 0;
+            }
+            else
+            {
+                performanceCounterInstance.RawValue = timer.Histogram.LastValue / 1000;
+            }
         }
     }
 
     readonly PerformanceCountersCache cache;
     readonly Dictionary<string, CounterInstanceName?> legacyInstanceNameMap;
+    long lastCompleted;
+
+    public void OnReceivePipelineCompleted()
+    {
+        Volatile.Write(ref lastCompleted, NowTicks);
+    }
+
+    static long NowTicks => DateTime.UtcNow.Ticks;
+    readonly long resetAfterTicks;
 }
