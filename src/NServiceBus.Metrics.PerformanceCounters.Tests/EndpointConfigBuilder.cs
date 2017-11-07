@@ -5,7 +5,7 @@ static class EndpointConfigBuilder
     public static EndpointConfiguration BuildEndpoint(string s)
     {
         var endpointConfiguration = new EndpointConfiguration(s);
-        endpointConfiguration.UseTransport<MsmqTransport>();
+        endpointConfiguration.UseTransport<LearningTransport>();
         endpointConfiguration.SendFailedMessagesTo("error");
         endpointConfiguration.EnableInstallers();
         endpointConfiguration.UseSerialization<NewtonsoftSerializer>();
