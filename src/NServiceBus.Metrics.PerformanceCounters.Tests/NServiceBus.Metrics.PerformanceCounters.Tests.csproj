@@ -16,8 +16,6 @@
     <PackageReference Include="ApprovalTests" Version="3.*" />
     <PackageReference Include="ApprovalUtilities" Version="3.*" />
     <PackageReference Include="Mono.Cecil" Version="0.10.0-*" />
-    <PackageReference Include="NServiceBus" Version="6.4.2" />
-    <PackageReference Include="NServiceBus.Metrics" Version="[2.0.0, 3.0.0)" />
     <PackageReference Include="NServiceBus.Newtonsoft.Json" Version="1.1.0" />
     <PackageReference Include="NUnit" Version="3.*" />
     <PackageReference Include="ApiApprover" Version="6.1.0-*" />
