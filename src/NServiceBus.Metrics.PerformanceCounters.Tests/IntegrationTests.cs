@@ -31,6 +31,17 @@ public class IntegrationTests
         var endpoint = await Endpoint.Start(endpointConfiguration)
             .ConfigureAwait(false);
 
+        var criticalTime = GetCounter(PerformanceCountersFeature.CriticalTimeCounterName);
+        var processingTime = GetCounter(PerformanceCountersFeature.ProcessingTimeCounterName);
+
+        Assert.AreEqual(0, criticalTime.RawValue);
+        Assert.AreEqual(0, processingTime.RawValue);
+
+        var cancellation = new CancellationTokenSource();
+
+        var criticalTimeReading = ReadNonZero(criticalTime, cancellation);
+        var processingTimeReading = ReadNonZero(processingTime, cancellation);
+
         await endpoint.SendLocal(new MyMessage())
             .ConfigureAwait(false);
 
@@ -40,20 +51,34 @@ public class IntegrationTests
         await endpoint.Stop()
             .ConfigureAwait(false);
 
-        var criticalTimePerfCounter = GetCounter(PerformanceCountersFeature.CriticalTimeCounterName);
-        var processingTimePerfCounter = GetCounter(PerformanceCountersFeature.ProcessingTimeCounterName);
+        cancellation.Cancel();
         var slaPerCounter = GetCounter(SLAMonitoringFeature.CounterName);
         var messagesFailuresPerSecondCounter = GetCounter(PerformanceCountersFeature.MessagesFailuresPerSecondCounterName);
         var messagesProcessedPerSecondCounter = GetCounter(PerformanceCountersFeature.MessagesProcessedPerSecondCounterName);
         var messagesPulledPerSecondCounter = GetCounter(PerformanceCountersFeature.MessagesPulledPerSecondCounterName);
-        //Assert.AreNotEqual(0, criticalTimePerfCounter.RawValue);
-        //Assert.AreNotEqual(0, processingTimePerfCounter.RawValue);
+        Assert.True(await criticalTimeReading);
+        Assert.True(await processingTimeReading);
         Assert.AreNotEqual(0, slaPerCounter.RawValue);
         Assert.AreEqual(0, messagesFailuresPerSecondCounter.RawValue);
         Assert.AreNotEqual(0, messagesProcessedPerSecondCounter.RawValue);
         Assert.AreNotEqual(0, messagesPulledPerSecondCounter.RawValue);
 
         Assert.IsNull(message);
+    }
+
+    static async Task<bool> ReadNonZero(PerformanceCounter counter, CancellationTokenSource cancellation)
+    {
+        while (counter.RawValue == 0)
+        {
+            if (cancellation.IsCancellationRequested)
+            {
+                return false;
+            }
+
+            await Task.Delay(TimeSpan.FromMilliseconds(10));
+        }
+
+        return true;
     }
 
     static PerformanceCounter GetCounter(string counterName) => new PerformanceCounter("NServiceBus", counterName, EndpointName, true);
