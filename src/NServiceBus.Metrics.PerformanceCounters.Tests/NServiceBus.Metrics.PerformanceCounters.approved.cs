@@ -23,9 +23,5 @@ namespace NServiceBus
     public class PerformanceCountersSettings
     {
         public void EnableSLAPerformanceCounters(System.TimeSpan sla) { }
-        [System.ObsoleteAttribute("This interval is no longer used for reporting. Counters values are updated as soo" +
-            "n as they are reported. Will be treated as an error from version 2.0.0. Will be " +
-            "removed in version 3.0.0.", false)]
-        public void UpdateCounterEvery(System.TimeSpan updateInterval) { }
     }
 }
