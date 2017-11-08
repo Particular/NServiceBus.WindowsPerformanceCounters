@@ -4,9 +4,9 @@ using System.Security;
 using System.Runtime.CompilerServices;
 
 [CompilerGenerated]
-public static class CounterCreator
+public static class CounterCreator 
 {
-    public static void Create()
+    public static void Create() 
     {
         var counterCreationCollection = new CounterCreationDataCollection(Counters);
         try
