@@ -8,6 +8,12 @@
     <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="CSharpCodeGenerationTests.Generates.approved.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="PowershellCodeGenerationTests.Generates.approved.ps1" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="ApprovalTests" Version="3.0.13" />
     <PackageReference Include="ApprovalUtilities" Version="3.0.13" />
     <PackageReference Include="NServiceBus.Metrics" Version="[2.0.0, 3.0.0)" />
