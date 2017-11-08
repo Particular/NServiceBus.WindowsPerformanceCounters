@@ -1,4 +1,3 @@
-
 #requires -RunAsAdministrator
 Function InstallNSBPerfCounters {
     

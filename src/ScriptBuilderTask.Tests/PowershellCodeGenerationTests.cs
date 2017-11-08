@@ -39,6 +39,8 @@
 
             task.Execute();
 
+            GenericDiffReporter.RegisterTextFileTypes(".ps1");
+
             var powershell = Directory.EnumerateFiles(tempPath, "*.ps1", SearchOption.AllDirectories).Single();
             Approvals.VerifyFile(powershell);
         }
