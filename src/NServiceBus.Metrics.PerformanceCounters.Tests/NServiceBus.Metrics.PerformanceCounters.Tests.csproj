@@ -1,26 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>net452</TargetFramework>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
-  
+
   <ItemGroup>
-    <Compile Remove="*.approved.cs" />
-    <Compile Remove="*.received.cs" />
-    <Compile Include="..\ScriptBuilderTask.Tests\CSharpCodeGenerationTests.Generates.approved.cs" Link="CSharpCodeGenerationTests.Generates.approved.cs" />
+    <ProjectReference Include="..\NServiceBus.Metrics.PerformanceCounters\NServiceBus.Metrics.PerformanceCounters.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
     <PackageReference Include="NServiceBus" Version="6.4.2" />
-    <PackageReference Include="NServiceBus.Metrics" Version="[2.0.0, 3.0.0)" />
+    <PackageReference Include="NServiceBus.Metrics" Version="2.0.0" />
     <PackageReference Include="NServiceBus.Newtonsoft.Json" Version="1.1.0" />
     <PackageReference Include="NUnit" Version="3.7.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.8.0-alpha1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
-    <ProjectReference Include="..\NServiceBus.Metrics.PerformanceCounters\NServiceBus.Metrics.PerformanceCounters.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="ApprovalTests" Version="3.0.13" />
-    <PackageReference Include="PublicApiGenerator" Version="6.4.0" />    
+    <PackageReference Include="PublicApiGenerator" Version="6.4.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\ScriptBuilderTask.Tests\CSharpCodeGenerationTests.Generates.approved.cs" />
+  </ItemGroup>
+
 </Project>

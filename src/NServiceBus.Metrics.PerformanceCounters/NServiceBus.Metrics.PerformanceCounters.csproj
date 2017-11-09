@@ -1,22 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>net452</TargetFramework>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(SolutionDir)NServiceBus.snk</AssemblyOriginatorKeyFile>
     <OutputPath>..\..\binaries\</OutputPath>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="..\ScriptBuilderTask\CounterNameConventions.cs" Link="CounterNameConventions.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="NServiceBus.Metrics" Version="[2.0.0, 3.0.0)" />
-    <PackageReference Include="Obsolete.Fody" Version="4.3.2" />
-    <PackageReference Include="Particular.Packaging" Version="0.1.0" PrivateAssets="All" />
-    <PackageReference Include="Particular.CodeRules" Version="*" PrivateAssets="All" />
-  </ItemGroup>
-
-  <PropertyGroup>
-    <PackageId>NServiceBus.Metrics.PerformanceCounters</PackageId>
     <Description>Enables access to performance counters</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NServiceBus.Metrics" Version="[2.0.0, 3.0.0)" />
+    <PackageReference Include="Fody" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Obsolete.Fody" Version="4.3.2" PrivateAssets="All" />
+    <PackageReference Include="Particular.CodeRules" Version="0.2.0" PrivateAssets="All" />
+    <PackageReference Include="Particular.Packaging" Version="0.1.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\ScriptBuilderTask\CounterNameConventions.cs" />
+  </ItemGroup>
+
 </Project>
