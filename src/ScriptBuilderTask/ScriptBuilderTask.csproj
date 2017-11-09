@@ -1,22 +1,19 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net452;netstandard1.5</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
     <AssemblyName>NServiceBus.Metrics.PerformanceCounters.Task</AssemblyName>
     <NuSpecFileName>NServiceBus.Metrics.PerformanceCounters.MsBuild</NuSpecFileName>
     <AssemblyOriginatorKeyFile>$(SolutionDir)NServiceBus.snk</AssemblyOriginatorKeyFile>
-    <DebugType>full</DebugType>
-    <DebugSymbols>True</DebugSymbols>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <OutputPath>..\..\binaries\</OutputPath>
     <NoWarn>CS1591;CS0006</NoWarn>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
+  
   <ItemGroup>
-    <PackageReference Include="GitVersionTask" Version="4.0.0-*" PrivateAssets="All" />
     <PackageReference Include="ILRepack" Version="2.0.*" PrivateAssets="All" />
     <PackageReference Include="Mono.Cecil" Version="0.10.0-beta6" PrivateAssets="All" />
+    <PackageReference Include="Particular.CodeRules" Version="*" PrivateAssets="All" />
+    <PackageReference Include="Particular.Packaging" Version="0.1.0" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
@@ -32,8 +29,13 @@
     <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.*" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.*" PrivateAssets="All" />
   </ItemGroup>
+
+  <!--Required to ensure that Mono.Cecil is available in the binaries directory and, thus, the ILRepack step will succeed-->
   <PropertyGroup>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+  
+  <PropertyGroup>
     <PackageId>NServiceBus.Metrics.PerformanceCounters.MsBuild</PackageId>
     <Description>MsBuild Task for building deployment scripts for the NServiceBus.Metrics.PerformanceCounters package.</Description>
     <NuSpecFile>$(MSBuildThisFileDirectory)$(PackageId).nuspec</NuSpecFile>
