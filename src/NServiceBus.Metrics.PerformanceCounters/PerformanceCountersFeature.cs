@@ -30,6 +30,12 @@ class PerformanceCountersFeature : Feature
 
         context.RegisterStartupTask(new Cleanup(this));
 
+        context.Pipeline.OnReceivePipelineCompleted(_=>
+        {
+            updater.OnReceivePipelineCompleted();
+            return TaskExtensions.CompletedTask;
+        });
+
         options.RegisterObservers(probeContext =>
         {
             updater.Observe(probeContext);
@@ -61,12 +67,13 @@ class PerformanceCountersFeature : Feature
 
         protected override Task OnStart(IMessageSession session)
         {
+            feature.updater.Start();
             return TaskExtensions.CompletedTask;
         }
 
         protected override Task OnStop(IMessageSession session)
         {
-            return TaskExtensions.CompletedTask;
+            return feature.updater.Stop();
         }
 
         PerformanceCountersFeature feature;

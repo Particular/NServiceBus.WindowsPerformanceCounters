@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
     using ApprovalUtilities.Utilities;
     using NServiceBus;
     using NUnit.Framework;
@@ -156,6 +158,73 @@
         {
             return d.Ticks * Stopwatch.Frequency / TimeSpan.TicksPerSecond;
         }
+        [Test]
+        public async Task Durations_should_be_reported_as_zeros_after_specific_period_from_last_observed_pipeline_completion()
+        {
+            const string endpoint = "Sender@af016c07";
+            var resetTimersAfter = TimeSpan.FromMilliseconds(100);
+
+            var cache = new MockPerformanceCountersCache();
+            var updater = new PerformanceCounterUpdater(cache, new Dictionary<string, CounterInstanceName?>(), endpoint, resetTimersAfter);
+
+            var durationProbes = new[]
+            {
+                new MockDurationProbe("Critical Time"),
+                new MockDurationProbe("Processing Time")
+            };
+
+            // update before timeout
+            updater.Observe(new ProbeContext(durationProbes, new ISignalProbe[0]));
+
+            updater.Start();
+
+            durationProbes[0].Raise(TimeSpan.FromSeconds(11));
+            durationProbes[1].Raise(TimeSpan.FromSeconds(22));
+
+            await Task.Delay(TimeSpan.FromTicks(resetTimersAfter.Ticks * 2));
+
+            var performanceCounterOne = cache.Get(new CounterInstanceName("Critical Time", endpoint));
+            var performanceCounterTwo = cache.Get(new CounterInstanceName("Processing Time", endpoint));
+
+            await updater.Stop();
+
+            Assert.AreEqual(0, performanceCounterOne.RawValue);
+            Assert.AreEqual(0, performanceCounterTwo.RawValue);
+        }
+
+        [Test]
+        public void Durations_should_be_reported_properly_after_observed_pipeline_completion()
+        {
+            const string endpoint = "Sender@af016c07";
+            var resetTimersAfter = TimeSpan.FromMilliseconds(100);
+
+            var cache = new MockPerformanceCountersCache();
+            var updater = new PerformanceCounterUpdater(cache, new Dictionary<string, CounterInstanceName?>(), endpoint, resetTimersAfter);
+
+            var durationProbes = new[]
+            {
+                new MockDurationProbe("Critical Time"),
+                new MockDurationProbe("Processing Time")
+            };
+
+            // update before timeout
+            updater.Observe(new ProbeContext(durationProbes, new ISignalProbe[0]));
+
+            updater.Start();
+
+            Thread.Sleep(TimeSpan.FromTicks(resetTimersAfter.Ticks * 2));
+
+            updater.OnReceivePipelineCompleted();
+
+            durationProbes[0].Raise(TimeSpan.FromSeconds(11));
+            durationProbes[1].Raise(TimeSpan.FromSeconds(22));
+
+            var performanceCounterOne = cache.Get(new CounterInstanceName("Critical Time", endpoint));
+            var performanceCounterTwo = cache.Get(new CounterInstanceName("Processing Time", endpoint));
+
+            Assert.AreEqual(11, performanceCounterOne.RawValue);
+            Assert.AreEqual(22, performanceCounterTwo.RawValue);
+        }
     }
 
     class MockPerformanceCountersCache : PerformanceCountersCache
@@ -195,6 +264,12 @@
         public void Register(OnEvent<DurationEvent> observer)
         {
             Observers += observer;
+        }
+
+        public void Raise(TimeSpan timespan, string messageType = null)
+        {
+            var duration = new DurationEvent(timespan, messageType);
+            Observers(ref duration);
         }
 
         public string Name { get; }
