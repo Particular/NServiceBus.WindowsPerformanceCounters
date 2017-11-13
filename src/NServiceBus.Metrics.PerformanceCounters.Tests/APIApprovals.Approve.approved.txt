@@ -20,6 +20,5 @@ namespace NServiceBus
     public class PerformanceCountersSettings
     {
         public void EnableSLAPerformanceCounters(System.TimeSpan sla) { }
-            "n as they are reported. Will be removed in version 3.0.0.", true)]
     }
 }
