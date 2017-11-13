@@ -48,7 +48,7 @@ class PerformanceCounterUpdater
             {
                 var key = new CounterInstanceName(durationProbe.Name, endpointName);
                 var performanceCounterInstance = cache.Get(key);
-                expirable[key] = performanceCounterInstance;
+                resettable[key] = performanceCounterInstance;
                 durationProbe.Register((ref DurationEvent d) => performanceCounterInstance.RawValue = (long) d.Duration.TotalSeconds);
             }
 
@@ -66,7 +66,7 @@ class PerformanceCounterUpdater
 
     readonly PerformanceCountersCache cache;
     readonly Dictionary<string, CounterInstanceName?> legacyInstanceNameMap;
-    readonly ConcurrentDictionary<CounterInstanceName, IPerformanceCounterInstance> expirable = new ConcurrentDictionary<CounterInstanceName, IPerformanceCounterInstance>();
+    readonly ConcurrentDictionary<CounterInstanceName, IPerformanceCounterInstance> resettable = new ConcurrentDictionary<CounterInstanceName, IPerformanceCounterInstance>();
     long lastCompleted;
 
     public void OnReceivePipelineCompleted()
@@ -83,7 +83,7 @@ class PerformanceCounterUpdater
             var idleFor = NowTicks - Volatile.Read(ref lastCompleted);
             if (idleFor > resetEvery.Ticks)
             {
-                foreach (var performanceCounter in expirable)
+                foreach (var performanceCounter in resettable)
                 {
                     performanceCounter.Value.RawValue = 0;
                 }
