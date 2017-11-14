@@ -1,54 +1,72 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
-using Newtonsoft.Json.Linq;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using NServiceBus;
+using NServiceBus.Metrics.PerformanceCounters;
 
 class PerformanceCounterUpdater
 {
-    public PerformanceCounterUpdater(PerformanceCountersCache cache, Dictionary<string, CounterInstanceName?> legacyInstanceNameMap, TimeSpan? resetTimersAfter = null)
+    public PerformanceCounterUpdater(PerformanceCountersCache cache, Dictionary<string, CounterInstanceName?> legacyInstanceNameMap, string endpointName, TimeSpan? resetTimersAfter = null)
     {
-        resetAfterTicks = (resetTimersAfter ?? TimeSpan.FromSeconds(2)).Ticks;
+        resetEvery = resetTimersAfter ?? TimeSpan.FromSeconds(2);
         this.legacyInstanceNameMap = legacyInstanceNameMap;
+        this.endpointName = endpointName;
         this.cache = cache;
-
+        cancellation = new CancellationTokenSource();
         // initialize to an armed state
         OnReceivePipelineCompleted();
     }
 
-    public void Update(string payload)
+    public void Start()
     {
-        var rootObject = JObject.Parse(payload);
+        cleaner = Task.Run(Cleanup);
+    }
 
-        var context = rootObject.Value<string>("Context");
-        var meters = rootObject["Meters"]?.ToObject<List<Meter>>() ?? new List<Meter>();
-        foreach (var meter in meters)
+    public Task Stop()
+    {
+        cancellation.Cancel();
+        return cleaner;
+    }
+
+    public void Observe(ProbeContext context)
+    {
+        foreach (var signalProbe in context.Signals)
         {
-            CounterInstanceName? instanceName;
-            legacyInstanceNameMap.TryGetValue(meter.Name, out instanceName);
+            legacyInstanceNameMap.TryGetValue(signalProbe.Name, out var instanceName);
 
-            var performanceCounterInstance = cache.Get(instanceName ?? new CounterInstanceName(meter.Name, context));
-            performanceCounterInstance.RawValue = meter.Count;
+            var performanceCounterInstance = cache.Get(instanceName ?? new CounterInstanceName(signalProbe.Name, endpointName));
+
+            signalProbe.Register((ref SignalEvent e) => performanceCounterInstance.Increment());
         }
 
-        var timers = rootObject["Timers"]?.ToObject<List<Timer>>() ?? new List<Timer>();
-        foreach (var timer in timers)
+        foreach (var durationProbe in context.Durations)
         {
-            var performanceCounterInstance = cache.Get(new CounterInstanceName(timer.Name, context));
+            if (durationProbe.Name == CounterNameConventions.ProcessingTime || durationProbe.Name == CounterNameConventions.CriticalTime)
+            {
+                var key = new CounterInstanceName(durationProbe.Name, endpointName);
+                var performanceCounterInstance = cache.Get(key);
+                resettable[key] = performanceCounterInstance;
+                durationProbe.Register((ref DurationEvent d) => performanceCounterInstance.RawValue = (long) d.Duration.TotalSeconds);
+            }
 
-            var idleFor = NowTicks - Volatile.Read(ref lastCompleted);
-            if (idleFor > resetAfterTicks)
+            var averageTimerCounter = cache.Get(new CounterInstanceName(durationProbe.Name.GetAverageTimerCounterName(), endpointName));
+            var baseAverageTimerCounter = cache.Get(new CounterInstanceName(durationProbe.Name.GetAverageTimerBaseCounterName(), endpointName));
+
+            durationProbe.Register((ref DurationEvent d) =>
             {
-                performanceCounterInstance.RawValue = 0;
-            }
-            else
-            {
-                performanceCounterInstance.RawValue = timer.Histogram.LastValue / 1000;
-            }
+                var performanceCounterTicks = d.Duration.Ticks * Stopwatch.Frequency / TimeSpan.TicksPerSecond;
+                averageTimerCounter.IncrementBy(performanceCounterTicks);
+                baseAverageTimerCounter.Increment();
+            });
         }
     }
 
     readonly PerformanceCountersCache cache;
     readonly Dictionary<string, CounterInstanceName?> legacyInstanceNameMap;
+    readonly ConcurrentDictionary<CounterInstanceName, IPerformanceCounterInstance> resettable = new ConcurrentDictionary<CounterInstanceName, IPerformanceCounterInstance>();
     long lastCompleted;
 
     public void OnReceivePipelineCompleted()
@@ -56,6 +74,26 @@ class PerformanceCounterUpdater
         Volatile.Write(ref lastCompleted, NowTicks);
     }
 
+    async Task Cleanup()
+    {
+        while (cancellation.IsCancellationRequested == false)
+        {
+            await Task.Delay(resetEvery).ConfigureAwait(false);
+
+            var idleFor = NowTicks - Volatile.Read(ref lastCompleted);
+            if (idleFor > resetEvery.Ticks)
+            {
+                foreach (var performanceCounter in resettable)
+                {
+                    performanceCounter.Value.RawValue = 0;
+                }
+            }
+        }
+    }
+
     static long NowTicks => DateTime.UtcNow.Ticks;
-    readonly long resetAfterTicks;
+    readonly TimeSpan resetEvery;
+    readonly string endpointName;
+    Task cleaner;
+    readonly CancellationTokenSource cancellation;
 }

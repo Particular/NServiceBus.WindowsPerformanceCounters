@@ -35,6 +35,8 @@
         [MethodImpl(MethodImplOptions.NoInlining)]
         public void Generates()
         {
+            GenericDiffReporter.RegisterTextFileTypes(".ps1");
+
             task.Execute();
 
             GenericDiffReporter.RegisterTextFileTypes(".ps1");

@@ -14,9 +14,6 @@ namespace NServiceBus
         {
             Guard.AgainstNull(nameof(endpointConfiguration), endpointConfiguration);
 
-#pragma warning disable 618
-            endpointConfiguration.DisableFeature<Features.ReceiveStatisticsPerformanceCounters>();
-#pragma warning restore 618
             endpointConfiguration.EnableFeature<PerformanceCountersFeature>();
 
             return new PerformanceCountersSettings(endpointConfiguration);

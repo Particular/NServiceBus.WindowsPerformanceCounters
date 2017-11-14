@@ -8,6 +8,7 @@ using NUnit.Framework;
 [TestFixture]
 public class IntegrationTests
 {
+    const string EndpointName = "PerfCountersIntegrationTests";
     static ManualResetEvent ManualResetEvent = new ManualResetEvent(false);
 
     [Test]
@@ -15,8 +16,7 @@ public class IntegrationTests
     {
         string message = null;
 
-        var endpointName = "PerfCountersIntegrationTests";
-        var endpointConfiguration = EndpointConfigBuilder.BuildEndpoint(endpointName);
+        var endpointConfiguration = EndpointConfigBuilder.BuildEndpoint(EndpointName);
         endpointConfiguration.DefineCriticalErrorAction(
             context =>
             {
@@ -27,11 +27,21 @@ public class IntegrationTests
 
         var performanceCounters = endpointConfiguration.EnableWindowsPerformanceCounters();
         performanceCounters.EnableSLAPerformanceCounters(TimeSpan.FromSeconds(10));
-        performanceCounters.UpdateCounterEvery(TimeSpan.FromSeconds(1));
 
         var endpoint = await Endpoint.Start(endpointConfiguration)
             .ConfigureAwait(false);
-        
+
+        var criticalTime = GetCounter(PerformanceCountersFeature.CriticalTimeCounterName);
+        var processingTime = GetCounter(PerformanceCountersFeature.ProcessingTimeCounterName);
+
+        Assert.AreEqual(0, criticalTime.RawValue);
+        Assert.AreEqual(0, processingTime.RawValue);
+
+        var cancellation = new CancellationTokenSource();
+
+        var criticalTimeReading = ReadNonZero(criticalTime, cancellation);
+        var processingTimeReading = ReadNonZero(processingTime, cancellation);
+
         await endpoint.SendLocal(new MyMessage())
             .ConfigureAwait(false);
 
@@ -41,14 +51,13 @@ public class IntegrationTests
         await endpoint.Stop()
             .ConfigureAwait(false);
 
-        var criticalTimePerfCounter = new PerformanceCounter("NServiceBus", PerformanceCountersFeature.CriticalTimeCounterName, endpointName, true);
-        //var processingTimePerfCounter = new PerformanceCounter("NServiceBus", PerformanceCountersFeature.ProcessingTimeCounterName, endpointName, true);
-        var slaPerCounter = new PerformanceCounter("NServiceBus", SLAMonitoringFeature.CounterName, endpointName, true);
-        var messagesFailuresPerSecondCounter = new PerformanceCounter("NServiceBus", PerformanceCountersFeature.MessagesFailuresPerSecondCounterName, endpointName, true);
-        var messagesProcessedPerSecondCounter = new PerformanceCounter("NServiceBus", PerformanceCountersFeature.MessagesProcessedPerSecondCounterName, endpointName, true);
-        var messagesPulledPerSecondCounter = new PerformanceCounter("NServiceBus", PerformanceCountersFeature.MessagesPulledPerSecondCounterName, endpointName, true);
-        Assert.AreNotEqual(0, criticalTimePerfCounter.RawValue);
-        //Assert.AreNotEqual(0, processingTimePerfCounter.RawValue);
+        cancellation.Cancel();
+        var slaPerCounter = GetCounter(SLAMonitoringFeature.CounterName);
+        var messagesFailuresPerSecondCounter = GetCounter(PerformanceCountersFeature.MessagesFailuresPerSecondCounterName);
+        var messagesProcessedPerSecondCounter = GetCounter(PerformanceCountersFeature.MessagesProcessedPerSecondCounterName);
+        var messagesPulledPerSecondCounter = GetCounter(PerformanceCountersFeature.MessagesPulledPerSecondCounterName);
+        Assert.True(await criticalTimeReading);
+        Assert.True(await processingTimeReading);
         Assert.AreNotEqual(0, slaPerCounter.RawValue);
         Assert.AreEqual(0, messagesFailuresPerSecondCounter.RawValue);
         Assert.AreNotEqual(0, messagesProcessedPerSecondCounter.RawValue);
@@ -57,12 +66,29 @@ public class IntegrationTests
         Assert.IsNull(message);
     }
 
+    static async Task<bool> ReadNonZero(PerformanceCounter counter, CancellationTokenSource cancellation)
+    {
+        while (counter.RawValue == 0)
+        {
+            if (cancellation.IsCancellationRequested)
+            {
+                return false;
+            }
+
+            await Task.Delay(TimeSpan.FromMilliseconds(10));
+        }
+
+        return true;
+    }
+
+    static PerformanceCounter GetCounter(string counterName) => new PerformanceCounter("NServiceBus", counterName, EndpointName, true);
+
     public class MyHandler : IHandleMessages<MyMessage>
     {
         public Task Handle(MyMessage message, IMessageHandlerContext context)
         {
             ManualResetEvent.Set();
-            return Task.Delay(TimeSpan.FromMilliseconds(100));
+            return Task.Delay(TimeSpan.FromMilliseconds(1000));
         }
     }
     public class MyMessage : ICommand

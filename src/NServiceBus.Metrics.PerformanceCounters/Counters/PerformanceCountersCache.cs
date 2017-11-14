@@ -27,7 +27,7 @@ class PerformanceCountersCache : IDisposable
 
         if (counterInstanceName.InstanceName.Length > sbyte.MaxValue)
         {
-            throw new Exception($"The endpoint name ('{counterInstanceName.InstanceName}') is too long (longer then {sbyte.MaxValue}) to register as a performance counter instance name. Reduce the endpoint name.");
+            throw new Exception($"The endpoint name ('{counterInstanceName.InstanceName}') is too long (longer then {sbyte.MaxValue}) to register as a performance counter instance name. Shorten the endpoint name length.");
         }
 
         try
@@ -41,6 +41,8 @@ class PerformanceCountersCache : IDisposable
         }
         return new PerformanceCounterInstance(counter);
     }
+
+    protected int CountCounters() => counterCache.Count;
 
     ConcurrentDictionary<CounterInstanceName, IPerformanceCounterInstance> counterCache = new ConcurrentDictionary<CounterInstanceName, IPerformanceCounterInstance>();
 }

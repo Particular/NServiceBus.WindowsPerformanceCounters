@@ -9,8 +9,16 @@ struct CounterInstanceName : IEquatable<CounterInstanceName>
 
     public override bool Equals(object obj)
     {
-        if (ReferenceEquals(null, obj)) return false;
-        return obj is CounterInstanceName && Equals((CounterInstanceName)obj);
+        if (ReferenceEquals(null, obj))
+        {
+            return false;
+        }
+
+        if (!(obj is CounterInstanceName))
+        {
+            return false;
+        }
+        return Equals((CounterInstanceName)obj);
     }
 
     public override int GetHashCode()

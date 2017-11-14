@@ -1,103 +1,65 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{08FD76CB-6988-485A-A535-B3129AF89C60}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NServiceBus.Metrics.PerformanceCounters</RootNamespace>
-    <AssemblyName>NServiceBus.Metrics.PerformanceCounters.Task</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <NuSpecFileName>NServiceBus.Metrics.PerformanceCounters.MsBuild</NuSpecFileName>
+    <TargetFrameworks>net452;netstandard1.5</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
+    <AssemblyName>NServiceBus.Metrics.PerformanceCounters.Task</AssemblyName>
     <AssemblyOriginatorKeyFile>$(SolutionDir)NServiceBus.snk</AssemblyOriginatorKeyFile>
+    <OutputPath>..\..\binaries\</OutputPath>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
+    <PackageReference Include="ILRepack" Version="2.0.13" PrivateAssets="All" />
+    <PackageReference Include="Mono.Cecil" Version="0.10.0-beta6" PrivateAssets="All" />
+    <PackageReference Include="Particular.CodeRules" Version="0.2.0" PrivateAssets="All" />
+    <PackageReference Include="Particular.Packaging" Version="0.1.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
     <Reference Include="Microsoft.Build" />
     <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="Microsoft.Build.Tasks.v4.0" />
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
-    <Reference Include="Mono.Cecil, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mono.Cecil.0.9.6.4\lib\net45\Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Mdb, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mono.Cecil.0.9.6.4\lib\net45\Mono.Cecil.Mdb.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Pdb, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mono.Cecil.0.9.6.4\lib\net45\Mono.Cecil.Pdb.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Rocks, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mono.Cecil.0.9.6.4\lib\net45\Mono.Cecil.Rocks.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="BuildLogger.cs" />
-    <Compile Include="DirectoryExtensions.cs" />
-    <Compile Include="ExceptionExtensions.cs" />
-    <Compile Include="InnerTask.cs" />
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="ScriptBuilderTask.cs" />
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.5' ">
+    <PackageReference Include="Microsoft.Build" Version="15.3.409" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="15.3.409" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.3.409" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.3.409" PrivateAssets="All" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ScriptBuilder\ScriptBuilder.csproj">
-      <Project>{1BDA0A75-91F6-4412-A780-7BE9322B2A4E}</Project>
-      <Name>ScriptBuilder</Name>
-      <Private>True</Private>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets" Condition="Exists('..\packages\GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+
+  <PropertyGroup>
+    <PackageId>NServiceBus.Metrics.PerformanceCounters.MsBuild</PackageId>
+    <Description>MsBuild Task for building deployment scripts for the NServiceBus.Metrics.PerformanceCounters package.</Description>
+    <NuSpecFile>$(MSBuildThisFileDirectory)$(PackageId).nuspec</NuSpecFile>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+  </PropertyGroup>
+
+  <Target Name="SetPackageDependencies" BeforeTargets="GenerateNuspec">
     <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+      <NuspecProperties>id=$(PackageId);version=$(PackageVersion);authors=$(Authors);owners=$(Authors);licenseUrl=$(PackageLicenseUrl);requireLicenseAcceptance=$(PackageRequireLicenseAcceptance);iconUrl=$(PackageIconUrl);projectUrl=$(PackageProjectUrl);description=$(Description);copyright=$(Copyright);tags=$(PackageTags)</NuspecProperties>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets'))" />
-    <Error Condition="!Exists('..\packages\NuGetPackager.0.6.1\build\NuGetPackager.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NuGetPackager.0.6.1\build\NuGetPackager.targets'))" />
   </Target>
-  <Import Project="..\packages\NuGetPackager.0.6.1\build\NuGetPackager.targets" Condition="Exists('..\packages\NuGetPackager.0.6.1\build\NuGetPackager.targets')" />
-  <Target Name="AfterBuild">
+
+  <!--Required to ensure that Mono.Cecil is available in the binaries directory and, thus, the ILRepack step will succeed-->
+  <PropertyGroup>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <Target Name="MergeDependencies" AfterTargets="CopyFilesToOutputDirectory" Condition="'$(Configuration)' == 'Release'">
     <PropertyGroup>
-      <IlMerge>"$(SolutionDir)..\Tools\ilmerge.exe"</IlMerge>
-      <ScriptBuilderDll>$(ProjectDir)bin\$(ConfigurationName)\NServiceBus.Metrics.PerformanceCounters.Builder.dll</ScriptBuilderDll>
-      <ScriptBuilderTaskDll>$(ProjectDir)bin\$(ConfigurationName)\NServiceBus.Metrics.PerformanceCounters.Task.dll</ScriptBuilderTaskDll>
-      <Cecil>$(ProjectDir)bin\$(ConfigurationName)\Mono.Cecil.dll</Cecil>
-      <MergeOutputDll>$(SolutionDir)..\binaries\NServiceBus.Metrics.PerformanceCounters.Task.dll</MergeOutputDll>
-      <MergeOutputPdb>$(SolutionDir)..\binaries\NServiceBus.Metrics.PerformanceCounters.Task.pdb</MergeOutputPdb>
-      <MsBuildTargets>$(SolutionDir)..\packaging\nuget\NServiceBus.Metrics.PerformanceCounters.MsBuild.targets</MsBuildTargets>
+      <TempFolder>$(ProjectDir)$(OutputPath)temp</TempFolder>
     </PropertyGroup>
-    <MakeDir Directories="$(SolutionDir)..\binaries" />
-    <Exec Command="$(IlMerge) /out:&quot;$(MergeOutputDll)&quot; &quot;$(ScriptBuilderTaskDll)&quot; &quot;$(ScriptBuilderDll)&quot; &quot;$(Cecil)&quot; /target:library /targetplatform:&quot;v4,$(FrameworkPathOverride)&quot; /internalize /keyfile:&quot;$(SolutionDir)NServiceBus.snk&quot;" />
-    <MakeDir Directories="$(SolutionDir)ForIntegration" />
-    <Copy SourceFiles="$(MergeOutputDll)" DestinationFolder="$(SolutionDir)ForIntegration" />
-    <Copy SourceFiles="$(MergeOutputPdb)" DestinationFolder="$(SolutionDir)ForIntegration" />
-    <Copy SourceFiles="$(MsBuildTargets)" DestinationFolder="$(SolutionDir)ForIntegration\build" />
+    <MakeDir Directories="$(TempFolder)" />
+    <Exec Command="$(ILRepack) /out:&quot;$(TempFolder)\$(AssemblyName).dll&quot; &quot;$(ProjectDir)$(OutputPath)$(AssemblyName).dll&quot; &quot;$(ProjectDir)$(OutputPath)Mono.Cecil.dll&quot; /targetplatform:v4 /internalize /keyfile:$(AssemblyOriginatorKeyFile)" />
+    <ItemGroup>
+      <TempFiles Include="$(TempFolder)\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(TempFiles)" DestinationFolder="$(OutputPath)" OverwriteReadOnlyFiles="true" />
+    <Delete Files="@(TempFiles)" />
+    <RemoveDir Directories="$(TempFolder)" />
   </Target>
+
 </Project>

@@ -28,14 +28,12 @@
         }
 
         /// <summary>
-        /// Defines the update interval for the performance counter values.
+        /// Sets the update interval.
         /// </summary>
-        /// <param name="updateInterval">The update interval.</param>
+        /// <param name="updateInterval"></param>
+        [ObsoleteEx(Message = "This interval is no longer used for reporting. Counters values are updated as soon as they are reported", RemoveInVersion = "3.0")]
         public void UpdateCounterEvery(TimeSpan updateInterval)
         {
-            Guard.AgainstNegativeAndZero(nameof(updateInterval), updateInterval);
-
-            endpointConfiguration.GetSettings().Set(PerformanceCountersFeature.UpdateIntervalKey, updateInterval);
         }
     }
 }

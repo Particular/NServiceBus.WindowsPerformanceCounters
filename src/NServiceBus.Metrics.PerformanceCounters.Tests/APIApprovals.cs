@@ -22,10 +22,12 @@ public class APIApprovals
 
     string Filter(string text)
     {
-        return string.Join(Environment.NewLine, text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
-            .Where(l => !l.StartsWith("[assembly: "))
+        return string.Join(Environment.NewLine, text.Split(new[]
+            {
+                Environment.NewLine
+            }, StringSplitOptions.RemoveEmptyEntries)
+            .Where(l => !l.StartsWith("[assembly: ReleaseDateAttribute("))
             .Where(l => !string.IsNullOrWhiteSpace(l))
-            );
+        );
     }
-
 }

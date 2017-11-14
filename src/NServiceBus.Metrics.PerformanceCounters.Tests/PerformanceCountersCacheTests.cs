@@ -1,6 +1,7 @@
 ﻿namespace Tests
 {
     using System;
+    using System.Runtime.CompilerServices;
     using ApprovalTests;
     using NUnit.Framework;
 
@@ -25,6 +26,7 @@
         }
 
         [Test]
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public void Should_throw_for_endpoint_name_too_long()
         {
             var cache = new PerformanceCountersCache();

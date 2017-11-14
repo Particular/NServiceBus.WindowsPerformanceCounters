@@ -12,8 +12,7 @@ class EstimatedTimeToSLABreachCounter : IDisposable
 
     public void Update(ReceivePipelineCompleted completed)
     {
-        DateTime timeSent;
-        if (completed.TryGetTimeSent(out timeSent))
+        if (completed.TryGetTimeSent(out var timeSent))
         {
             Update(timeSent, completed.StartedAt, completed.CompletedAt);
         }
