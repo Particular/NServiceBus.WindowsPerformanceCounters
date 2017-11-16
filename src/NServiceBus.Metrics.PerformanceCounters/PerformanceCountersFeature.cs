@@ -16,6 +16,8 @@ class PerformanceCountersFeature : Feature
 
     protected override void Setup(FeatureConfigurationContext context)
     {
+        context.ThrowIfSendOnly();
+
         var endpoint = context.Settings.LogicalAddress().EndpointInstance.Endpoint;
 
         var legacyInstanceNameMap = new Dictionary<string, CounterInstanceName?>
