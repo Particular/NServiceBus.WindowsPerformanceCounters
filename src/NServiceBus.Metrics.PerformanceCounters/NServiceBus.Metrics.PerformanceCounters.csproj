@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NServiceBus.Metrics" Version="3.0.0-beta0001" />
+    <PackageReference Include="NServiceBus.Metrics" Version="[3.0.0-rc0003, 4.0.0)" />
     <PackageReference Include="Fody" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Obsolete.Fody" Version="4.3.2" PrivateAssets="All" />
     <PackageReference Include="Particular.CodeRules" Version="0.2.0" PrivateAssets="All" />
