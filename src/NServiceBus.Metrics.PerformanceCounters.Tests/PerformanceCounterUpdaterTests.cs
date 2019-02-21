@@ -6,7 +6,6 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using ApprovalUtilities.Utilities;
     using NServiceBus;
     using NUnit.Framework;
 
@@ -31,9 +30,9 @@
             sut.Observe(new ProbeContext(new IDurationProbe[0], signals));
 
             var e = new SignalEvent();
-            Enumerable.Range(0, 111).ForEach(_ => signals[0].Observers(ref e));
-            Enumerable.Range(0, 222).ForEach(_ => signals[1].Observers(ref e));
-            Enumerable.Range(0, 333).ForEach(_ => signals[2].Observers(ref e));
+            Enumerable.Range(0, 111).ToList().ForEach(_ => signals[0].Observers(ref e));
+            Enumerable.Range(0, 222).ToList().ForEach(_ => signals[1].Observers(ref e));
+            Enumerable.Range(0, 333).ToList().ForEach(_ => signals[2].Observers(ref e));
 
             var performanceCounterOne = cache.Get(new CounterInstanceName(signals[0].Name, endpointName));
             var performanceCounterTwo = cache.Get(new CounterInstanceName(signals[1].Name, endpointName));
@@ -69,9 +68,9 @@
 
             var e = new SignalEvent();
 
-            Enumerable.Range(0, 111).ForEach(_ => signals[0].Observers(ref e));
-            Enumerable.Range(0, 222).ForEach(_ => signals[1].Observers(ref e));
-            Enumerable.Range(0, 333).ForEach(_ => signals[2].Observers(ref e));
+            Enumerable.Range(0, 111).ToList().ForEach(_ => signals[0].Observers(ref e));
+            Enumerable.Range(0, 222).ToList().ForEach(_ => signals[1].Observers(ref e));
+            Enumerable.Range(0, 333).ToList().ForEach(_ => signals[2].Observers(ref e));
 
             var performanceCounterOne = cache.Get(new CounterInstanceName("# of msgs failures / sec", "queueAddress"));
             var performanceCounterTwo = cache.Get(new CounterInstanceName("# of msgs pulled from the input queue /sec", "queueAddress"));

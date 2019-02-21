@@ -19,12 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ApprovalTests" Version="3.0.13" />
-    <PackageReference Include="PublicApiGenerator" Version="6.4.0" />
+    <PackageReference Include="Particular.Approvals" Version="0.2.0" />
+    <PackageReference Include="PublicApiGenerator" Version="8.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\ScriptBuilderTask.Tests\CSharpCodeGenerationTests.Generates.approved.cs" />
+    <Compile Include="..\ScriptBuilderTask.Tests\ApprovalFiles\CSharpCodeGenerationTests.Generates.approved.txt" Visible="false" />
   </ItemGroup>
 
 </Project>
