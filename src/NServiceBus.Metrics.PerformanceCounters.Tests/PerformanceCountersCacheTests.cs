@@ -1,8 +1,8 @@
 ﻿namespace Tests
 {
     using System;
-    using ApprovalTests;
     using NUnit.Framework;
+    using Particular.Approvals;
 
     [TestFixture]
     public class PerformanceCountersCacheTests
@@ -33,7 +33,7 @@
             {
                 cache.Get(new CounterInstanceName("counter", new string('*', 129)));
             });
-            Approvals.Verify(exception.Message);
+            Approver.Verify(exception.Message);
         }
 
         [Test]

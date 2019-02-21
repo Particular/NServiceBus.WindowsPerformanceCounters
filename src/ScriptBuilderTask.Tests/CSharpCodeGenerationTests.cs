@@ -3,10 +3,9 @@
     using System;
     using System.IO;
     using System.Linq;
-    using System.Runtime.CompilerServices;
-    using ApprovalTests;
     using NServiceBus.Metrics.PerformanceCounters;
     using NUnit.Framework;
+    using Particular.Approvals;
 
     [TestFixture]
     public class CSharpCodeGenerationTests
@@ -31,13 +30,14 @@
         }
 
         [Test]
-        [MethodImpl(MethodImplOptions.NoInlining)]
         public void Generates()
         {
             task.Execute();
 
             var cSharpCode = Directory.EnumerateFiles(tempPath, "*.g.cs", SearchOption.AllDirectories).Single();
-            Approvals.VerifyFile(cSharpCode);
+            var content = File.ReadAllText(cSharpCode);
+
+            Approver.Verify(content);
         }
     }
 }
