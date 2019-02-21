@@ -3,11 +3,9 @@
     using System;
     using System.IO;
     using System.Linq;
-    using System.Runtime.CompilerServices;
-    using ApprovalTests;
-    using ApprovalTests.Reporters;
     using NServiceBus.Metrics.PerformanceCounters;
     using NUnit.Framework;
+    using Particular.Approvals;
 
     [TestFixture]
     public class PowershellCodeGenerationTests
@@ -32,17 +30,14 @@
         }
 
         [Test]
-        [MethodImpl(MethodImplOptions.NoInlining)]
         public void Generates()
         {
-            GenericDiffReporter.RegisterTextFileTypes(".ps1");
-
             task.Execute();
 
-            GenericDiffReporter.RegisterTextFileTypes(".ps1");
-
             var powershell = Directory.EnumerateFiles(tempPath, "*.ps1", SearchOption.AllDirectories).Single();
-            Approvals.VerifyFile(powershell);
+            var content = File.ReadAllText(powershell);
+
+            Approver.Verify(content);
         }
     }
 }
