@@ -81,11 +81,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\ApprovalFiles\CSharpCodeGenerationTests.Generates.approved.txt">
-      <Visible>false</Visible>
-    </Compile>
     <Compile Include="APIApprovals.cs" />
     <Compile Include="App_Packages\PublicApiGenerator.8.1.0\ApiGenerator.cs" />
+    <Compile Include="CounterCreator.cs" />
     <Compile Include="ElevateCheckerTests.cs" />
     <Compile Include="EndpointConfigBuilder.cs" />
     <Compile Include="EndpointConfigurationExtensions.cs" />
