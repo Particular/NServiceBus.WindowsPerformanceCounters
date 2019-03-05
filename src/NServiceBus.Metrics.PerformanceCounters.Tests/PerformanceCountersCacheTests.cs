@@ -1,9 +1,8 @@
 ﻿namespace Tests
 {
     using System;
-    using System.Runtime.CompilerServices;
-    using ApprovalTests;
     using NUnit.Framework;
+    using Particular.Approvals;
 
     [TestFixture]
     public class PerformanceCountersCacheTests
@@ -26,7 +25,6 @@
         }
 
         [Test]
-        [MethodImpl(MethodImplOptions.NoInlining)]
         public void Should_throw_for_endpoint_name_too_long()
         {
             var cache = new PerformanceCountersCache();
@@ -35,7 +33,7 @@
             {
                 cache.Get(new CounterInstanceName("counter", new string('*', 129)));
             });
-            Approvals.Verify(exception.Message);
+            Approver.Verify(exception.Message);
         }
 
         [Test]
