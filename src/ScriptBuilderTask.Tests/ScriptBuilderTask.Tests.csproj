@@ -11,16 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ApprovalTests" Version="3.0.13" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="NServiceBus.Metrics" Version="3.0.0" />
-    <PackageReference Include="NUnit" Version="3.7.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.8.0-alpha1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="CSharpCodeGenerationTests.Generates.approved.cs" />
-    <None Include="CSharpCodeGenerationTests.Generates.approved.cs" />
+    <PackageReference Include="NUnit" Version="3.11.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
+    <PackageReference Include="Particular.Approvals" Version="0.2.0" />
   </ItemGroup>
 
 </Project>
