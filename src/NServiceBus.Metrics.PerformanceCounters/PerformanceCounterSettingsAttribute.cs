@@ -6,6 +6,8 @@
     /// Configuration options that are evaluated at compile time.
     /// </summary>
     [AttributeUsage(AttributeTargets.Assembly)]
+    [ObsoleteEx(Message = "The NServiceBus.Metrics.PerformanceCounters.MsBuild package is deprecated. There is no longer any need to configure its output.",
+        RemoveInVersion = "4.0", TreatAsErrorFromVersion = "3.1")]
     public sealed class PerformanceCounterSettingsAttribute : Attribute
     {
         /// <summary>

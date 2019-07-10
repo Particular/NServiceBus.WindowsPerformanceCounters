@@ -1,57 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Choose>
-    <When Condition="'$(MSBuildRuntimeType)' == 'Core'">
-      <PropertyGroup>
-        <ScriptBuilderTaskPath>$(MSBuildThisFileDirectory)..\netstandard\NServiceBus.Metrics.PerformanceCounters.Task.dll</ScriptBuilderTaskPath>
-      </PropertyGroup>
-    </When>
-    <Otherwise>
-      <PropertyGroup>
-        <ScriptBuilderTaskPath>$(MSBuildThisFileDirectory)..\netclassic\NServiceBus.Metrics.PerformanceCounters.Task.dll</ScriptBuilderTaskPath>
-      </PropertyGroup>
-    </Otherwise>
-  </Choose>
 
-  <UsingTask
-      TaskName="NServiceBus.Metrics.PerformanceCounters.ScriptBuilderTask"
-      AssemblyFile="$(ScriptBuilderTaskPath)" />
-
-  <Target
-      AfterTargets="AfterCompile"
-      Name="PerformanceCountersScriptBuilder"
-      Condition="'$(DesignTimeBuild)' != 'true'">
-    <PropertyGroup>
-      <ScriptDirectory>$(ProjectDir)$(IntermediateOutputPath)NServiceBus.Metrics.PerformanceCounters\</ScriptDirectory>
-    </PropertyGroup>
-    <ScriptBuilderTask
-          AssemblyPath="$(ProjectDir)@(IntermediateAssembly)"
-          References="@(ReferencePath)"
-          ReferenceCopyLocalPaths="@(ReferenceCopyLocalPaths)"
-          IntermediateDirectory="$(ProjectDir)$(IntermediateOutputPath)"
-          ProjectDirectory="$(ProjectDir)"
-          SolutionDirectory="$(SolutionDir)"/>
+  <Target Name="MetricsPerformanceCountersMsBuildPackageRemovalWarning" BeforeTargets="Build">
+    <Warning Text="The NServiceBus.Metrics.PerformanceCounters.MsBuild package is deprecated and should be removed from the project. The scripts it generated are now included in the NServiceBus.Metrics.PerformanceCounters package." />
   </Target>
-
-  <Target
-      BeforeTargets="GetCopyToOutputDirectoryItems"
-      Name="AddScriptsToGetCopyToOutputDirectoryItems"
-      Condition="'$(DesignTimeBuild)' != 'true'">
-    <ItemGroup>
-      <Scripts Include="$(ScriptDirectory)**\*.g.cs" />
-      <Scripts Include="$(ScriptDirectory)**\*.ps1" />
-    </ItemGroup>
-    <CreateItem Include="@(Scripts)" AdditionalMetadata="CopyToOutputDirectory=PreserveNewest;TargetPath=NServiceBus.Metrics.PerformanceCounters\%(RecursiveDir)%(Filename)%(Extension)">
-      <Output TaskParameter="Include" ItemName="_SourceItemsToCopyToOutputDirectoryAlways" />
-    </CreateItem>
-    <CreateItem Include="@(Scripts)" AdditionalMetadata="CopyToOutputDirectory=PreserveNewest;TargetPath=NServiceBus.Metrics.PerformanceCounters\%(RecursiveDir)%(Filename)%(Extension)">
-      <Output TaskParameter="Include" ItemName="AllItemsFullPathWithTargetPath" />
-    </CreateItem>
-  </Target>
-
-  <!--Support for ncrunch-->
-  <ItemGroup  Condition="'$(NCrunch)' == '1'">
-    <None Include="$(MSBuildThisFileDirectory)..\*.*" />
-  </ItemGroup>
 
 </Project>
