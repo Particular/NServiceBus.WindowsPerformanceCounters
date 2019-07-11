@@ -11,8 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Scripts\Counters.g.cs" />
-    <None Include="Scripts\Counters.g.cs" Pack="true" PackagePath="build\Counters.g.cs" />
     <None Update="Scripts\CreateNSBPerfCounters.ps1" Pack="true" PackagePath="build\CreateNSBPerfCounters.ps1" />
     <None Update="Scripts\NServiceBus.Metrics.PerformanceCounters.props" Pack="true" PackagePath="build\NServiceBus.Metrics.PerformanceCounters.props" />
   </ItemGroup>

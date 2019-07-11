@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <Target Name="MetricsPerformanceCountersMsBuildPackageRemovalWarning" BeforeTargets="Build">
-    <Warning Text="The NServiceBus.Metrics.PerformanceCounters.MsBuild package is deprecated and should be removed from the project. The scripts it generated are now included in the NServiceBus.Metrics.PerformanceCounters package." />
+    <Error Text="The NServiceBus.Metrics.PerformanceCounters.MsBuild package is deprecated and should be removed from the project. The Powershell script to create performance counter objects is now included in the NServiceBus.Metrics.PerformanceCounters package." />
   </Target>
 
 </Project>

@@ -4,13 +4,9 @@
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
   <ItemGroup>
-    <ContentWithTargetPath Include="$(MSBuildThisFileDirectory)\*.g.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>NServiceBus.Metrics.PerformanceCounters\CSharp\%(Filename)%(Extension)</TargetPath>
-    </ContentWithTargetPath>
     <ContentWithTargetPath Include="$(MSBuildThisFileDirectory)\*.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>NServiceBus.Metrics.PerformanceCounters\Powershell\%(Filename)%(Extension)</TargetPath>
+      <TargetPath>NServiceBus.Metrics.PerformanceCounters\%(Filename)%(Extension)</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
 </Project>
