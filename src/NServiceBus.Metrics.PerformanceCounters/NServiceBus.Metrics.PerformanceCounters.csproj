@@ -11,8 +11,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="Scripts\CreateNSBPerfCounters.ps1" Pack="true" PackagePath="build\CreateNSBPerfCounters.ps1" />
-    <None Update="Scripts\NServiceBus.Metrics.PerformanceCounters.props" Pack="true" PackagePath="build\NServiceBus.Metrics.PerformanceCounters.props" />
+    <None Remove="Scripts\*" />
+    <Content Include="Scripts\*" Pack="true" PackagePath="build" />
   </ItemGroup>
 
   <ItemGroup>
