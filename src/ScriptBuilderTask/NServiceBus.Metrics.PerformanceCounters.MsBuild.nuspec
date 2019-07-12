@@ -18,8 +18,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\binaries\net452\NServiceBus.Metrics.PerformanceCounters.Task.???" target="netclassic" />
-    <file src="..\..\binaries\netstandard1.5\NServiceBus.Metrics.PerformanceCounters.Task.???" target="netstandard" />
     <file src="NServiceBus.Metrics.PerformanceCounters.MsBuild.targets" target="build" />
   </files>
 </package>

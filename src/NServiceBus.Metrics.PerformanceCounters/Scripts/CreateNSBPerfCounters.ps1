@@ -1,7 +1,7 @@
 
 #requires -RunAsAdministrator
 Function InstallNSBPerfCounters {
-    
+
     $category = @{Name="NServiceBus"; Description="NServiceBus statistics"}
     $counters = New-Object System.Diagnostics.CounterCreationDataCollection
     $counters.AddRange(@(

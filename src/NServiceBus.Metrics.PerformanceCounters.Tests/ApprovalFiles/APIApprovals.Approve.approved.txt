@@ -3,6 +3,9 @@
 namespace NServiceBus.Metrics.PerformanceCounters
 {
     [System.AttributeUsageAttribute(System.AttributeTargets.Assembly | System.AttributeTargets.All)]
+    [System.ObsoleteAttribute("The NServiceBus.Metrics.PerformanceCounters.MsBuild package is deprecated. There " +
+        "is no longer any need to configure its output. To promote the script outside the" +
+        " build directory, use a post-build event. Will be removed in version 5.0.0.", true)]
     public sealed class PerformanceCounterSettingsAttribute : System.Attribute
     {
         public PerformanceCounterSettingsAttribute() { }
