@@ -1,65 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net452;netstandard1.5</TargetFrameworks>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyName>NServiceBus.Metrics.PerformanceCounters.Task</AssemblyName>
-    <AssemblyOriginatorKeyFile>$(SolutionDir)NServiceBus.snk</AssemblyOriginatorKeyFile>
-    <OutputPath>..\..\binaries\</OutputPath>
-    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <TargetFramework>net452</TargetFramework>
+    <PackageId>NServiceBus.Metrics.PerformanceCounters.MsBuild</PackageId>
+    <Description>This package is deprecated and should no longer be referenced. The functionality was merged into the NServiceBus.Metrics.PerformanceCounters package.</Description>
+    <NuSpecFile>$(MSBuildThisFileDirectory)$(PackageId).nuspec</NuSpecFile>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ILRepack" Version="2.0.13" PrivateAssets="All" />
-    <PackageReference Include="Mono.Cecil" Version="0.10.0-beta6" PrivateAssets="All" />
-    <PackageReference Include="Particular.CodeRules" Version="0.2.1" PrivateAssets="All" />
-    <PackageReference Include="Particular.Packaging" Version="0.2.1" PrivateAssets="All" />
+    <PackageReference Include="Particular.Packaging" Version="0.3.0" PrivateAssets="All" />
   </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
-    <Reference Include="Microsoft.Build" />
-    <Reference Include="Microsoft.Build.Framework" />
-    <Reference Include="Microsoft.Build.Tasks.v4.0" />
-    <Reference Include="Microsoft.Build.Utilities.v4.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.5' ">
-    <PackageReference Include="Microsoft.Build" Version="15.3.409" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Build.Framework" Version="15.3.409" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.3.409" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.3.409" PrivateAssets="All" />
-  </ItemGroup>
-
-  <PropertyGroup>
-    <PackageId>NServiceBus.Metrics.PerformanceCounters.MsBuild</PackageId>
-    <Description>MsBuild Task for building deployment scripts for the NServiceBus.Metrics.PerformanceCounters package.</Description>
-    <NuSpecFile>$(MSBuildThisFileDirectory)$(PackageId).nuspec</NuSpecFile>
-    <NoPackageAnalysis>true</NoPackageAnalysis>
-  </PropertyGroup>
 
   <Target Name="SetPackageDependencies" BeforeTargets="GenerateNuspec">
     <PropertyGroup>
-      <NuspecProperties>id=$(PackageId);version=$(PackageVersion);authors=$(Authors);owners=$(Authors);licenseUrl=$(PackageLicenseUrl);requireLicenseAcceptance=$(PackageRequireLicenseAcceptance);iconUrl=$(PackageIconUrl);projectUrl=$(PackageProjectUrl);description=$(Description);copyright=$(Copyright);tags=$(PackageTags)</NuspecProperties>
+      <NuspecProperties>id=$(PackageId);version=$(PackageVersion);authors=$(Authors);owners=$(Authors);requireLicenseAcceptance=$(PackageRequireLicenseAcceptance);iconUrl=$(PackageIconUrl);projectUrl=$(PackageProjectUrl);description=$(Description);copyright=$(Copyright);tags=$(PackageTags)</NuspecProperties>
     </PropertyGroup>
-  </Target>
-
-  <!--Required to ensure that Mono.Cecil is available in the binaries directory and, thus, the ILRepack step will succeed-->
-  <PropertyGroup>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-  </PropertyGroup>
-
-  <Target Name="MergeDependencies" AfterTargets="CopyFilesToOutputDirectory" Condition="'$(Configuration)' == 'Release'">
-    <PropertyGroup>
-      <TempFolder>$(ProjectDir)$(OutputPath)temp</TempFolder>
-    </PropertyGroup>
-    <MakeDir Directories="$(TempFolder)" />
-    <Exec Command="$(ILRepack) /out:&quot;$(TempFolder)\$(AssemblyName).dll&quot; &quot;$(ProjectDir)$(OutputPath)$(AssemblyName).dll&quot; &quot;$(ProjectDir)$(OutputPath)Mono.Cecil.dll&quot; /targetplatform:v4 /internalize /keyfile:$(AssemblyOriginatorKeyFile)" />
-    <ItemGroup>
-      <TempFiles Include="$(TempFolder)\*.*" />
-    </ItemGroup>
-    <Copy SourceFiles="@(TempFiles)" DestinationFolder="$(OutputPath)" OverwriteReadOnlyFiles="true" />
-    <Delete Files="@(TempFiles)" />
-    <RemoveDir Directories="$(TempFolder)" />
   </Target>
 
 </Project>
