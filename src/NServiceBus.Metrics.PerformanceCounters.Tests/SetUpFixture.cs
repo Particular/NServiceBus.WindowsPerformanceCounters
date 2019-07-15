@@ -3,7 +3,7 @@ using NUnit.Framework;
 [SetUpFixture]
 public class SetUpFixture
 {
-    //[OneTimeSetUp]
+    [OneTimeSetUp]
     public void SetUp()
     {
         CounterCreator.Create();
