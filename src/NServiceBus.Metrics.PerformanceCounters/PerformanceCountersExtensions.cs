@@ -1,10 +1,5 @@
 namespace NServiceBus
 {
-#if NETSTANDARD2_0
-    using System;
-    using System.Runtime.InteropServices;
-#endif
-
     /// <summary>
     /// Exposes windows performance counters configuration on <see cref="EndpointConfiguration"/>.
     /// </summary>
@@ -16,10 +11,10 @@ namespace NServiceBus
         /// <param name="endpointConfiguration">The <see cref="EndpointConfiguration" /> instance to apply the settings to.</param>
         public static PerformanceCountersSettings EnableWindowsPerformanceCounters(this EndpointConfiguration endpointConfiguration)
         {
-#if NETSTANDARD2_0
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+#if NETSTANDARD
+            if (!System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
             {
-                throw new PlatformNotSupportedException("Windows Performance Counters are not supported on this platform.");
+                throw new System.PlatformNotSupportedException("Windows Performance Counters are not supported on this platform.");
             }
 #endif
             Guard.AgainstNull(nameof(endpointConfiguration), endpointConfiguration);
