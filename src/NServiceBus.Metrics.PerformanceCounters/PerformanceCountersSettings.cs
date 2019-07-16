@@ -1,7 +1,9 @@
 ﻿namespace NServiceBus
 {
     using System;
+#if NETSTANDARD2_0
     using System.Runtime.InteropServices;
+#endif
     using Configuration.AdvancedExtensibility;
 
     /// <summary>

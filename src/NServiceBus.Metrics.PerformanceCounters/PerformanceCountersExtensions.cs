@@ -1,7 +1,9 @@
 namespace NServiceBus
 {
+#if NETSTANDARD2_0
     using System;
     using System.Runtime.InteropServices;
+#endif
 
     /// <summary>
     /// Exposes windows performance counters configuration on <see cref="EndpointConfiguration"/>.
