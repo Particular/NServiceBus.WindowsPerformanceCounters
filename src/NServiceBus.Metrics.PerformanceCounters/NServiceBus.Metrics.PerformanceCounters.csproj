@@ -10,11 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Scripts\*" />
-    <Content Include="Scripts\*" Pack="true" PackagePath="build" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="NServiceBus.Metrics" Version="[3.0.0, 4.0.0)" />
     <PackageReference Include="Fody" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Obsolete.Fody" Version="4.3.2" PrivateAssets="All" />
@@ -25,6 +20,11 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="4.5.0" />
     <PackageReference Include="System.Security.Principal.Windows" Version="4.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Scripts\*" />
+    <Content Include="Scripts\*" Pack="true" PackagePath="build" />
   </ItemGroup>
 
 </Project>
