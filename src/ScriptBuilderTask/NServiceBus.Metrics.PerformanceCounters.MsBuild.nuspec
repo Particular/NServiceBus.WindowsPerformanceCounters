@@ -6,10 +6,11 @@
     <authors>$authors$</authors>
     <owners>$owners$</owners>
     <developmentDependency>true</developmentDependency>
-    <licenseUrl>https://particular.net/licenseagreement</licenseUrl>
-    <projectUrl>$projectUrl$</projectUrl>
     <requireLicenseAcceptance>$requireLicenseAcceptance$</requireLicenseAcceptance>
-    <iconUrl>$iconUrl$</iconUrl>
+    <license type="file">LICENSE.md</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <projectUrl>$projectUrl$</projectUrl>
+    <iconUrl>https://s3.amazonaws.com/nuget.images/NServiceBus_32.png</iconUrl>
     <description>$description$</description>
     <copyright>$copyright$</copyright>
     <tags>$tags$</tags>
@@ -21,5 +22,6 @@
     <file src="..\..\binaries\net452\NServiceBus.Metrics.PerformanceCounters.Task.???" target="netclassic" />
     <file src="..\..\binaries\netstandard1.5\NServiceBus.Metrics.PerformanceCounters.Task.???" target="netstandard" />
     <file src="NServiceBus.Metrics.PerformanceCounters.MsBuild.targets" target="build" />
+    <file src="..\..\LICENSE.md" target="LICENSE.md" />
   </files>
 </package>

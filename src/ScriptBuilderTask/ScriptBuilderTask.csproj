@@ -37,9 +37,9 @@
     <NoPackageAnalysis>true</NoPackageAnalysis>
   </PropertyGroup>
 
-  <Target Name="SetPackageDependencies" BeforeTargets="GenerateNuspec">
+  <Target Name="SetPackageDependencies" BeforeTargets="GenerateNuspec" DependsOnTargets="GetVersion">
     <PropertyGroup>
-      <NuspecProperties>id=$(PackageId);version=$(PackageVersion);authors=$(Authors);owners=$(Authors);requireLicenseAcceptance=$(PackageRequireLicenseAcceptance);iconUrl=$(PackageIconUrl);projectUrl=$(PackageProjectUrl);description=$(Description);copyright=$(Copyright);tags=$(PackageTags)</NuspecProperties>
+      <NuspecProperties>id=$(PackageId);version=$(PackageVersion);authors=$(Authors);owners=$(Authors);requireLicenseAcceptance=$(PackageRequireLicenseAcceptance);projectUrl=$(PackageProjectUrl);description=$(Description);copyright=$(Copyright);tags=$(PackageTags)</NuspecProperties>
     </PropertyGroup>
   </Target>
 
