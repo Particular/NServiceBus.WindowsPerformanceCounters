@@ -17,6 +17,7 @@ Samples/DataBus/storage
 packages
 PrecompiledWeb
 tempstorage
+.learningtransport
 core-only
 Release
 Artifacts
@@ -92,7 +93,3 @@ src/scaffolding.config
 # JetBrains Rider
 .idea/
 *.sln.iml
-src/ForIntegration/*
-src/Integration/Directory.Build.props
-
-.learningtransport
