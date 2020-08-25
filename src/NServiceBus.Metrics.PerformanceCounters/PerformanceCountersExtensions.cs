@@ -19,6 +19,7 @@ namespace NServiceBus
 #endif
             Guard.AgainstNull(nameof(endpointConfiguration), endpointConfiguration);
 
+            endpointConfiguration.EnableMetrics();
             endpointConfiguration.EnableFeature<PerformanceCountersFeature>();
 
             return new PerformanceCountersSettings(endpointConfiguration);

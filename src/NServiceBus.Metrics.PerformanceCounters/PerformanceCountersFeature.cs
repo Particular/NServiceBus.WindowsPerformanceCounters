@@ -10,7 +10,7 @@ class PerformanceCountersFeature : Feature
     {
         Defaults(s =>
         {
-            options = s.EnableMetrics();
+            options = s.GetOrCreate<MetricsOptions>();
         });
     }
 
