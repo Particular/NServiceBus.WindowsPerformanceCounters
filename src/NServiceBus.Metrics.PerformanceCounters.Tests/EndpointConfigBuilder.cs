@@ -8,8 +8,7 @@ static class EndpointConfigBuilder
         endpointConfiguration.UseTransport<LearningTransport>();
         endpointConfiguration.SendFailedMessagesTo("error");
         endpointConfiguration.EnableInstallers();
-        //endpointConfiguration.UseSerialization<NewtonsoftSerializer>();
-        endpointConfiguration.UsePersistence<InMemoryPersistence>();
+        endpointConfiguration.UsePersistence<LearningPersistence>();
         var recoverability = endpointConfiguration.Recoverability();
         recoverability.Immediate(c => c.NumberOfRetries(0));
         recoverability.Delayed(c => c.NumberOfRetries(0));
