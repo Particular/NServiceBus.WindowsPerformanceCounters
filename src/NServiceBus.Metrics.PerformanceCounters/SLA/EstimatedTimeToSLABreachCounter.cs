@@ -18,7 +18,7 @@ class EstimatedTimeToSLABreachCounter : IDisposable
         }
     }
 
-    public void Update(DateTime sent, DateTime processingStarted, DateTime processingEnded)
+    public void Update(DateTimeOffset sent, DateTimeOffset processingStarted, DateTimeOffset processingEnded)
     {
         var dataPoint = new DataPoint(processingEnded - sent, processingEnded, processingEnded - processingStarted);
 

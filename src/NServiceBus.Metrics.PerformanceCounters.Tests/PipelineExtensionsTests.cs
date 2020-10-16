@@ -14,7 +14,7 @@ public class PipelineExtensionsTests
         var headers = new Dictionary<string, string>
         {
             {
-                Headers.TimeSent, DateTimeExtensions.ToWireFormattedString(dateTime)
+                Headers.TimeSent, DateTimeOffsetHelper.ToWireFormattedString(dateTime)
             }
         };
         var pipelineCompleted = PipelineHelper.BuildPipelineCompleted(

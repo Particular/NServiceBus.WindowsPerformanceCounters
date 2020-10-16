@@ -2,7 +2,7 @@ using System;
 
 struct DataPoint
 {
-    public DataPoint(TimeSpan criticalTime, DateTime occurredAt, TimeSpan processingTime)
+    public DataPoint(TimeSpan criticalTime, DateTimeOffset occurredAt, TimeSpan processingTime)
     {
         CriticalTime = criticalTime;
         OccurredAt = occurredAt;
@@ -11,7 +11,7 @@ struct DataPoint
 
     public readonly TimeSpan CriticalTime;
 
-    public readonly DateTime OccurredAt;
+    public readonly DateTimeOffset OccurredAt;
 
     public readonly TimeSpan ProcessingTime;
 }
