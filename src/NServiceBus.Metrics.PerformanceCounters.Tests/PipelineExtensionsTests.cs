@@ -10,7 +10,7 @@ public class PipelineExtensionsTests
     [Test]
     public void Should_extract_timeSent_from_headers()
     {
-        var dateTime = new DateTime(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
+        var dateTime = new DateTimeOffset(2000, 1, 1, 1, 1, 1, new TimeSpan());
         var headers = new Dictionary<string, string>
         {
             {
