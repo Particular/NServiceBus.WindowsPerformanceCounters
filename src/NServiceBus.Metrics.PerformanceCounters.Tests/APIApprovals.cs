@@ -8,7 +8,10 @@ public class APIApprovals
     [Test]
     public void Approve()
     {
-        var publicApi = typeof(PerformanceCountersFeature).Assembly.GeneratePublicApi(new ApiGeneratorOptions { ExcludeAttributes = new[] { "System.Runtime.Versioning.TargetFrameworkAttribute" } });
+        var publicApi = typeof(PerformanceCountersFeature).Assembly.GeneratePublicApi(new ApiGeneratorOptions
+        {
+            ExcludeAttributes = new[] { "System.Runtime.Versioning.TargetFrameworkAttribute", "System.Reflection.AssemblyMetadataAttribute" }
+        });
         Approver.Verify(publicApi);
     }
 }
