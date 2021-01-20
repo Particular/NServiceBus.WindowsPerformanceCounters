@@ -49,7 +49,7 @@ class PerformanceCounterUpdater
                 var key = new CounterInstanceName(durationProbe.Name, endpointName);
                 var performanceCounterInstance = cache.Get(key);
                 resettable[key] = performanceCounterInstance;
-                durationProbe.Register((ref DurationEvent d) => performanceCounterInstance.RawValue = (long) d.Duration.TotalSeconds);
+                durationProbe.Register((ref DurationEvent d) => performanceCounterInstance.RawValue = (long)d.Duration.TotalSeconds);
             }
 
             var averageTimerCounter = cache.Get(new CounterInstanceName(durationProbe.Name.GetAverageTimerCounterName(), endpointName));
