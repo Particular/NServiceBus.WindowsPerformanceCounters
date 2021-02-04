@@ -1,6 +1,7 @@
 ﻿namespace NServiceBus
 {
     using System;
+    using System.Runtime.InteropServices;
     using Configuration.AdvancedExtensibility;
 
     /// <summary>
@@ -21,7 +22,7 @@
         /// <param name="sla">The SLA to use. Must be greater than <see cref="TimeSpan.Zero" />.</param>
         public void EnableSLAPerformanceCounters(TimeSpan sla)
         {
-            if (!System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 throw new PlatformNotSupportedException("Windows Performance Counters are not supported on this platform.");
             }
