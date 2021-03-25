@@ -15,7 +15,7 @@ class PerformanceCounterUpdater
         this.legacyInstanceNameMap = legacyInstanceNameMap;
         this.endpointName = endpointName;
         this.cache = cache;
-        cancellation = new CancellationTokenSource();
+        counterCleanupTokenSource = new CancellationTokenSource();
         // initialize to an armed state
         OnReceivePipelineCompleted();
     }
@@ -27,7 +27,7 @@ class PerformanceCounterUpdater
 
     public Task Stop()
     {
-        cancellation.Cancel();
+        counterCleanupTokenSource.Cancel();
         return cleaner;
     }
 
@@ -76,9 +76,9 @@ class PerformanceCounterUpdater
 
     async Task Cleanup()
     {
-        while (cancellation.IsCancellationRequested == false)
+        while (!counterCleanupTokenSource.IsCancellationRequested)
         {
-            await Task.Delay(resetEvery).ConfigureAwait(false);
+            await Task.Delay(resetEvery, counterCleanupTokenSource.Token).ConfigureAwait(false);
 
             var idleFor = NowTicks - Volatile.Read(ref lastCompleted);
             if (idleFor > resetEvery.Ticks)
@@ -95,5 +95,5 @@ class PerformanceCounterUpdater
     readonly TimeSpan resetEvery;
     readonly string endpointName;
     Task cleaner;
-    readonly CancellationTokenSource cancellation;
+    readonly CancellationTokenSource counterCleanupTokenSource;
 }

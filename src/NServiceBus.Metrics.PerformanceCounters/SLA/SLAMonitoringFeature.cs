@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Features;
@@ -18,7 +19,7 @@ class SLAMonitoringFeature : Feature
 
         slaBreachCounter = new EstimatedTimeToSLABreachCounter(endpointSla, counter);
 
-        context.Pipeline.OnReceivePipelineCompleted(pipelineCompleted =>
+        context.Pipeline.OnReceivePipelineCompleted((pipelineCompleted, _) =>
         {
             slaBreachCounter?.Update(pipelineCompleted);
             return Task.FromResult(0);
@@ -49,13 +50,13 @@ class SLAMonitoringFeature : Feature
             feature.cache?.Dispose();
         }
 
-        protected override Task OnStart(IMessageSession session)
+        protected override Task OnStart(IMessageSession session, CancellationToken cancellationToken)
         {
             feature.slaBreachCounter.Start();
             return TaskExtensions.CompletedTask;
         }
 
-        protected override Task OnStop(IMessageSession session)
+        protected override Task OnStop(IMessageSession session, CancellationToken cancellationToken)
         {
             return TaskExtensions.CompletedTask;
         }
