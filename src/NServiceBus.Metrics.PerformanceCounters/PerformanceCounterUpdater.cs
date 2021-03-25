@@ -76,18 +76,25 @@ class PerformanceCounterUpdater
 
     async Task Cleanup()
     {
-        while (!counterCleanupTokenSource.IsCancellationRequested)
+        try
         {
-            await Task.Delay(resetEvery, counterCleanupTokenSource.Token).ConfigureAwait(false);
-
-            var idleFor = NowTicks - Volatile.Read(ref lastCompleted);
-            if (idleFor > resetEvery.Ticks)
+            while (!counterCleanupTokenSource.IsCancellationRequested)
             {
-                foreach (var performanceCounter in resettable)
+                await Task.Delay(resetEvery, counterCleanupTokenSource.Token).ConfigureAwait(false);
+
+                var idleFor = NowTicks - Volatile.Read(ref lastCompleted);
+                if (idleFor > resetEvery.Ticks)
                 {
-                    performanceCounter.Value.RawValue = 0;
+                    foreach (var performanceCounter in resettable)
+                    {
+                        performanceCounter.Value.RawValue = 0;
+                    }
                 }
             }
+        }
+        catch (OperationCanceledException)
+        {
+            // no-op
         }
     }
 
