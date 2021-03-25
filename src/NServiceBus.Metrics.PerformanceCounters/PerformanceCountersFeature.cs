@@ -36,7 +36,7 @@ class PerformanceCountersFeature : Feature
         context.Pipeline.OnReceivePipelineCompleted((_, __) =>
         {
             updater.OnReceivePipelineCompleted();
-            return TaskExtensions.CompletedTask;
+            return Task.CompletedTask;
         });
 
         options.RegisterObservers(probeContext =>
@@ -71,7 +71,7 @@ class PerformanceCountersFeature : Feature
         protected override Task OnStart(IMessageSession session, CancellationToken cancellationToken)
         {
             feature.updater.Start();
-            return TaskExtensions.CompletedTask;
+            return Task.CompletedTask;
         }
 
         protected override Task OnStop(IMessageSession session, CancellationToken cancellationToken)

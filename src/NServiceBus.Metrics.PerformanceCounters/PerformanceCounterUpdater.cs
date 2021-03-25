@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Metrics.PerformanceCounters;
+using NServiceBus.Logging;
 
 class PerformanceCounterUpdater
 {
@@ -92,12 +93,18 @@ class PerformanceCounterUpdater
                 }
             }
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException) when (counterCleanupTokenSource.IsCancellationRequested)
         {
             // no-op
+            return;
+        }
+        catch (Exception ex)
+        {
+            logger.Error("Failed to reset performance counter buffers", ex);
         }
     }
 
+    static ILog logger = LogManager.GetLogger<PerformanceMonitorUsersInstaller>();
     static long NowTicks => DateTime.UtcNow.Ticks;
     readonly TimeSpan resetEvery;
     readonly string endpointName;

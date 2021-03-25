@@ -53,12 +53,12 @@ class SLAMonitoringFeature : Feature
         protected override Task OnStart(IMessageSession session, CancellationToken cancellationToken)
         {
             feature.slaBreachCounter.Start();
-            return TaskExtensions.CompletedTask;
+            return Task.CompletedTask;
         }
 
         protected override Task OnStop(IMessageSession session, CancellationToken cancellationToken)
         {
-            return TaskExtensions.CompletedTask;
+            return Task.CompletedTask;
         }
 
         SLAMonitoringFeature feature;
