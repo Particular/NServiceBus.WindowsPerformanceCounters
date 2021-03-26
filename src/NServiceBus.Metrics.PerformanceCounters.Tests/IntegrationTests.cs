@@ -16,9 +16,11 @@ public class IntegrationTests
     {
         string message = null;
 
-        var endpointConfiguration = EndpointConfigBuilder.BuildEndpoint(EndpointName);
+        var endpointConfiguration = new EndpointConfiguration(EndpointName);
+        endpointConfiguration.UseTransport(new LearningTransport());
+
         endpointConfiguration.DefineCriticalErrorAction(
-            context =>
+            (context, _) =>
             {
                 message = context.Error;
                 ManualResetEvent.Set();

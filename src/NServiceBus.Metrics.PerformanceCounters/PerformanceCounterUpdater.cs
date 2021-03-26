@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Metrics.PerformanceCounters;
+using NServiceBus.Logging;
 
 class PerformanceCounterUpdater
 {
@@ -15,7 +16,7 @@ class PerformanceCounterUpdater
         this.legacyInstanceNameMap = legacyInstanceNameMap;
         this.endpointName = endpointName;
         this.cache = cache;
-        cancellation = new CancellationTokenSource();
+        counterCleanupTokenSource = new CancellationTokenSource();
         // initialize to an armed state
         OnReceivePipelineCompleted();
     }
@@ -27,7 +28,7 @@ class PerformanceCounterUpdater
 
     public Task Stop()
     {
-        cancellation.Cancel();
+        counterCleanupTokenSource.Cancel();
         return cleaner;
     }
 
@@ -76,24 +77,37 @@ class PerformanceCounterUpdater
 
     async Task Cleanup()
     {
-        while (cancellation.IsCancellationRequested == false)
+        try
         {
-            await Task.Delay(resetEvery).ConfigureAwait(false);
-
-            var idleFor = NowTicks - Volatile.Read(ref lastCompleted);
-            if (idleFor > resetEvery.Ticks)
+            while (!counterCleanupTokenSource.IsCancellationRequested)
             {
-                foreach (var performanceCounter in resettable)
+                await Task.Delay(resetEvery, counterCleanupTokenSource.Token).ConfigureAwait(false);
+
+                var idleFor = NowTicks - Volatile.Read(ref lastCompleted);
+                if (idleFor > resetEvery.Ticks)
                 {
-                    performanceCounter.Value.RawValue = 0;
+                    foreach (var performanceCounter in resettable)
+                    {
+                        performanceCounter.Value.RawValue = 0;
+                    }
                 }
             }
         }
+        catch (OperationCanceledException) when (counterCleanupTokenSource.IsCancellationRequested)
+        {
+            // no-op
+            return;
+        }
+        catch (Exception ex)
+        {
+            logger.Error("Failed to reset performance counter buffers", ex);
+        }
     }
 
+    static ILog logger = LogManager.GetLogger<PerformanceMonitorUsersInstaller>();
     static long NowTicks => DateTime.UtcNow.Ticks;
     readonly TimeSpan resetEvery;
     readonly string endpointName;
     Task cleaner;
-    readonly CancellationTokenSource cancellation;
+    readonly CancellationTokenSource counterCleanupTokenSource;
 }

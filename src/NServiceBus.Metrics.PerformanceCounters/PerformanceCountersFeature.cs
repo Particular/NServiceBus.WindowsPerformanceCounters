@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Features;
@@ -18,7 +19,7 @@ class PerformanceCountersFeature : Feature
     {
         context.ThrowIfSendOnly();
 
-        var endpoint = context.Settings.LogicalAddress().EndpointInstance.Endpoint;
+        var endpoint = context.Settings.EndpointName();
 
         var legacyInstanceNameMap = new Dictionary<string, CounterInstanceName?>
         {
@@ -32,10 +33,10 @@ class PerformanceCountersFeature : Feature
 
         context.RegisterStartupTask(new Cleanup(this));
 
-        context.Pipeline.OnReceivePipelineCompleted(_ =>
+        context.Pipeline.OnReceivePipelineCompleted((_, __) =>
         {
             updater.OnReceivePipelineCompleted();
-            return TaskExtensions.CompletedTask;
+            return Task.CompletedTask;
         });
 
         options.RegisterObservers(probeContext =>
@@ -67,13 +68,13 @@ class PerformanceCountersFeature : Feature
             feature.cache.Dispose();
         }
 
-        protected override Task OnStart(IMessageSession session)
+        protected override Task OnStart(IMessageSession session, CancellationToken cancellationToken)
         {
             feature.updater.Start();
-            return TaskExtensions.CompletedTask;
+            return Task.CompletedTask;
         }
 
-        protected override Task OnStop(IMessageSession session)
+        protected override Task OnStop(IMessageSession session, CancellationToken cancellationToken)
         {
             return feature.updater.Stop();
         }

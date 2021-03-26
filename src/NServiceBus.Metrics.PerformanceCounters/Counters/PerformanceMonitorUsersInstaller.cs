@@ -1,11 +1,12 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus.Installation;
 using NServiceBus.Logging;
 
-// Add the identity to the 'Performance Monitor Users' local group 
+// Add the identity to the 'Performance Monitor Users' local group
 class PerformanceMonitorUsersInstaller : INeedToInstallSomething
 {
     static PerformanceMonitorUsersInstaller()
@@ -13,7 +14,7 @@ class PerformanceMonitorUsersInstaller : INeedToInstallSomething
         builtinPerformanceMonitoringUsersName = PerformanceMonitoringUsersSid.Get();
     }
 
-    public Task Install(string identity)
+    public Task Install(string identity, CancellationToken cancellationToken)
     {
         //did not use DirectoryEntry to avoid a ref to the DirectoryServices.dll
         try
