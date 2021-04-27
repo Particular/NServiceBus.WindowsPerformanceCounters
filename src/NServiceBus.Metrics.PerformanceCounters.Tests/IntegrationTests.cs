@@ -41,8 +41,8 @@ public class IntegrationTests
 
         var cancellation = new CancellationTokenSource();
 
-        var criticalTimeReading = ReadNonZero(criticalTime, cancellation);
-        var processingTimeReading = ReadNonZero(processingTime, cancellation);
+        var criticalTimeReading = ReadNonZero(criticalTime, cancellation.Token);
+        var processingTimeReading = ReadNonZero(processingTime, cancellation.Token);
 
         await endpoint.SendLocal(new MyMessage())
             .ConfigureAwait(false);
@@ -68,16 +68,17 @@ public class IntegrationTests
         Assert.IsNull(message);
     }
 
-    static async Task<bool> ReadNonZero(PerformanceCounter counter, CancellationTokenSource cancellation)
+    static async Task<bool> ReadNonZero(PerformanceCounter counter, CancellationToken cancellationToken)
     {
         while (counter.RawValue == 0)
         {
-            if (cancellation.IsCancellationRequested)
+            if (cancellationToken.IsCancellationRequested)
             {
                 return false;
             }
 
-            await Task.Delay(TimeSpan.FromMilliseconds(10));
+            // Short and don't want to return false, not throw
+            await Task.Delay(TimeSpan.FromMilliseconds(10), CancellationToken.None);
         }
 
         return true;

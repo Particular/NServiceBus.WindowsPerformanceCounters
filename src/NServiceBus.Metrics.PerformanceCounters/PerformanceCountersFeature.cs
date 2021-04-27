@@ -68,15 +68,15 @@ class PerformanceCountersFeature : Feature
             feature.cache.Dispose();
         }
 
-        protected override Task OnStart(IMessageSession session, CancellationToken cancellationToken)
+        protected override Task OnStart(IMessageSession session, CancellationToken cancellationToken = default)
         {
             feature.updater.Start();
             return Task.CompletedTask;
         }
 
-        protected override Task OnStop(IMessageSession session, CancellationToken cancellationToken)
+        protected override Task OnStop(IMessageSession session, CancellationToken cancellationToken = default)
         {
-            return feature.updater.Stop();
+            return feature.updater.Stop(cancellationToken);
         }
 
         PerformanceCountersFeature feature;

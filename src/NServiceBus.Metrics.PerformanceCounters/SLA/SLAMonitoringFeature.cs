@@ -50,13 +50,13 @@ class SLAMonitoringFeature : Feature
             feature.cache?.Dispose();
         }
 
-        protected override Task OnStart(IMessageSession session, CancellationToken cancellationToken)
+        protected override Task OnStart(IMessageSession session, CancellationToken cancellationToken = default)
         {
             feature.slaBreachCounter.Start();
             return Task.CompletedTask;
         }
 
-        protected override Task OnStop(IMessageSession session, CancellationToken cancellationToken)
+        protected override Task OnStop(IMessageSession session, CancellationToken cancellationToken = default)
         {
             return Task.CompletedTask;
         }

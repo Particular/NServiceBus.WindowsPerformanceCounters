@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus;
-using NServiceBus.Metrics.PerformanceCounters;
 using NServiceBus.Logging;
+using NServiceBus.Metrics.PerformanceCounters;
 
 class PerformanceCounterUpdater
 {
@@ -23,10 +23,10 @@ class PerformanceCounterUpdater
 
     public void Start()
     {
-        cleaner = Task.Run(Cleanup);
+        cleaner = Task.Run(() => Cleanup(counterCleanupTokenSource.Token));
     }
 
-    public Task Stop()
+    public Task Stop(CancellationToken cancellationToken = default)
     {
         counterCleanupTokenSource.Cancel();
         return cleaner;
@@ -75,13 +75,13 @@ class PerformanceCounterUpdater
         Volatile.Write(ref lastCompleted, NowTicks);
     }
 
-    async Task Cleanup()
+    async Task Cleanup(CancellationToken cancellationToken)
     {
         try
         {
-            while (!counterCleanupTokenSource.IsCancellationRequested)
+            while (!cancellationToken.IsCancellationRequested)
             {
-                await Task.Delay(resetEvery, counterCleanupTokenSource.Token).ConfigureAwait(false);
+                await Task.Delay(resetEvery, cancellationToken).ConfigureAwait(false);
 
                 var idleFor = NowTicks - Volatile.Read(ref lastCompleted);
                 if (idleFor > resetEvery.Ticks)
@@ -93,7 +93,7 @@ class PerformanceCounterUpdater
                 }
             }
         }
-        catch (OperationCanceledException) when (counterCleanupTokenSource.IsCancellationRequested)
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
             // no-op
             return;

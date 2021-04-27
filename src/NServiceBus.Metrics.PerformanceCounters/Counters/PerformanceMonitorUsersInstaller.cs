@@ -14,7 +14,7 @@ class PerformanceMonitorUsersInstaller : INeedToInstallSomething
         builtinPerformanceMonitoringUsersName = PerformanceMonitoringUsersSid.Get();
     }
 
-    public Task Install(string identity, CancellationToken cancellationToken)
+    public Task Install(string identity, CancellationToken cancellationToken = default)
     {
         //did not use DirectoryEntry to avoid a ref to the DirectoryServices.dll
         try
