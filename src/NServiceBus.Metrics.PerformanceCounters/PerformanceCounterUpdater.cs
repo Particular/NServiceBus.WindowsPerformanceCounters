@@ -97,7 +97,7 @@ class PerformanceCounterUpdater
         {
             if (cancellationToken.IsCancellationRequested)
             {
-                logger.Debug("Message processing cancelled.", ex);
+                logger.Debug("Metrics cleanup cancelled.", ex);
             }
             else
             {
