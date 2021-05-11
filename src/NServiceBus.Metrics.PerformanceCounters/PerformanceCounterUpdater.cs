@@ -79,9 +79,17 @@ class PerformanceCounterUpdater
     {
         try
         {
-            while (!cancellationToken.IsCancellationRequested)
+            while (true)
             {
-                await Task.Delay(resetEvery, cancellationToken).ConfigureAwait(false);
+                try
+                {
+                    await Task.Delay(resetEvery, cancellationToken).ConfigureAwait(false);
+                }
+                catch (OperationCanceledException ex)
+                {
+                    logger.Debug("Metrics cleanup cancelled.", ex);
+                    break;
+                }
 
                 var idleFor = NowTicks - Volatile.Read(ref lastCompleted);
                 if (idleFor > resetEvery.Ticks)
@@ -92,18 +100,6 @@ class PerformanceCounterUpdater
                     }
                 }
             }
-        }
-        catch (OperationCanceledException ex)
-        {
-            if (cancellationToken.IsCancellationRequested)
-            {
-                logger.Debug("Metrics cleanup cancelled.", ex);
-            }
-            else
-            {
-                logger.Warn("Message processing cancelled.", ex);
-            }
-            return;
         }
         catch (Exception ex)
         {
