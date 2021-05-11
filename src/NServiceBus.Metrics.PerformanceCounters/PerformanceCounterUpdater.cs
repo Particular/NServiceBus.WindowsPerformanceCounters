@@ -23,7 +23,7 @@ class PerformanceCounterUpdater
 
     public void Start()
     {
-        cleaner = Task.Run(() => Cleanup(counterCleanupTokenSource.Token));
+        cleaner = Task.Run(() => Cleanup(counterCleanupTokenSource.Token), CancellationToken.None);
     }
 
     public Task Stop(CancellationToken cancellationToken = default)
@@ -93,9 +93,16 @@ class PerformanceCounterUpdater
                 }
             }
         }
-        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        catch (OperationCanceledException ex)
         {
-            // no-op
+            if (cancellationToken.IsCancellationRequested)
+            {
+                logger.Debug("Metrics cleanup cancelled.", ex);
+            }
+            else
+            {
+                logger.Warn("Message processing cancelled.", ex);
+            }
             return;
         }
         catch (Exception ex)
