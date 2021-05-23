@@ -21,10 +21,8 @@ class PerformanceCounterUpdater
         OnReceivePipelineCompleted();
     }
 
-    public void Start()
-    {
-        cleaner = Task.Run(() => Cleanup(counterCleanupTokenSource.Token), CancellationToken.None);
-    }
+    // no Task.Run() here since CleanupAndSwallowExceptions yields with an await almost immediately
+    public void Start() => cleaner = CleanupAndSwallowExceptions(counterCleanupTokenSource.Token);
 
     public Task Stop(CancellationToken cancellationToken = default)
     {
@@ -75,19 +73,19 @@ class PerformanceCounterUpdater
         Volatile.Write(ref lastCompleted, NowTicks);
     }
 
-    async Task Cleanup(CancellationToken cancellationToken)
+    async Task CleanupAndSwallowExceptions(CancellationToken cancellationToken)
     {
         try
         {
-            while (true)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 try
                 {
                     await Task.Delay(resetEvery, cancellationToken).ConfigureAwait(false);
                 }
-                catch (OperationCanceledException ex)
+                catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
                 {
-                    logger.Debug("Metrics cleanup cancelled.", ex);
+                    // private token, updater is being stopped, don't log the exception because the Task.Delay stack trace is not interesting
                     break;
                 }
 
@@ -107,10 +105,13 @@ class PerformanceCounterUpdater
         }
     }
 
-    static ILog logger = LogManager.GetLogger<PerformanceMonitorUsersInstaller>();
     static long NowTicks => DateTime.UtcNow.Ticks;
+
+    static readonly ILog logger = LogManager.GetLogger<PerformanceMonitorUsersInstaller>();
+
     readonly TimeSpan resetEvery;
     readonly string endpointName;
-    Task cleaner;
     readonly CancellationTokenSource counterCleanupTokenSource;
+
+    Task cleaner;
 }

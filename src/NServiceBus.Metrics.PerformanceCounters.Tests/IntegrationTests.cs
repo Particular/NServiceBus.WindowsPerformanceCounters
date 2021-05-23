@@ -72,10 +72,7 @@ public class IntegrationTests
     {
         while (counter.RawValue == 0)
         {
-            if (cancellationToken.IsCancellationRequested)
-            {
-                return false;
-            }
+            cancellationToken.ThrowIfCancellationRequested();
 
             // Short and don't want to return false, not throw
             await Task.Delay(TimeSpan.FromMilliseconds(10), CancellationToken.None);
