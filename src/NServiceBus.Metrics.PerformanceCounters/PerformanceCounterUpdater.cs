@@ -98,7 +98,6 @@ class PerformanceCounterUpdater
             catch (Exception ex)
             {
                 logger.Error("Failed to reset performance counter buffers", ex);
-                break;
             }
         }
     }
