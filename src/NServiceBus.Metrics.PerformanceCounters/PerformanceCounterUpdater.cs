@@ -75,19 +75,11 @@ class PerformanceCounterUpdater
 
     async Task CleanupAndSwallowExceptions(CancellationToken cancellationToken)
     {
-        try
+        while (!cancellationToken.IsCancellationRequested)
         {
-            while (!cancellationToken.IsCancellationRequested)
+            try
             {
-                try
-                {
-                    await Task.Delay(resetEvery, cancellationToken).ConfigureAwait(false);
-                }
-                catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
-                {
-                    // private token, updater is being stopped, don't log the exception because the Task.Delay stack trace is not interesting
-                    break;
-                }
+                await Task.Delay(resetEvery, cancellationToken).ConfigureAwait(false);
 
                 var idleFor = NowTicks - Volatile.Read(ref lastCompleted);
                 if (idleFor > resetEvery.Ticks)
@@ -98,10 +90,16 @@ class PerformanceCounterUpdater
                     }
                 }
             }
-        }
-        catch (Exception ex)
-        {
-            logger.Error("Failed to reset performance counter buffers", ex);
+            catch (Exception ex) when (ex.IsCausedBy(cancellationToken))
+            {
+                // private token, updater is being stopped, don't log the exception because the Task.Delay stack trace is not interesting
+                break;
+            }
+            catch (Exception ex)
+            {
+                logger.Error("Failed to reset performance counter buffers", ex);
+                break;
+            }
         }
     }
 
